@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
@@ -8,6 +9,7 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm'; 
+import { DataSource } from 'typeorm';
 
 
 @Module({
@@ -25,4 +27,12 @@ import typeOrmConfig from './config/typeorm';
   controllers: [AuthController, UserController],
   providers: [AuthService, UserService],
 })
-export class AppModule {}
+
+
+export class AppModule implements OnModuleInit {
+  constructor(private dataSource: DataSource) {} 
+
+  async onModuleInit() {
+    console.log('App iniciada correctamente');
+    }
+  }
