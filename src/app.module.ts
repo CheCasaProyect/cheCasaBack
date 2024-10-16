@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './config/typeorm'; 
+import { DataSource } from 'typeorm';
 
 
 @Module({
@@ -22,4 +23,12 @@ import typeOrmConfig from './config/typeorm';
   controllers: [AuthController],
   providers: [AuthService],
 })
-export class AppModule {}
+
+
+export class AppModule implements OnModuleInit {
+  constructor(private dataSource: DataSource) {} 
+
+  async onModuleInit() {
+    console.log('App iniciada correctamente');
+    }
+  }
