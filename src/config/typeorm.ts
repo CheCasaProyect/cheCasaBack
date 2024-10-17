@@ -4,7 +4,6 @@ import { config as dotenvConfig } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 dotenvConfig({ path: '.env.development' });
 
-
 console.log('Database Username: ', process.env.DB_USERNAME);
 console.log('Database Password:', process.env.DB_PASSWORD);
 const config = {
