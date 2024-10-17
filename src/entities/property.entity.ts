@@ -4,62 +4,88 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Review } from './review.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { ReservationDetail } from './reservationDetail.entity';
 
 @Entity({
   name: `properties`,
 })
 export class Property {
   @PrimaryGeneratedColumn(`uuid`)
+  @ApiProperty({
+    description: 'Property id',
+    format: 'uuid',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
   id: string;
 
   @ManyToOne(() => User, (user) => user.properties)
   @JoinColumn({ name: `owner_id` })
-  owner: User;
+  @ApiProperty()
+  owner: User; //Se relaciona el dueño de la propiedad.
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+  })
+  @ApiProperty()
+  title: string;
+
+  @Column({
+    type: 'text',
+    length: 500,
+  })
+  @ApiProperty()
+  description: string;
 
   @Column({
     type: 'varchar',
     length: 50,
   })
-  title: string;
-
-  @Column({
-    type: 'varchar',
-    length: 500,
-  })
-  description: string;
+  @ApiProperty()
+  location: string;
 
   @Column({
     type: 'decimal',
     precision: 10,
     scale: 2,
   })
+  @ApiProperty()
   price: number;
 
   @Column({
-    type: 'integer',
+    type: 'boolean',
+    default: true,
   })
-  maxPeople: number;
+  @ApiProperty()
+  isAvailable: boolean; //aquí el tipo boolean es para tener una referencia, pero se podría poner otra cosa para ver para qué fecha vuelve a estar disponible.
+
+  @Column({ type: 'integer' })
+  @ApiProperty()
+  capacity: number;
 
   @Column({
     type: 'varchar',
-    length: 50,
   })
-  location: string;
-
-  @Column({
-    type: 'varchar', //este tipo no es el final,
+  @ApiProperty({
+    description: 'Product image',
+    example: 'product1.jpg',
   })
-  images: string; //este tipo no es el final.
-
-  @Column({
-    type: 'boolean',
-  })
-  available: boolean; //aquí el tipo boolean es para tener una referencia.
+  imgUrl: string;
 
   @OneToMany(() => Review, (review) => review.property)
+  @ApiProperty()
   reviews: Review[];
+
+  @OneToOne(
+    () => ReservationDetail,
+    (reservationDetail) => reservationDetail.property,
+  )
+  @ApiProperty()
+  reservationDetail: ReservationDetail;
 }

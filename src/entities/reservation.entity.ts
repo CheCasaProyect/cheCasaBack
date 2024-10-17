@@ -8,21 +8,25 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { ReservationDetail } from './reservationDetail.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({
   name: `reservations`,
 })
 export class Reservation {
   @PrimaryGeneratedColumn(`uuid`)
+  @ApiProperty()
   id: string;
 
   @ManyToOne(() => User, (user) => user.reservations)
   @JoinColumn({ name: `user_id` })
+  @ApiProperty()
   user: User;
 
   @Column({
     type: 'date',
   })
+  @ApiProperty()
   requestedAt: Date;
 
   @OneToOne(
@@ -30,5 +34,6 @@ export class Reservation {
     (reservationDetail) => reservationDetail.reservation,
   )
   @JoinColumn({ name: `reservation_detail_id` })
+  @ApiProperty()
   reservationDetails: ReservationDetail;
 }
