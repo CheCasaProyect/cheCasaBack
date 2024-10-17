@@ -10,6 +10,7 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm'; 
 import { DataSource } from 'typeorm';
+import { FileUploadModule } from './cloudinary/file-upload.module';
 
 
 @Module({
@@ -23,7 +24,8 @@ import { DataSource } from 'typeorm';
     useFactory:(configService: ConfigService) => configService.get('typeorm'),
   }),
     AuthModule,
-    UserModule],
+    UserModule,
+    FileUploadModule],
   controllers: [AuthController, UserController],
   providers: [AuthService, UserService],
 })

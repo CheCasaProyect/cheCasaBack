@@ -1,7 +1,51 @@
+/* eslint-disable prettier/prettier */
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Reservations } from "./reservations.entity";
+
+
+
+@Entity()
+export class User{
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    email: string;
+
+    @Column()
+    password: string;
+
+    @Column()
+    nDni: number;
+
+    @Column()
+    phone: number;
+
+    @Column()
+    address: string;
+
+    @Column()
+    country: string;
+
+    @Column()
+    city: string;
+
+    @Column()
+    role: string; //cambiar por enum!!
+
+    @OneToMany(()=> Reservations, (reservations) => reservations.userId)
+    @JoinColumn()
+    reservations: Reservations[];
+}
+
+
 // import { ApiProperty } from "@nestjs/swagger";
 // import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 // import { v4 as uuid } from 'uuid'
-// import { UserRole } from "./user.enum";
+// import { UserRole } from "../utils/user.enum";
 
 // @Entity ({
 //     name: 'users',
@@ -61,6 +105,10 @@
 //         example: 'Traveler'
 //     })
 //     role: UserRole
+
+//     @OneToMany(()=> Reservations, (reservations) => reservations.userId)
+//     @JoinColumn()
+//     reservations: Reservations[];
 
 
 // }
