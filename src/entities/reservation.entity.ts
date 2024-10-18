@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user.entity';
+import { User } from './users.entity';
 import { ReservationDetail } from './reservationDetail.entity';
 import { ApiProperty } from '@nestjs/swagger';
 

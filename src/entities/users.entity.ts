@@ -3,6 +3,8 @@ import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "t
 import { v4 as uuid } from 'uuid'
 import { UserRole } from "../utils/user.enum";
 import { Reservation } from "./reservation.entity";
+import { Property } from "./property.entity";
+import { Review } from "./review.entity";
 
 @Entity ({
     name: 'users',
@@ -66,6 +68,14 @@ export class User {
     @OneToMany(()=> Reservation, (reservations) => reservations.user)
     @JoinColumn()
     reservations: Reservation[];
+
+    @OneToMany(() => Property, (properties) => properties.owner)
+    @JoinColumn()
+    properties: Property[];
+
+    @OneToMany(() => Review, (reviews) => reviews.user)
+    @JoinColumn()
+    reviews: Review[];
 
 
 }
