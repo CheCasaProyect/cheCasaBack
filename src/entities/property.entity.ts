@@ -37,7 +37,7 @@ export class Property {
   title: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     length: 500,
   })
   @ApiProperty()
