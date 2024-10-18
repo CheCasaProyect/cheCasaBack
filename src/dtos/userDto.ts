@@ -73,4 +73,7 @@ export class UserDto {
   })
   @IsEnum([UserRole.Traveler, UserRole.Host])
   role: UserRole;
+
+  @ApiProperty()
+  active: boolean
 }

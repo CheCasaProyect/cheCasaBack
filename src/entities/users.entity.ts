@@ -65,6 +65,10 @@ export class User {
     })
     role: UserRole
 
+    @Column({default: true})
+    @ApiProperty()
+    active: boolean;
+
     @OneToMany(()=> Reservation, (reservations) => reservations.user)
     @JoinColumn()
     reservations: Reservation[];
