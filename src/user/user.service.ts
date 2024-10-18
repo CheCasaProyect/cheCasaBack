@@ -3,17 +3,17 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly userRepository: UserRepository){}
+  constructor(private readonly userRepository: UserRepository) {}
 
-    async getUser(){}
+  async getUser() {}
 
-    async getUserById(){}
+  async getUserById() {}
 
-    async getUserByEmail(){}
+  async getUserByEmail() {}
 
-    async createUser(){}
+  async createUser() {}
 
-    async upldateUser(){}
+  async upldateUser() {}
 
-    async removeUser(){}
+  async removeUser() {}
 }
