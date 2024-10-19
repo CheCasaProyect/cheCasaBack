@@ -37,7 +37,7 @@ export class Property {
   title: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     length: 500,
   })
   @ApiProperty()
@@ -72,11 +72,8 @@ export class Property {
   @Column({
     type: 'varchar',
   })
-  @ApiProperty({
-    description: 'Product image',
-    example: 'product1.jpg',
-  })
-  imgUrl: string;
+  @ApiProperty()
+  photos: File[];
 
   @OneToMany(() => Review, (review) => review.property)
   @ApiProperty()
