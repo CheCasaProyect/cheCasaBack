@@ -44,3 +44,4 @@ export class UserRepository {
       return this.userRepository.delete({id: id})
      }
 }
+

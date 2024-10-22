@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Param, ParseUUIDPipe, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
+import { UserDto } from 'src/dtos/userDto';
+import { User } from 'src/entities/users.entity';
 
 @ApiTags('user')
 @Controller('users')
@@ -25,11 +27,14 @@ export class UserController {
     return this.userService.getUserByEmail(email)
   }
 
-  // @ApiOperation({ summary: 'Update User' })
-  // @Put(':id')
-  // updateUser(@Param('id', ParseUUIDPipe)id: string) {
-  //   return this.userService.updateUser(id)
-  // }
+  @ApiOperation({ summary: 'Update User' })
+  @Put(':id')
+  updateUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateUser: User
+  ) {
+    return this.userService.updateUser(id, updateUser);
+  }
 
   @ApiOperation({summary: 'Deactivate User'})
   @Put(':id')

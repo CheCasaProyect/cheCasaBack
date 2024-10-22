@@ -2,10 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from 'src/entities/users.entity';
 import { UserDto } from 'src/dtos/userDto';
+import { InjectRepository } from '@nestjs/typeorm';
+
 
 @Injectable()
 export class UserService {
-    constructor(private readonly userRepository: UserRepository){}
+  constructor(private readonly userRepository: UserRepository) {}
 
     async getAllUsers(){
         const user = await this.userRepository.getAllUsers()
