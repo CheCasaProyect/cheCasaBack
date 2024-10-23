@@ -26,13 +26,13 @@ export class ReservationDetail {
     type: 'date',
   })
   @ApiProperty()
-  reservationDate: Date;
+  checkIn: Date;
 
   @Column({
     type: 'date',
   })
   @ApiProperty()
-  reservationEnd: Date;
+  checkOut: Date;
 
   @Column({
     type: 'integer',
