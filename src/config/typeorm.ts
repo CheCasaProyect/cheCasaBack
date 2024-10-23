@@ -19,6 +19,9 @@ const config = {
   extra: {
     connectionTimeoutMillis: 45000,
   },
+    ssl: {
+      rejectUnauthorized: false 
+    }
 };
 
 console.log(process.env.DB_PASSWORD);
