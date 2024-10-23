@@ -1,28 +1,33 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsInt, IsNotEmpty, IsNumber, IsString, IsUUID, Min } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  Min,
+} from 'class-validator';
 
+export class ReservationDetailsDTO {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
+  checkIn: Date;
 
-export class ReservationDetailsDTO{
+  @ApiProperty()
+  @IsNotEmpty()
+  checkOut: Date;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @IsInt()
+  @Min(1)
+  pax: number;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsDate()
-    checkIn: Date;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    checkOut: Date;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsNumber()
-    @IsInt()
-    @Min(1)
-    pax: number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsUUID()
-    propertyId: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  propertyId: string;
 }
