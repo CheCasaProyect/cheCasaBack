@@ -18,7 +18,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get User By ID' })
   @Get(':id')
   getUserById(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.getUserById
+    return this.userService.getUserById(id)
   }
 
   @ApiOperation({summary: 'Get User By Email'})

@@ -8,6 +8,7 @@ import typeOrmConfig from './config/typeorm';
 
 import { DataSource } from 'typeorm';
 import { FileUploadModule } from './cloudinary/file-upload.module';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { FileUploadModule } from './cloudinary/file-upload.module';
     AuthModule,
     UserModule,
     FileUploadModule,
+    FirebaseModule,
   ],
   controllers: [],
   providers: [],
