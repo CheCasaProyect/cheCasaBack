@@ -7,14 +7,12 @@ import { UserDto } from 'src/dtos/userDto';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'SignUp' })
   @Post('signup')
-  createUser(@Body()user: UserDto) {
-    return this.authService.signUp(user)
+  createUser(@Body() user: UserDto) {
+    return this.authService.signUp(user);
   }
 
   @ApiOperation({ summary: 'SignIn' })

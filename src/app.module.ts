@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm';
-import { DataSource} from 'typeorm';
+import { DataSource } from 'typeorm';
 import { FileUploadModule } from './cloudinary/file-upload.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { PropertyModule } from './property/property.module';
 
 @Module({
   imports: [
@@ -24,12 +25,13 @@ import { FirebaseModule } from './firebase/firebase.module';
     UserModule,
     FileUploadModule,
     FirebaseModule,
+    PropertyModule,
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private dataSource: DataSource){}
+  constructor(private dataSource: DataSource) {}
 
   async onModuleInit() {
     console.log('App iniciada correctamente');
