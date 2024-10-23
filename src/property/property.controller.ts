@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
+import { Property } from 'src/entities/property.entity';
 
 @Controller(`properties`)
 export class PropertyController {
@@ -19,5 +20,10 @@ export class PropertyController {
   addProperty(@Body() property: CreatePropertyDto) {
     const newProperty = this.propertyService.addProperty(property);
     return newProperty;
+  }
+
+  @Get('filter')
+  async filterProperties(@Query() query: any): Promise<Property[]>{
+    return this.propertyService.filterProperties(query);
   }
 }

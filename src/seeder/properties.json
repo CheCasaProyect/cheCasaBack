@@ -1,0 +1,35 @@
+[
+    {
+      "title": "Villa de Lujo",
+      "description": "Una hermosa villa de lujo con piscina privada y jardín.",
+      "location": "Buenos Aires, Argentina",
+      "price": 250.00,
+      "isAvailable": true,
+      "capacity": 8,
+      "photos": ["foto1.jpg", "foto2.jpg", "foto3.jpg"],
+      "reviews": [],
+      "reservationDetail": null
+    },
+    {
+      "title": "Apartamento Acogedor",
+      "description": "Un pequeño y acogedor apartamento perfecto para parejas.",
+      "location": "Córdoba, Argentina",
+      "price": 150.00,
+      "isAvailable": false,
+      "capacity": 2,
+      "photos": ["foto4.jpg", "foto5.jpg"],
+      "reviews": [],
+      "reservationDetail": null
+    },
+    {
+      "title": "Condominio Frente al Mar",
+      "description": "Un condominio frente al mar con impresionantes vistas al océano.",
+      "location": "Mar del Plata, Argentina",
+      "price": 300.00,
+      "isAvailable": true,
+      "capacity": 4,
+      "photos": ["foto6.jpg", "foto7.jpg", "foto8.jpg"],
+      "reviews": [],
+      "reservationDetail": null
+    }
+  ]
