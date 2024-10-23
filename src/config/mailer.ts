@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const nodemailer = require('nodemailer');
+import * as nodemailer from 'nodemailer';
 import { config as dotenvConfig } from 'dotenv';
 dotenvConfig({ path: `.env` });
 export const transporter = nodemailer.createTransport({

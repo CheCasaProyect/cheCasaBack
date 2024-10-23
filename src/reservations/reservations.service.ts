@@ -5,10 +5,16 @@ import { ReservationDetailsDTO } from 'src/dtos/reservationDetailsDTO';
 
 @Injectable()
 export class ReservationsService {
-    constructor(private readonly reservationRepository: ReservationsRepository){}
+  constructor(private readonly reservationRepository: ReservationsRepository) {}
 
-    createReservation(reservation: ReservationsDTO, reservationDetails: ReservationDetailsDTO) {
-        const newReservation = this.reservationRepository.createReservation(reservation, reservationDetails);
-        return newReservation
-    }
+  createReservation(
+    reservation: ReservationsDTO,
+    reservationDetails: ReservationDetailsDTO,
+  ) {
+    const newReservation = this.reservationRepository.createReservation(
+      reservation,
+      reservationDetails,
+    );
+    return newReservation;
+  }
 }
