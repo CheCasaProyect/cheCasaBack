@@ -5,8 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm';
-
-import { DataSource } from 'typeorm';
+import { DataSource} from 'typeorm';
 import { FileUploadModule } from './cloudinary/file-upload.module';
 
 @Module({
@@ -28,7 +27,7 @@ import { FileUploadModule } from './cloudinary/file-upload.module';
   providers: [],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private dataSource: DataSource) {}
+  constructor(private dataSource: DataSource){}
 
   async onModuleInit() {
     console.log('App iniciada correctamente');

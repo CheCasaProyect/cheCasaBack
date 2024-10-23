@@ -17,4 +17,8 @@ export class PropertyService {
     const newProperty = this.propertyRepository.addProperty(property);
     return newProperty;
   }
+
+  filterProperties(filters: any) {
+    return this.propertyRepository.filterProperties(filters);
+  }
 }
