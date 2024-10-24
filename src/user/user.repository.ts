@@ -21,12 +21,13 @@ export class UserRepository {
       }
 
       createUser(userData: Partial<User>){
-        return this.userRepository.create(userData)
+        const newUser = this.userRepository.create(userData)
+        return this.userRepository.save(newUser)
       }
 
-      saveUser(user: User){
-        return this.userRepository.save(user)
-      }
+      // saveUser(user: User){
+      //   return this.userRepository.save(user)
+      // }
 
       userUpdate(id: string, updateUser: Partial<User>){
         return this.userRepository.update(id, updateUser)
@@ -39,6 +40,14 @@ export class UserRepository {
         user.active = false
         await this.userRepository.save(user);  
      }
+
+     async activeUser(id: string){
+      const user = await this.userRepository.findOneBy({id: id})
+      if(!user) throw new BadRequestException('User not found')
+
+      user.active = true 
+      await this.userRepository.save(user)   
+   }
 
      removeUser(id: string){
       return this.userRepository.delete({id: id})

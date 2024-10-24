@@ -34,7 +34,6 @@ export class UserService {
 
     async createUser(userData: UserDto){
         const newUser = await this.userRepository.createUser(userData)
-        await this.userRepository.saveUser(newUser)
         const {password, ...userWithoutPass} = newUser
 
         return userWithoutPass
@@ -53,16 +52,13 @@ export class UserService {
     }
 
      async deactivateUser(id: string){
-        return this.userRepository.deactivateUser(id)
+        return await this.userRepository.deactivateUser(id)
      }
 
      async activeUser(id: string){
-        const user = await this.userRepository.getUserById(id)
-        if(!user) throw new BadRequestException('User not found')
-
-        user.active = true 
-        await this.userRepository.saveUser(user)   
+       return await this.activeUser(id)
      }
+
 
      async removeUser(id: string){
         const user = await this.userRepository.getUserById(id)
