@@ -69,21 +69,21 @@ export class User {
     enum: UserRole,
     example: 'Traveler',
   })
-    role: UserRole;
+  role: UserRole;
 
-    @Column({default: true})
-    @ApiProperty()
-    active: boolean;
+  @Column({ default: true })
+  @ApiProperty()
+  active: boolean;
 
-    @OneToMany(()=> Reservation, (reservations) => reservations.user)
-    @JoinColumn()
-    reservations: Reservation[];
+  @OneToMany(() => Reservation, (reservations) => reservations.user)
+  @JoinColumn()
+  reservations: Reservation[];
 
-    @OneToMany(() => Property, (properties) => properties.owner)
-    @JoinColumn()
-    properties: Property[];
+  @OneToMany(() => Property, (properties) => properties.owner)
+  @JoinColumn()
+  properties: Property[];
 
-    @OneToMany(() => Review, (reviews) => reviews.user)
-    @JoinColumn()
-    reviews: Review[];
+  @OneToMany(() => Review, (reviews) => reviews.user)
+  @JoinColumn()
+  reviews: Review[];
 }

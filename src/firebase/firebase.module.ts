@@ -1,9 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as firebase from 'firebase/app'
-import {config as dotenvConfig} from 'dotenv';
+import * as firebase from 'firebase/app';
+import { config as dotenvConfig } from 'dotenv';
 dotenvConfig({ path: '.env' });
-
 
 @Global()
 @Module({
@@ -23,9 +22,9 @@ dotenvConfig({ path: '.env' });
         return firebase.initializeApp(firebaseConfig);
       },
       inject: [ConfigService],
-    }],
+    },
+  ],
 
-    exports:['FIREBASE_APP'],
-
+  exports: ['FIREBASE_APP'],
 })
 export class FirebaseModule {}

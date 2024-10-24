@@ -6,6 +6,7 @@ import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, Goo
 import { UserDto } from 'src/dtos/userDto';
 import { UserRole } from 'src/utils/user.enum';
 import { devNull } from 'os';
+import { transporter } from 'src/config/mailer';
 
 @Injectable()
 export class AuthService {
@@ -24,9 +25,6 @@ export class AuthService {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)    
             
             await this.userRepository.createUser(user);
-
-           return 'User created successfully!'
-    }
 
 
     async login(email: string, password: string){
@@ -93,4 +91,20 @@ export class AuthService {
 
     return this.userRepository.userUpdate(existingUser.id, userDto)
  }
+
+    await this.sendMails();
+
+    console.log(`Mensaje enviado al gmail correctamtente`);
+
+    return 'User created successfully!';
+  }
+
+  async sendMails() {
+    await transporter.sendMail({
+      from: '"Te Registraste en CheCasa 👻" <che.casa.proyect@gmail.com>',
+      to: 'che.casa.proyect@gmail.com', //Es un ejemplo, luego tendría que sacar el email del usuario q se registre.
+      html: '<b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>',
+    });
+  }
+
 }

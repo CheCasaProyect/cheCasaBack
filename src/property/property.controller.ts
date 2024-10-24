@@ -2,7 +2,9 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { Property } from 'src/entities/property.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags(`property`)
 @Controller(`properties`)
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
@@ -23,7 +25,7 @@ export class PropertyController {
   }
 
   @Get('filter')
-  async filterProperties(@Query() query: any): Promise<Property[]>{
+  async filterProperties(@Query() query: any): Promise<Property[]> {
     return this.propertyService.filterProperties(query);
   }
 }

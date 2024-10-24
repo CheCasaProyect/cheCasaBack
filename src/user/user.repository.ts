@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/entities/users.entity";
-import { Repository } from "typeorm";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository {
@@ -25,9 +25,6 @@ export class UserRepository {
         return this.userRepository.save(newUser)
       }
 
-      // saveUser(user: User){
-      //   return this.userRepository.save(user)
-      // }
 
       userUpdate(id: string, updateUser: Partial<User>){
         return this.userRepository.update(id, updateUser)
@@ -53,4 +50,3 @@ export class UserRepository {
       return this.userRepository.delete({id: id})
      }
 }
-

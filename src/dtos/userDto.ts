@@ -75,5 +75,5 @@ export class UserDto {
   role: UserRole;
 
   @ApiProperty()
-  active: boolean
+  active: boolean;
 }
