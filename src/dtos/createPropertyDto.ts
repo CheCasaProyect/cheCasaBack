@@ -56,5 +56,5 @@ export class CreatePropertyDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  photos: File[];
+  photos: string[];
 }

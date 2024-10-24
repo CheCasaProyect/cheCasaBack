@@ -8,4 +8,11 @@ export class FileUploadService {
     const updateUser = this.fileUploadRepository.uploadProfileImg(file, userId);
     return updateUser;
   }
+  uploadPropertyImg(file: Express.Multer.File, productId: string) {
+    const updateProperty = this.fileUploadRepository.uploadPropertyImg(
+      file,
+      productId,
+    );
+    return updateProperty;
+  }
 }
