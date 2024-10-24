@@ -86,4 +86,11 @@ export class User {
   @OneToMany(() => Review, (reviews) => reviews.user)
   @JoinColumn()
   reviews: Review[];
+
+  @Column({
+    type: 'text',
+    default:
+      'https://res.cloudinary.com/dddh5wrx3/image/upload/v1729712425/png-clipart-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette_lfuate.png',
+  })
+  profileImgUrl: string;
 }

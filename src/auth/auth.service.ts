@@ -103,6 +103,7 @@ export class AuthService {
     await transporter.sendMail({
       from: '"Te Registraste en CheCasa 👻" <che.casa.proyect@gmail.com>',
       to: 'che.casa.proyect@gmail.com', //Es un ejemplo, luego tendría que sacar el email del usuario q se registre.
+      subject: "Registro existoso",
       html: '<b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>',
     });
   }
