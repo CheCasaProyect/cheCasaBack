@@ -6,9 +6,10 @@ import { User } from 'src/entities/users.entity';
 import { cloudinaryService } from './cloudinary.service';
 import { FileUploadService } from './file-upload.service';
 import { FileUploadRepository } from './file-upload.repository';
+import { Property } from 'src/entities/property.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User, Property])],
   controllers: [FileUploadController],
   providers: [
     cloudinaryService,

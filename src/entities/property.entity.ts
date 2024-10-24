@@ -73,7 +73,7 @@ export class Property {
     type: 'varchar',
   })
   @ApiProperty()
-  photos: File[];
+  photos: string[];
 
   @OneToMany(() => Review, (review) => review.property)
   @ApiProperty()
