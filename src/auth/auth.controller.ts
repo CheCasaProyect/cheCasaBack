@@ -10,7 +10,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'SignUp' })
   @Post('signup')
-  createUser(@Body() user: UserDto) {
+  signinUp(@Body() user: UserDto) {
     return this.authService.signUp(user);
   }
 
@@ -21,16 +21,11 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Google Login' })
-  @Post('google-login')
+  @Post('google')
   googleLogin() {
     return this.authService.googleLogin();
   }
 
-  @ApiOperation({ summary: 'Facebook Login' })
-  @Post('facebook-login')
-  facebookLogin() {
-    return this.authService.facebookLogin();
-  }
 
   @ApiOperation({ summary: 'Complete Profile' })
   @Put('complete-profile')

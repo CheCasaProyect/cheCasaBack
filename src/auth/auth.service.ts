@@ -7,7 +7,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
 import { UserDto } from 'src/dtos/userDto';
@@ -21,47 +20,56 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     @Inject('FIREBASE_APP') private readonly firebaseApp: FirebaseApp,
   ) {}
-
+  
   async signUp(user: UserDto) {
     const { email, password } = user;
     if (!email || !password) throw new BadRequestException('Required');
     const existinUser = await this.userRepository.getUserByEmail(user.email);
     if (existinUser) throw new BadRequestException('Email already exists');
-
+    
     const auth = getAuth(this.firebaseApp);
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
+    const userCredential = await createUserWithEmailAndPassword( auth, email, password);
+    const firebaseUid = userCredential.user.uid;
 
-    const newUser = await this.userRepository.createUser(user);
-    return newUser;
+      const newUser = await this.userRepository.createUser({
+        id: firebaseUid,
+        email,
+        firstname: '',
+        lastname: '',
+        phone: null,
+        birthdate: null,
+        role: UserRole.Traveler,
+        active: true,
+      });
+    
+      return newUser;
+      
+   
   }
 
   async login(email: string, password: string) {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) throw new BadRequestException('User not found');
     const auth = await getAuth(this.firebaseApp);
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
+    const userCredential = await signInWithEmailAndPassword( auth, email, password);
 
     return user;
   }
+
+
 
   async googleLogin() {
     const auth = getAuth(this.firebaseApp);
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     const { user } = userCredential;
+    const firebaseUid = user.uid;
     const existingUser = await this.userRepository.getUserByEmail(user.email);
     if (existingUser) {
       return existingUser;
     } else {
       const newUser = await this.userRepository.createUser({
+        id: firebaseUid,
         email: user.email,
         firstname: '',
         lastname: '',
@@ -73,28 +81,7 @@ export class AuthService {
       return newUser;
     }
   }
-
-  async facebookLogin() {
-    const auth = getAuth(this.firebaseApp);
-    const provider = new FacebookAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    const { user } = userCredential;
-    const existingUser = await this.userRepository.getUserByEmail(user.email);
-    if (existingUser) {
-      return existingUser;
-    } else {
-      const newUser = await this.userRepository.createUser({
-        email: user.email,
-        firstname: '',
-        lastname: '',
-        phone: null,
-        birthdate: null,
-        role: UserRole.Traveler,
-        active: true,
-      });
-      return newUser;
-    }
-  }
+  
 
   async completeProfile(userDto: UserDto) {
     const existingUser = await this.userRepository.getUserByEmail(
@@ -104,8 +91,6 @@ export class AuthService {
 
     return this.userRepository.userUpdate(existingUser.id, userDto);
   }
-
-  /* return 'User created successfully!'; */
 }
 
 /* await this.sendMails();
