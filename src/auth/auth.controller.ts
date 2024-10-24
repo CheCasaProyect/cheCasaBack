@@ -16,25 +16,25 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Login' })
   @Post('login')
-  login(@Body()email: string, password: string) {
-    return this.authService.login(email, password)
+  login(@Body() email: string, password: string) {
+    return this.authService.login(email, password);
   }
 
-  @ApiOperation({ summary: 'Google Login'})
+  @ApiOperation({ summary: 'Google Login' })
   @Post('google-login')
-    googleLogin(){
-      return this.authService.googleLogin()
+  googleLogin() {
+    return this.authService.googleLogin();
   }
 
-  @ApiOperation({ summary: 'Facebook Login'})
+  @ApiOperation({ summary: 'Facebook Login' })
   @Post('facebook-login')
-  facebookLogin(){
-    return this.authService.facebookLogin()
+  facebookLogin() {
+    return this.authService.facebookLogin();
   }
 
-  @ApiOperation({ summary: 'Complete Profile'})
+  @ApiOperation({ summary: 'Complete Profile' })
   @Put('complete-profile')
-  completeProfile(@Body()user: UserDto){
-    return this.authService.completeProfile(user)
+  completeProfile(@Body() user: UserDto) {
+    return this.authService.completeProfile(user);
   }
 }

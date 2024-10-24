@@ -6,9 +6,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm';
 import { DataSource } from 'typeorm';
-import { FileUploadModule } from './cloudinary/file-upload.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { PropertyModule } from './property/property.module';
+import { FileUploadModule } from './files/file-upload.module';
 
 @Module({
   imports: [
