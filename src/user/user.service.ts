@@ -31,10 +31,9 @@ export class UserService {
     if (!user) throw new BadRequestException('User not found');
   }
 
-  async createUser(userData: UserDto) {
-    const newUser = await this.userRepository.createUser(userData);
-    await this.userRepository.saveUser(newUser);
-    const { password, ...userWithoutPass } = newUser;
+    async createUser(userData: UserDto){
+        const newUser = await this.userRepository.createUser(userData)
+        const {password, ...userWithoutPass} = newUser
 
     return userWithoutPass;
   }
@@ -50,21 +49,19 @@ export class UserService {
     return userWithoutPass;
   }
 
-  async deactivateUser(id: string) {
-    return this.userRepository.deactivateUser(id);
-  }
+     async deactivateUser(id: string){
+        return await this.userRepository.deactivateUser(id)
+     }
 
-  async activeUser(id: string) {
-    const user = await this.userRepository.getUserById(id);
-    if (!user) throw new BadRequestException('User not found');
+     async activeUser(id: string){
+       return await this.activeUser(id)
+     }
 
-    user.active = true;
-    await this.userRepository.saveUser(user);
-  }
 
-  async removeUser(id: string) {
-    const user = await this.userRepository.getUserById(id);
-    if (!user) throw new BadRequestException('User not found');
+     async removeUser(id: string){
+        const user = await this.userRepository.getUserById(id)
+        if(!user) throw new BadRequestException('User not found')
+
 
     await this.userRepository.removeUser(id);
   }
