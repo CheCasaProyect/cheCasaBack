@@ -17,8 +17,12 @@ export class UserRepository {
     return this.userRepository.findOneBy({ id: id });
   }
 
-  getUserByEmail(email: string) {
-    return this.userRepository.findOneBy({ email: email });
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne( {where: { email: email }});
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    return user
   }
 
   createUser(userData: Partial<User>): Promise<User> {

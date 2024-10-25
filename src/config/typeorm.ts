@@ -23,6 +23,7 @@ const config = {
   ssl: {
     rejectUnauthorized: false,
   },
+  
 };
 
 console.log(process.env.DB_PASSWORD);

@@ -39,14 +39,11 @@ export class User {
   })
   lastname: string;
 
-  @Column({})
-  @ApiProperty({
-    description: 'User birthday',
-    example: '1990-01-01'
-  })
+  @Column({ type: 'varchar', nullable: true })
+  @ApiProperty()
   birthdate: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'int', nullable:true })
   @ApiProperty({
     description: 'Phone number',
     example: '5491122334455',

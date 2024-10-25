@@ -1,10 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
@@ -29,8 +31,12 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Get User By Email' })
-  @Get(':email')
-  getUserByEmail(@Param('email') email: string) {
+  @Get('email')
+  getUserByEmail(@Query('email') email: string) {
+    if (!email) {
+      throw new BadRequestException('Email is required');
+    }
+    console.log('email a buscar: ' + email);
     return this.userService.getUserByEmail(email);
   }
 

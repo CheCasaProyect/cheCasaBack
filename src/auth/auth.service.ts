@@ -27,7 +27,6 @@ export class AuthService {
     if (!email || !password) throw new BadRequestException('Required');
     const existinUser = await this.userRepository.getUserByEmail(user.email);
     if (existinUser) throw new BadRequestException('Email already exists');
-
     const auth = getAuth(this.firebaseApp);
     const userCredential = await createUserWithEmailAndPassword( auth, email, password);
     const firebaseUid = userCredential.user.uid;

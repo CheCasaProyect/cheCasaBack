@@ -34,6 +34,7 @@ export class UserDto {
     description: 'Birthdate',
     example: '1990-11-14',
   })
+
   @IsString()
   birthdate: string;
 
