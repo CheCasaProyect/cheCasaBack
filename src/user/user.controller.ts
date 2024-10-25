@@ -24,12 +24,7 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @ApiOperation({ summary: 'Get User By ID' })
-  @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.userService.getUserById(id);
-  }
-
+  
   @ApiOperation({ summary: 'Get User By Email' })
   @Get('email')
   getUserByEmail(@Query('email') email: string) {
@@ -39,6 +34,12 @@ export class UserController {
     console.log('email a buscar: ' + email);
     return this.userService.getUserByEmail(email);
   }
+  
+  @ApiOperation({ summary: 'Get User By ID' })
+  @Get(':id')
+  getUserById(@Param('id') id: string) {
+    return this.userService.getUserById(id);
+  }
 
   @ApiOperation({ summary: 'Update User' })
   @Put(':id')
@@ -47,13 +48,13 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Deactivate User' })
-  @Put(':id')
+  @Put('/deactivate')
   deactivateUser(@Param('id') id: string) {
     return this.userService.deactivateUser(id);
   }
 
   @ApiOperation({ summary: 'Activate User' })
-  @Put(':id')
+  @Put('/activate')
   activateUser(@Param('id') id: string) {
     return this.userService.activeUser(id);
   }

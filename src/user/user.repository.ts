@@ -17,13 +17,11 @@ export class UserRepository {
     return this.userRepository.findOneBy({ id: id });
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne( {where: { email: email }});
-    if (!user) {
-      throw new BadRequestException('User not found');
-    }
-    return user
+ 
+  async getUserByEmail(email: string): Promise<User | null> {
+     return this.userRepository.findOne({ where: { email } });
   }
+
 
   createUser(userData: Partial<User>): Promise<User> {
     const newUser = this.userRepository.create(userData);
