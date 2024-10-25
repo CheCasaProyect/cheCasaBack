@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -16,13 +17,13 @@ import { Review } from './review.entity';
   name: 'users',
 })
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn('varchar')
   @ApiProperty({
     description: 'User id',
-    format: 'uuid',
+    format: 'varchar(255)',
     example: '550e8400-e29b-41d4-a716-446655440000',
   })
-  id: string = uuid();
+  id: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   @ApiProperty({
@@ -40,9 +41,9 @@ export class User {
 
   @Column({})
   @ApiProperty({})
-  birthdate: Date;
+  birthdate: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable:true })
   @ApiProperty({
     description: 'Phone number',
     example: '5491122334455',
@@ -56,7 +57,7 @@ export class User {
   })
   email: string;
 
-  @Column({ type: 'varchar', length: 128, nullable: false })
+  @Column()
   @ApiProperty({
     description: 'User password',
     example: 'checasa123',

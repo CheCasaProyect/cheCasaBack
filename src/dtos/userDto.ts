@@ -35,7 +35,7 @@ export class UserDto {
     example: '1990-11-14',
   })
   @IsDate()
-  birthdate: Date;
+  birthdate: string;
 
   @ApiProperty({
     description: 'User phone number',

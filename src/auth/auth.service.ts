@@ -22,10 +22,10 @@ export class AuthService {
   ) {}
   
   async signUp(user: UserDto) {
-    const { email, password } = user;
+    const { email, password, firstname, lastname, phone, birthdate } = user;
     if (!email || !password) throw new BadRequestException('Required');
-    const existinUser = await this.userRepository.getUserByEmail(user.email);
-    if (existinUser) throw new BadRequestException('Email already exists');
+    // const existinUser = await this.userRepository.getUserByEmail(user.email);
+    // if (existinUser) throw new BadRequestException('Email already exists');
     
     const auth = getAuth(this.firebaseApp);
     const userCredential = await createUserWithEmailAndPassword( auth, email, password);
@@ -34,10 +34,11 @@ export class AuthService {
       const newUser = await this.userRepository.createUser({
         id: firebaseUid,
         email,
-        firstname: '',
-        lastname: '',
-        phone: null,
-        birthdate: null,
+        password,
+        firstname,
+        lastname,
+        phone,
+        birthdate,
         role: UserRole.Traveler,
         active: true,
       });
