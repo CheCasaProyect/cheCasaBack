@@ -1,28 +1,29 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
-import { ReservationsDTO } from 'src/dtos/reservationDto';
-import { ReservationDetailsDTO } from 'src/dtos/reservationDetailsDTO';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateReservationDTO } from 'src/dtos/createReservationDto';
 
+
+@ApiTags('reservations')
 @Controller('reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
-  @Post()
+
+  @ApiOperation({ summary: 'Create Reservation' })
+  @Post('newReservation')
   @HttpCode(HttpStatus.CREATED)
   createReservation(
-    @Body() reservationDto: ReservationsDTO,
-    @Body() reservationDetails: ReservationDetailsDTO,
-  ) {
+    @Body() createReservation: CreateReservationDTO) {
     return this.reservationsService.createReservation(
-      reservationDto,
-      reservationDetails,
+        createReservation.reservation,
+        createReservation.reservationDetails
     );
   }
 }

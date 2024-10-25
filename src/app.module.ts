@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import { FirebaseModule } from './firebase/firebase.module';
 import { PropertyModule } from './property/property.module';
 import { FileUploadModule } from './files/file-upload.module';
+import { ReservationsModule } from './reservations/reservations.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { FileUploadModule } from './files/file-upload.module';
     FileUploadModule,
     FirebaseModule,
     PropertyModule,
+    ReservationsModule,
   ],
   controllers: [],
   providers: [],
