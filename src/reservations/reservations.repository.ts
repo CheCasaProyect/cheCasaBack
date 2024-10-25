@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -7,10 +8,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from 'src/entities/property.entity';
 import { LessThanOrEqual, Repository } from 'typeorm';
 import { Reservation } from 'src/entities/reservation.entity';
-import { ReservationsDTO } from 'src/dtos/reservationDto';
-import { ReservationDetailsDTO } from 'src/dtos/reservationDetailsDTO';
 import { User } from 'src/entities/users.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
+import { CreateReservationDTO } from 'src/dtos/createReservationDto';
 
 @Injectable()
 export class ReservationsRepository {
@@ -25,39 +25,44 @@ export class ReservationsRepository {
     private readonly reservationDetailsRepository: Repository<ReservationDetail>,
   ) {}
 
-  async createReservation(
-    reservation: ReservationsDTO,
-    reservationDetails: ReservationDetailsDTO,
-  ): Promise<Reservation> {
+  async createReservation(createReservation: CreateReservationDTO): Promise<Reservation> {
+    console.log('Payload de reserva: ', createReservation);
+
+    if (!createReservation) {
+      throw new BadRequestException('El objeto reservation o userId es inválido');
+    }
+
     const property = await this.propertyRepository.findOne({
-      where: { id: reservationDetails.propertyId, isAvailable: true },
+      where: { id: createReservation.propertyId, isAvailable: true },
     });
     if (!property) {
       throw new NotFoundException(
         'La propiedad no existe o no está disponible',
       );
     }
+    console.log(property);
 
     const user = await this.userRepository.findOne({
-      where: { id: reservation.userId },
+      where: { id: createReservation.userId },
     });
-
     if (!user) {
       throw new NotFoundException('usuario inexistente');
     }
 
+    console.log(user);
+
     const newReservationDetails = this.reservationDetailsRepository.create({
-      checkIn: reservationDetails.checkIn,
-      checkOut: reservationDetails.checkOut,
-      pax: reservationDetails.pax,
+      checkIn: createReservation.checkIn,
+      checkOut: createReservation.checkOut,
+      pax: createReservation.pax,
       property: property,
     });
 
     await this.reservationDetailsRepository.save(newReservationDetails);
 
     const duration =
-      (new Date(reservationDetails.checkOut).getTime() -
-        new Date(reservationDetails.checkIn).getTime()) /
+      (new Date(createReservation.checkOut).getTime() -
+        new Date(createReservation.checkIn).getTime()) /
       (1000 * 3600 * 24);
     const totalPrice = duration * property.price;
 
@@ -65,6 +70,7 @@ export class ReservationsRepository {
       user: user,
       requestedAt: new Date(),
       reservationDetails: newReservationDetails,
+      totalPrice: totalPrice,
     });
 
     await this.reservationRepository.save(newReservation);

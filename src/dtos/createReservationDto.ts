@@ -1,12 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ReservationsDTO } from './reservationDto';
-import { ReservationDetailsDTO } from './reservationDetailsDTO';
+import { IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 
 export class CreateReservationDTO {
   @ApiProperty()
-  reservation: ReservationsDTO;
+  @IsUUID()
+  @IsNotEmpty()
+  propertyId: string; 
 
   @ApiProperty()
-  reservationDetails: ReservationDetailsDTO;
+  @IsNotEmpty()
+  userId: string; 
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
+  requestedAt: Date;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
+  checkIn: Date; 
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
+  checkOut: Date; 
+
+  @ApiProperty()
+  @IsNotEmpty()
+  pax: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  totalPrice?: number; 
 }
