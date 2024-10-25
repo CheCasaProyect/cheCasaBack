@@ -21,9 +21,8 @@ export class ReservationsController {
   @HttpCode(HttpStatus.CREATED)
   createReservation(
     @Body() createReservation: CreateReservationDTO) {
-    return this.reservationsService.createReservation(
-        createReservation.reservation,
-        createReservation.reservationDetails
-    );
+      console.log('Payload de Reserva: ', createReservation);
+
+    return this.reservationsService.createReservation(createReservation);
   }
 }

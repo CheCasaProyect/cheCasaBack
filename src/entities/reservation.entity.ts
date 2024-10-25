@@ -36,4 +36,11 @@ export class Reservation {
   @JoinColumn({ name: `reservation_detail_id` })
   @ApiProperty()
   reservationDetails: ReservationDetail;
+
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+  })
+  totalPrice: number;
 }
