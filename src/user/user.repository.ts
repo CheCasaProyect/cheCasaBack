@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -34,18 +34,22 @@ export class UserRepository {
 
   async deactivateUser(id: string) {
     const user = await this.userRepository.findOneBy({ id: id });
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new NotFoundException('User not found');
 
     user.active = false;
     await this.userRepository.save(user);
+
+    return 'Disabled user'
   }
 
   async activeUser(id: string) {
     const user = await this.userRepository.findOneBy({ id: id });
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new NotFoundException('User not found');
 
     user.active = true;
     await this.userRepository.save(user);
+
+    return 'Active user'
   }
 
   removeUser(id: string) {

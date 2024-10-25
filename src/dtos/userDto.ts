@@ -8,8 +8,9 @@ import {
   IsString,
   Length,
   Matches,
+  Validate,
 } from 'class-validator';
-import { UserRole } from 'src/utils/user.enum';
+import { MatchPassword } from 'src/utils/matchPassword.decorator';
 
 export class UserDto {
   @ApiProperty({
@@ -68,12 +69,15 @@ export class UserDto {
   )
   password: string;
 
+  
   @ApiProperty({
-    description: 'User Role',
-    example: 'Traveler',
-  })
-  @IsEnum([UserRole.Traveler, UserRole.Host])
-  role: UserRole;
+    description:'User password confirmation',
+    example: '#Checasa123'
+})
+   @IsNotEmpty()
+   @Validate(MatchPassword, ['password'])
+    confirmPassword: string;
+
 
   @ApiProperty()
   active: boolean;

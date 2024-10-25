@@ -1,5 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/entities/users.entity';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { FirebaseApp } from 'firebase/app';
 import {
@@ -10,9 +9,10 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { UserDto } from 'src/dtos/userDto';
-import { UserRole } from 'src/utils/user.enum';
+import * as bcrypt from 'bcrypt';
 import { devNull } from 'os';
 import { transporter } from 'src/config/mailer';
+import { console } from 'inspector';
 
 @Injectable()
 export class AuthService {
@@ -25,25 +25,31 @@ export class AuthService {
   async signUp(user: UserDto) {
     const { email, password, firstname, lastname, phone, birthdate } = user;
     if (!email || !password) throw new BadRequestException('Required');
+
     const existinUser = await this.userRepository.getUserByEmail(user.email);
     if (existinUser) throw new BadRequestException('Email already exists');
+
+    const hashedPassword = await bcrypt.hash(user.password, 10)
+    if(!hashedPassword) throw new BadRequestException('Password could not hashed');
+
     const auth = getAuth(this.firebaseApp);
     const userCredential = await createUserWithEmailAndPassword( auth, email, password);
     const firebaseUid = userCredential.user.uid;
 
-      const newUser = await this.userRepository.createUser({
+    // console.log(hashedPassword);
+
+      await this.userRepository.createUser({
         id: firebaseUid,
         email,
-        password,
+        password: hashedPassword,
         firstname,
         lastname,
         phone,
         birthdate,
-        role: UserRole.Traveler,
         active: true,
       });
 
-      return newUser;
+      return 'User created successfully!';
 
 
   }
@@ -53,12 +59,16 @@ export class AuthService {
       throw new BadRequestException('Required');
 
     const user = await this.userRepository.getUserByEmail(email);
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new NotFoundException('User not found');
+
+    
+    const passwordValidation = await bcrypt.compare(password, user.password)
+    if(!passwordValidation) throw new BadRequestException('Invalid Credentials')
 
     const auth = await getAuth(this.firebaseApp);
     const userCredential = await signInWithEmailAndPassword( auth, email, password);
 
-    return user;
+    return 'Loggin successfully!';
   }
 
 
@@ -73,17 +83,16 @@ export class AuthService {
     if (existingUser) {
       return existingUser;
     } else {
-      const newUser = await this.userRepository.createUser({
+      await this.userRepository.createUser({
         id: firebaseUid,
         email: user.email,
         firstname: '',
         lastname: '',
         phone: '',
         birthdate: null,
-        role: UserRole.Traveler,
         active: true,
       });
-      return newUser;
+      return 'Loggin successfully!';
     }
   }
 
@@ -92,7 +101,7 @@ export class AuthService {
     const existingUser = await this.userRepository.getUserByEmail(
       userDto.email,
     );
-    if (!existingUser) throw new BadRequestException('User not found');
+    if (!existingUser) throw new NotFoundException('User not found');
 
     const updateData = {
       firstname: userDto.firstname || existingUser.firstname,

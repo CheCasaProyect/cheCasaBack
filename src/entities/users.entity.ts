@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { UserRole } from '../utils/user.enum';
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
@@ -63,14 +62,6 @@ export class User {
     example: 'checasa123',
   })
   password: string;
-
-  @Column({ type: 'enum', enum: UserRole })
-  @ApiProperty({
-    description: ' User role',
-    enum: UserRole,
-    example: 'Traveler',
-  })
-  role: UserRole;
 
   @Column({ default: true })
   @ApiProperty()
