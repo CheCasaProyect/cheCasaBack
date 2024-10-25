@@ -2,6 +2,7 @@ import { Body, Controller, Post, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserDto } from 'src/dtos/userDto';
+import { LoginDto } from 'src/dtos/loginDto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -16,8 +17,10 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Login' })
   @Post('login')
-  login(@Body() email: string, password: string) {
-    return this.authService.login(email, password);
+  login(
+    @Body() login: LoginDto) {
+     const { email, password } = login;
+     return this.authService.login(email, password);
   }
 
   @ApiOperation({ summary: 'Google Login' })

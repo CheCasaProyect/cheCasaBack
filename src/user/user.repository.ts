@@ -21,7 +21,7 @@ export class UserRepository {
     return this.userRepository.findOneBy({ email: email });
   }
 
-  createUser(userData: Partial<User>) {
+  createUser(userData: Partial<User>): Promise<User> {
     const newUser = this.userRepository.create(userData);
     return this.userRepository.save(newUser);
   }

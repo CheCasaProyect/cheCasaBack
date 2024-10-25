@@ -34,15 +34,15 @@ export class UserDto {
     description: 'Birthdate',
     example: '1990-11-14',
   })
-  @IsDate()
-  birthdate: Date;
+  @IsString()
+  birthdate: string;
 
   @ApiProperty({
     description: 'User phone number',
     example: '123456789',
   })
-  @IsInt()
-  phone: number;
+  @IsString()
+  phone: string;
 
   @ApiProperty({
     description: 'User mail',
