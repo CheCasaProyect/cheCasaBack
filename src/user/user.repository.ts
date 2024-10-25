@@ -25,7 +25,7 @@ export class UserRepository {
     return user
   }
 
-  createUser(userData: Partial<User>) {
+  createUser(userData: Partial<User>): Promise<User> {
     const newUser = this.userRepository.create(userData);
     return this.userRepository.save(newUser);
   }

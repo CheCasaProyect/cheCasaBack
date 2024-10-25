@@ -39,8 +39,8 @@ export class User {
   })
   lastname: string;
 
-  @Column({})
-  @ApiProperty({})
+  @Column({ type: 'varchar', nullable: true })
+  @ApiProperty()
   birthdate: string;
 
   @Column({ type: 'int', nullable:true })
@@ -48,7 +48,7 @@ export class User {
     description: 'Phone number',
     example: '5491122334455',
   })
-  phone: number;
+  phone: string;
 
   @Column({ type: 'varchar', length: 50, unique: true, nullable: false })
   @ApiProperty({

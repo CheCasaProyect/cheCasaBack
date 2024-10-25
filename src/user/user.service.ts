@@ -26,16 +26,22 @@ export class UserService {
     return userWithoutPass;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string){
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) throw new BadRequestException('User not found');
+    return user;
   }
 
   async createUser(userData: UserDto) {
-    const newUser = await this.userRepository.createUser(userData);
-    const { password, ...userWithoutPass } = newUser;
-
-    return userWithoutPass;
+    try {
+      
+      const newUser = await this.userRepository.createUser(userData);
+      const { password, ...userWithoutPass } = newUser;
+  
+      return userWithoutPass;
+    } catch (error) {
+      throw new BadRequestException('New user not created')
+    }
   }
 
   async updateUser(id: string, updateUser: User): Promise<Partial<User>> {

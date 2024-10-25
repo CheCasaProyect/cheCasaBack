@@ -21,12 +21,12 @@ export class AuthService {
     @Inject('FIREBASE_APP') private readonly firebaseApp: FirebaseApp,
   ) {}
   
+
   async signUp(user: UserDto) {
     const { email, password, firstname, lastname, phone, birthdate } = user;
     if (!email || !password) throw new BadRequestException('Required');
-    // const existinUser = await this.userRepository.getUserByEmail(user.email);
-    // if (existinUser) throw new BadRequestException('Email already exists');
-    
+    const existinUser = await this.userRepository.getUserByEmail(user.email);
+    if (existinUser) throw new BadRequestException('Email already exists');
     const auth = getAuth(this.firebaseApp);
     const userCredential = await createUserWithEmailAndPassword( auth, email, password);
     const firebaseUid = userCredential.user.uid;
@@ -42,15 +42,19 @@ export class AuthService {
         role: UserRole.Traveler,
         active: true,
       });
-    
+
       return newUser;
-      
-   
+
+
   }
 
   async login(email: string, password: string) {
+    if(!email || !password)
+      throw new BadRequestException('Required');
+
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) throw new BadRequestException('User not found');
+
     const auth = await getAuth(this.firebaseApp);
     const userCredential = await signInWithEmailAndPassword( auth, email, password);
 
@@ -74,7 +78,7 @@ export class AuthService {
         email: user.email,
         firstname: '',
         lastname: '',
-        phone: null,
+        phone: '',
         birthdate: null,
         role: UserRole.Traveler,
         active: true,
@@ -82,7 +86,7 @@ export class AuthService {
       return newUser;
     }
   }
-  
+
 
   async completeProfile(userDto: UserDto) {
     const existingUser = await this.userRepository.getUserByEmail(
@@ -90,7 +94,14 @@ export class AuthService {
     );
     if (!existingUser) throw new BadRequestException('User not found');
 
-    return this.userRepository.userUpdate(existingUser.id, userDto);
+    const updateData = {
+      firstname: userDto.firstname || existingUser.firstname,
+      lastname: userDto.lastname || existingUser.lastname,
+      phone: userDto.phone || existingUser.phone,
+      birthdate: userDto.birthdate !== undefined ? userDto.birthdate : existingUser.birthdate,
+    };
+
+    return this.userRepository.userUpdate(existingUser.id, updateData);
   }
 }
 
