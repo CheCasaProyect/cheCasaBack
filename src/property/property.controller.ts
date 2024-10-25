@@ -28,4 +28,5 @@ export class PropertyController {
   async filterProperties(@Query() query: any): Promise<Property[]> {
     return this.propertyService.filterProperties(query);
   }
+  
 }
