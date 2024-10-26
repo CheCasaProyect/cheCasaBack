@@ -68,7 +68,12 @@ export class AuthService {
     const auth = await getAuth(this.firebaseApp);
     const userCredential = await signInWithEmailAndPassword( auth, email, password);
 
-    return 'Loggin successfully!';
+    const token = await userCredential.user.getIdToken()
+
+    return {
+      message: 'Loggin successfully!',
+      token
+    } ;
   }
 
 

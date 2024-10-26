@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as firebase from 'firebase/app';
 import { config as dotenvConfig } from 'dotenv';
+import { FirebaseAdminModule } from './firebase-admin.module';
 dotenvConfig({ path: '.env' });
 
 @Global()
@@ -26,5 +27,7 @@ dotenvConfig({ path: '.env' });
   ],
 
   exports: ['FIREBASE_APP'],
+
+  imports: [FirebaseAdminModule],
 })
 export class FirebaseModule {}
