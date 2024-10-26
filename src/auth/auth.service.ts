@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { FirebaseApp } from 'firebase/app';
 import {
@@ -20,7 +25,6 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     @Inject('FIREBASE_APP') private readonly firebaseApp: FirebaseApp,
   ) {}
-  
 
   async signUp(user: UserDto) {
     const { email, password, firstname, lastname, phone, birthdate } = user;
@@ -29,54 +33,71 @@ export class AuthService {
     const existinUser = await this.userRepository.getUserByEmail(user.email);
     if (existinUser) throw new BadRequestException('Email already exists');
 
-    const hashedPassword = await bcrypt.hash(user.password, 10)
-    if(!hashedPassword) throw new BadRequestException('Password could not hashed');
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    if (!hashedPassword)
+      throw new BadRequestException('Password could not hashed');
 
     const auth = getAuth(this.firebaseApp);
-    const userCredential = await createUserWithEmailAndPassword( auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     const firebaseUid = userCredential.user.uid;
 
     // console.log(hashedPassword);
 
-      await this.userRepository.createUser({
-        id: firebaseUid,
-        email,
-        password: hashedPassword,
-        firstname,
-        lastname,
-        phone,
-        birthdate,
-        active: true,
-      });
+    await this.userRepository.createUser({
+      id: firebaseUid,
+      email,
+      password: hashedPassword,
+      firstname,
+      lastname,
+      phone,
+      birthdate,
+      active: true,
+    });
+    await transporter.sendMail({
+      from: '"Te Registraste en CheCasa ✍" <che.casa.proyect@gmail.com>',
+      to: user.email, //Prueba
+      subject: 'Registro existoso',
+      html: '<b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>', //Mensaje de prueba.
+    });
 
-      return 'User created successfully!';
-
-
+    return 'User created successfully!';
   }
 
   async login(email: string, password: string) {
-    if(!email || !password)
-      throw new BadRequestException('Required');
+    if (!email || !password) throw new BadRequestException('Required');
 
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) throw new NotFoundException('User not found');
 
-    
-    const passwordValidation = await bcrypt.compare(password, user.password)
-    if(!passwordValidation) throw new BadRequestException('Invalid Credentials')
+    const passwordValidation = await bcrypt.compare(password, user.password);
+    if (!passwordValidation)
+      throw new BadRequestException('Invalid Credentials');
 
     const auth = await getAuth(this.firebaseApp);
-    const userCredential = await signInWithEmailAndPassword( auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
 
-    const token = await userCredential.user.getIdToken()
+    const token = await userCredential.user.getIdToken();
+
+    await transporter.sendMail({
+      from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
+      to: user.email,
+      subject: 'Inicio de sesión existoso',
+      html: `<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>`, //Mensaje de prueba.
+    });
 
     return {
       message: 'Loggin successfully!',
-      token
-    } ;
+      token,
+    };
   }
-
-
 
   async googleLogin() {
     const auth = getAuth(this.firebaseApp);
@@ -97,10 +118,15 @@ export class AuthService {
         birthdate: null,
         active: true,
       });
+      await transporter.sendMail({
+        from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
+        to: user.email,
+        subject: 'Inicio de sesión existoso',
+        html: '<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>', //Mensaje de prueba.
+      });
       return 'Loggin successfully!';
     }
   }
-
 
   async completeProfile(userDto: UserDto) {
     const existingUser = await this.userRepository.getUserByEmail(
@@ -112,21 +138,12 @@ export class AuthService {
       firstname: userDto.firstname || existingUser.firstname,
       lastname: userDto.lastname || existingUser.lastname,
       phone: userDto.phone || existingUser.phone,
-      birthdate: userDto.birthdate !== undefined ? userDto.birthdate : existingUser.birthdate,
+      birthdate:
+        userDto.birthdate !== undefined
+          ? userDto.birthdate
+          : existingUser.birthdate,
     };
 
     return this.userRepository.userUpdate(existingUser.id, updateData);
   }
 }
-
-/* await this.sendMails();
-
-  console.log(`Mensaje enviado al gmail correctamtente`);
-  async sendMails() {
-    await transporter.sendMail({
-      from: '"Te Registraste en CheCasa 👻" <che.casa.proyect@gmail.com>',
-      to: 'che.casa.proyect@gmail.com', //Es un ejemplo, luego tendría que sacar el email del usuario q se registre.
-      subject: "Registro existoso",
-      html: '<b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>',
-    });
-  } */

@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as admin from 'firebase-admin';
 
@@ -10,11 +15,11 @@ export class FirebaseTokenGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = request.headers['authoritation']?.split('Bearer ')[1];
 
-    if(!token) throw new ForbiddenException('You are not logged in');
+    if (!token) throw new ForbiddenException('You are not logged in');
 
     try {
       const decodedToken = admin.auth().verifyIdToken(token);
-      request.user = decodedToken
+      request.user = decodedToken;
     } catch (error) {
       throw new ForbiddenException('Invalid token');
     }

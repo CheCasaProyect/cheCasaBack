@@ -25,11 +25,15 @@ export class ReservationsRepository {
     private readonly reservationDetailsRepository: Repository<ReservationDetail>,
   ) {}
 
-  async createReservation(createReservation: CreateReservationDTO): Promise<Reservation> {
+  async createReservation(
+    createReservation: CreateReservationDTO,
+  ): Promise<Reservation> {
     console.log('Payload de reserva: ', createReservation);
 
     if (!createReservation) {
-      throw new BadRequestException('El objeto reservation o userId es inválido');
+      throw new BadRequestException(
+        'El objeto reservation o userId es inválido',
+      );
     }
 
     const property = await this.propertyRepository.findOne({
