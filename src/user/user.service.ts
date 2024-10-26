@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from 'src/entities/users.entity';
 import { UserDto } from 'src/dtos/userDto';
@@ -26,7 +30,7 @@ export class UserService {
     return userWithoutPass;
   }
 
-  async getUserByEmail(email: string){
+  async getUserByEmail(email: string) {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) throw new BadRequestException('User not found');
     return user;
@@ -34,13 +38,12 @@ export class UserService {
 
   async createUser(userData: UserDto) {
     try {
-      
       const newUser = await this.userRepository.createUser(userData);
       const { password, ...userWithoutPass } = newUser;
-  
+
       return userWithoutPass;
     } catch (error) {
-      throw new BadRequestException('New user not created')
+      throw new BadRequestException('New user not created');
     }
   }
 

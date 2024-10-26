@@ -17,10 +17,9 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Login' })
   @Post('login')
-  login(
-    @Body() login: LoginDto) {
-     const { email, password } = login;
-     return this.authService.login(email, password);
+  login(@Body() login: LoginDto) {
+    const { email, password } = login;
+    return this.authService.login(email, password);
   }
 
   @ApiOperation({ summary: 'Google Login' })
@@ -28,7 +27,6 @@ export class AuthController {
   googleLogin() {
     return this.authService.googleLogin();
   }
-
 
   @ApiOperation({ summary: 'Complete Profile' })
   @Put('complete-profile')

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -8,6 +9,7 @@ import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { Property } from 'src/entities/property.entity';
 import { Repository } from 'typeorm';
 import * as fs from 'fs';
+import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 
 @Injectable()
 export class PropertyRepository {
@@ -59,6 +61,23 @@ export class PropertyRepository {
     } catch (error) {
       if (error instanceof ConflictException) {
         throw new ConflictException(error.message);
+      }
+    }
+  }
+
+  async updateProperty(id: string, property: UpdatePropertyDto) {
+    try {
+      const foundProperty = await this.propertyDBRepository.findOne({
+        where: { id },
+      });
+      if (!foundProperty) {
+        throw new BadRequestException(`No se encontró la propiedad`);
+      }
+      const updateProperty = this.propertyDBRepository.update(id, property);
+      return updateProperty;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
       }
     }
   }

@@ -35,7 +35,6 @@ export class UserDto {
     description: 'Birthdate',
     example: '1990-11-14',
   })
-
   @IsString()
   birthdate: string;
 
@@ -69,15 +68,13 @@ export class UserDto {
   )
   password: string;
 
-  
   @ApiProperty({
-    description:'User password confirmation',
-    example: '#Checasa123'
-})
-   @IsNotEmpty()
-   @Validate(MatchPassword, ['password'])
-    confirmPassword: string;
-
+    description: 'User password confirmation',
+    example: '#Checasa123',
+  })
+  @IsNotEmpty()
+  @Validate(MatchPassword, ['password'])
+  confirmPassword: string;
 
   @ApiProperty()
   active: boolean;

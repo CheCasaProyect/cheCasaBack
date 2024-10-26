@@ -10,7 +10,9 @@ import { User } from 'src/entities/users.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reservation, Property, User, ReservationDetail])],
+  imports: [
+    TypeOrmModule.forFeature([Reservation, Property, User, ReservationDetail]),
+  ],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],
 })

@@ -42,7 +42,7 @@ export class User {
   @ApiProperty()
   birthdate: string;
 
-  @Column({ type: 'int', nullable:true })
+  @Column({ type: 'int', nullable: true })
   @ApiProperty({
     description: 'Phone number',
     example: '5491122334455',

@@ -24,7 +24,6 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  
   @ApiOperation({ summary: 'Get User By Email' })
   @Get('email')
   getUserByEmail(@Query('email') email: string) {
@@ -34,7 +33,7 @@ export class UserController {
     console.log('email a buscar: ' + email);
     return this.userService.getUserByEmail(email);
   }
-  
+
   @ApiOperation({ summary: 'Get User By ID' })
   @Get(':id')
   getUserById(@Param('id') id: string) {

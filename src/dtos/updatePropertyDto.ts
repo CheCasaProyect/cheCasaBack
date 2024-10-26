@@ -2,65 +2,58 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsInt,
-  IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
-export class CreatePropertyDto {
+export class UpdatePropertyDto {
   @ApiProperty({
     description: 'Title, property type',
     example: 'Cabaña',
   })
-  @IsNotEmpty()
   @IsString()
-  title: string;
+  @IsOptional()
+  title?: string;
 
   @ApiProperty({
     description: 'Property description',
   })
-  @IsNotEmpty()
   @IsString()
-  description: string;
-
-  @ApiProperty({
-    description: 'Property location',
-  })
-  @IsNotEmpty()
-  @IsString()
-  location: string;
+  @IsOptional()
+  description?: string;
 
   @ApiProperty({
     description: 'Property price',
     example: 1000,
   })
-  @IsNotEmpty()
   @IsNumber({ maxDecimalPlaces: 2 })
-  price: number;
+  @IsOptional()
+  price?: number;
 
   @ApiProperty({
     description: 'Availability',
   })
-  @IsNotEmpty()
   @IsBoolean()
-  isAvailable: boolean;
+  @IsOptional()
+  isAvailable?: boolean;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsInt()
-  capacity: number;
+  @IsOptional()
+  capacity?: number;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsInt()
-  room: number;
+  @IsOptional()
+  room?: number;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsInt()
-  bathrooms: number;
+  @IsOptional()
+  bathrooms?: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  photos: string[];
+  @IsOptional()
+  photos?: string[];
 }

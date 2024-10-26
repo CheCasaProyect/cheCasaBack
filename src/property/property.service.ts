@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PropertyRepository } from './property.repository';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
+import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 
 @Injectable()
 export class PropertyService {
@@ -17,7 +18,10 @@ export class PropertyService {
     const newProperty = this.propertyRepository.addProperty(property);
     return newProperty;
   }
-
+  updateProperty(id: string, property: UpdatePropertyDto) {
+    const updateProperty = this.propertyRepository.updateProperty(id, property);
+    return updateProperty;
+  }
   filterProperties(filters: any) {
     return this.propertyRepository.filterProperties(filters);
   }

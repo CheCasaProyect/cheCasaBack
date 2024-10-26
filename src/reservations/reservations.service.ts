@@ -8,7 +8,8 @@ export class ReservationsService {
   constructor(private readonly reservationRepository: ReservationsRepository) {}
 
   createReservation(createReservation: CreateReservationDTO) {
-    const newReservation = this.reservationRepository.createReservation(createReservation);
+    const newReservation =
+      this.reservationRepository.createReservation(createReservation);
     return newReservation;
   }
 }

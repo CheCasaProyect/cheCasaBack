@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -17,11 +21,9 @@ export class UserRepository {
     return this.userRepository.findOneBy({ id: id });
   }
 
- 
   async getUserByEmail(email: string): Promise<User | null> {
-     return this.userRepository.findOne({ where: { email } });
+    return this.userRepository.findOne({ where: { email } });
   }
-
 
   createUser(userData: Partial<User>): Promise<User> {
     const newUser = this.userRepository.create(userData);
@@ -39,7 +41,7 @@ export class UserRepository {
     user.active = false;
     await this.userRepository.save(user);
 
-    return 'Disabled user'
+    return 'Disabled user';
   }
 
   async activeUser(id: string) {
@@ -49,7 +51,7 @@ export class UserRepository {
     user.active = true;
     await this.userRepository.save(user);
 
-    return 'Active user'
+    return 'Active user';
   }
 
   removeUser(id: string) {
