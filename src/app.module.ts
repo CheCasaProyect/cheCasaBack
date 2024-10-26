@@ -10,6 +10,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { PropertyModule } from './property/property.module';
 import { FileUploadModule } from './files/file-upload.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ReservationsModule } from './reservations/reservations.module';
     AuthModule,
     UserModule,
     FileUploadModule,
+    FirebaseAdminModule,
     FirebaseModule,
     PropertyModule,
     ReservationsModule,
