@@ -89,7 +89,7 @@ export class AuthService {
     await transporter.sendMail({
       from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
       to: user.email,
-      subject: 'Inicio de sesión existoso',
+      subject: 'Inicio de sesión exitoso',
       html: `<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>`, //Mensaje de prueba.
     });
 
@@ -121,7 +121,7 @@ export class AuthService {
       await transporter.sendMail({
         from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
         to: user.email,
-        subject: 'Inicio de sesión existoso',
+        subject: 'Inicio de sesión exitoso',
         html: '<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>', //Mensaje de prueba.
       });
       return 'Loggin successfully!';
