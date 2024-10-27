@@ -29,6 +29,16 @@ export class PropertyController {
     const updateProperty = this.propertyService.updateProperty(id, property);
     return updateProperty;
   }
+  @Put(`/deactivate/:id`)
+  deacticateProperty(@Param(`id`) id: string) {
+    const deactivatedProperty = this.propertyService.deactivateProperty(id);
+    return deactivatedProperty;
+  }
+  @Put(`/activate/:id`)
+  activateProperty(@Param(`id`) id: string) {
+    const activatedProperty = this.propertyService.activateProperty(id);
+    return activatedProperty;
+  }
   @Get('filter')
   async filterProperties(@Query() query: any): Promise<Property[]> {
     return this.propertyService.filterProperties(query);

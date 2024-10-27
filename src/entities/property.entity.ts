@@ -29,6 +29,10 @@ export class Property {
   @ApiProperty()
   owner: User; //Se relaciona el dueño de la propiedad.
 
+  @Column({ default: true })
+  @ApiProperty()
+  active: boolean;
+
   @Column({
     type: 'varchar',
     length: 100,

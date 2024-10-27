@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -71,10 +70,48 @@ export class PropertyRepository {
         where: { id },
       });
       if (!foundProperty) {
-        throw new BadRequestException(`No se encontró la propiedad`);
+        throw new NotFoundException(`No se encontró la propiedad`);
       }
       const updateProperty = this.propertyDBRepository.update(id, property);
       return updateProperty;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+    }
+  }
+
+  async deactivateProperty(id: string) {
+    try {
+      const property = await this.propertyDBRepository.findOne({
+        where: { id },
+      });
+      if (!property) {
+        throw new NotFoundException(`Property not found`);
+      }
+      property.active = false;
+      property.isAvailable = false;
+      await this.propertyDBRepository.save(property);
+      return `Se desactivó la propiedad con éxito`;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+    }
+  }
+
+  async activateProperty(id: string) {
+    try {
+      const property = await this.propertyDBRepository.findOne({
+        where: { id },
+      });
+      if (!property) {
+        throw new NotFoundException(`Property not found`);
+      }
+      property.active = true;
+      property.isAvailable = true;
+      await this.propertyDBRepository.save(property);
+      return `Se activó la propiedad con éxito`;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -86,6 +123,7 @@ export class PropertyRepository {
     const query = this.propertyDBRepository.createQueryBuilder('property');
 
     if (filters.location) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       query.andWhere('property.location = :location'),
         { location: filters.location };
     }

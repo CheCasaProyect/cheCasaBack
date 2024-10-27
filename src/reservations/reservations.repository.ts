@@ -11,6 +11,7 @@ import { Reservation } from 'src/entities/reservation.entity';
 import { User } from 'src/entities/users.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
 import { CreateReservationDTO } from 'src/dtos/createReservationDto';
+import { transporter } from 'src/config/mailer';
 
 @Injectable()
 export class ReservationsRepository {
@@ -78,6 +79,12 @@ export class ReservationsRepository {
     });
 
     await this.reservationRepository.save(newReservation);
+    await transporter.sendMail({
+      from: '"Tu reserva en CheCasa fue exitosa" <che.casa.proyect@gmail.com>',
+      to: user.email,
+      subject: 'Reserva exitosa',
+      html: `<b>Los datos de tu reserva son: ${newReservation}</b>`, //Mensaje de prueba.
+    });
     return newReservation;
   }
 }

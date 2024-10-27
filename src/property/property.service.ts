@@ -22,6 +22,14 @@ export class PropertyService {
     const updateProperty = this.propertyRepository.updateProperty(id, property);
     return updateProperty;
   }
+  deactivateProperty(id: string) {
+    const deactivatedProperty = this.propertyRepository.deactivateProperty(id);
+    return deactivatedProperty;
+  }
+  activateProperty(id: string) {
+    const activatedProperty = this.propertyRepository.activateProperty(id);
+    return activatedProperty;
+  }
   filterProperties(filters: any) {
     return this.propertyRepository.filterProperties(filters);
   }
