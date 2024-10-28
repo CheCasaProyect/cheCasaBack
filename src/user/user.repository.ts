@@ -35,7 +35,7 @@ export class UserRepository {
   }
 
   async deactivateUser(id: string) {
-    const user = await this.userRepository.findOneBy({ id: id });
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) throw new NotFoundException('User not found');
 
     user.active = false;
@@ -45,7 +45,7 @@ export class UserRepository {
   }
 
   async activeUser(id: string) {
-    const user = await this.userRepository.findOneBy({ id: id });
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) throw new NotFoundException('User not found');
 
     user.active = true;

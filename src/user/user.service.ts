@@ -63,7 +63,7 @@ export class UserService {
   }
 
   async activeUser(id: string) {
-    return await this.activeUser(id);
+    return await this.userRepository.activeUser(id);
   }
 
   async removeUser(id: string) {
@@ -71,5 +71,6 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     await this.userRepository.removeUser(id);
+    return 'User removed successfully'
   }
 }

@@ -15,7 +15,7 @@ export class MatchPassword implements ValidatorConstraintInterface {
   ): Promise<boolean> | boolean {
     if (password !== (args.object as any)[args.constraints[0]]) return false;
 
-    // return true;
+    return true;
   }
 
   defaultMessage(args?: ValidationArguments): string {
