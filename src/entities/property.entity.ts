@@ -89,4 +89,10 @@ export class Property {
   )
   @ApiProperty()
   reservationDetail: ReservationDetail;
+
+  @Column({ nullable: true})
+  stripeProductId: string;
+
+  @Column({ nullable: true})
+  stripePriceId: string;
 }
