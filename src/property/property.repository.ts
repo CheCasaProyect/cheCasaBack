@@ -54,11 +54,15 @@ export class PropertyRepository {
         images: property.photos,
       });
 
+      console.log('Propiedad creada:' + stripeProduct);
+
       const stripePrice = await this.stripe.prices.create({
         unit_amount: property.price * 100,
         currency: 'ARS',
         product: stripeProduct.id,
       })
+
+      console.log('Precio creado: ' + stripePrice);
 
 
       const newProperty = this.propertyDBRepository.create({
