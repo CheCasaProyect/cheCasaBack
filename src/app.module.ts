@@ -11,6 +11,7 @@ import { PropertyModule } from './property/property.module';
 import { FileUploadModule } from './files/file-upload.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FirebaseAdminModule } from './firebase/firebase-admin.module';
     FirebaseModule,
     PropertyModule,
     ReservationsModule,
+    StripeModule,
   ],
   controllers: [],
   providers: [],
