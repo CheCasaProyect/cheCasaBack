@@ -2,6 +2,7 @@ import { Body, Controller, Post, Headers, Req, BadRequestException, Res } from '
 import { StripeService } from './stripe.service';
 import { Request, Response } from 'express'
 import stripe from 'stripe';
+import { CreatePaymentDto } from 'src/dtos/createPaymentDto';
 
 
 @Controller('stripe')
@@ -29,6 +30,10 @@ export class StripeController {
         return { received: true }
     } 
 
-    
-   
+    @Post('testingPayments')
+    async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
+        const sessionurl = await this.stripeService.createCheckoutSession(createPaymentDto.stripePriceId)
+        return { url: sessionurl };
+    }     
+   0
 }

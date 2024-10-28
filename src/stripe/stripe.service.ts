@@ -15,17 +15,17 @@ export class StripeService {
         })
     }
 
-    async createCheckoutSession(priceId: string) {
+    async createCheckoutSession(stripePriceId: string) {
         const session = await this.stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
                 {
-                    price: priceId,
+                    price: stripePriceId,
                     quantity: 1,
                 },
             ],
             mode: 'payment',
-            success_url:'' ,
+            success_url:'http://localhost:3000/paymentSucces' ,
             cancel_url:'' ,
         })
         return session.url
