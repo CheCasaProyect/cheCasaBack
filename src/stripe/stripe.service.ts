@@ -1,0 +1,33 @@
+import { Inject, Injectable } from '@nestjs/common';
+import Stripe from 'stripe';
+
+
+@Injectable()
+export class StripeService {
+    constructor(@Inject('STRIPE_CLIENT') private readonly stripe: Stripe) {}
+
+
+    async createPaymentIntent(amount: number, currency: string = 'ARS') {
+        return this.stripe.paymentIntents.create({
+            amount,
+            currency,
+            payment_method_types: ['card'],
+        })
+    }
+
+    async createCheckoutSession(priceId: string) {
+        const session = await this.stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price: priceId,
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url:'' ,
+            cancel_url:'' ,
+        })
+        return session.url
+    }
+}

@@ -9,9 +9,11 @@ import { Property } from 'src/entities/property.entity';
 import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
+import { Stripe } from 'stripe';
 
 @Injectable()
 export class PropertyRepository {
+  private stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {apiVersion: '2024-09-30.acacia'})
   constructor(
     @InjectRepository(Property)
     private readonly propertyDBRepository: Repository<Property>,
@@ -46,7 +48,24 @@ export class PropertyRepository {
   }
   async addProperty(property: CreatePropertyDto) {
     try {
-      const newProperty = this.propertyDBRepository.create(property);
+      const stripeProduct = await this.stripe.products.create({
+        name: property.title,
+        description: property.description,
+        images: property.photos,
+      });
+
+      const stripePrice = await this.stripe.prices.create({
+        unit_amount: property.price * 100,
+        currency: 'ARS',
+        product: stripeProduct.id,
+      })
+
+
+      const newProperty = this.propertyDBRepository.create({
+        ...property,
+        stripeProductId: stripeProduct.id,
+        stripePriceId: stripePrice.id,
+      });
       if (!newProperty) {
         throw new ConflictException(`La propiedad no se creó correctamente`);
       }
