@@ -34,6 +34,25 @@ export class UserController {
     return this.userService.getUserByEmail(email);
   }
 
+  
+  @ApiOperation({ summary: 'Deactivate User' })
+  @Put(':id/deactivate')
+  deactivateUser(@Param('id') id: string) {
+    return this.userService.deactivateUser(id);
+  }
+  
+  @ApiOperation({ summary: 'Activate User' })
+  @Put(':id/activate')
+  activateUser(@Param('id') id: string) {
+    return this.userService.activeUser(id);
+  }
+  
+  @ApiOperation({ summary: 'Remove User' })
+  @Delete(':id/delete')
+  removeUser(@Param('id') id: string) {
+    return this.userService.removeUser(id);
+  }
+  
   @ApiOperation({ summary: 'Get User By ID' })
   @Get(':id')
   getUserById(@Param('id') id: string) {
@@ -44,23 +63,5 @@ export class UserController {
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() updateUser: User) {
     return this.userService.updateUser(id, updateUser);
-  }
-
-  @ApiOperation({ summary: 'Deactivate User' })
-  @Put('/deactivate')
-  deactivateUser(@Param('id') id: string) {
-    return this.userService.deactivateUser(id);
-  }
-
-  @ApiOperation({ summary: 'Activate User' })
-  @Put('/activate')
-  activateUser(@Param('id') id: string) {
-    return this.userService.activeUser(id);
-  }
-
-  @ApiOperation({ summary: 'Remove User' })
-  @Delete(':id')
-  removeUser(@Param('id') id: string) {
-    return this.userService.removeUser(id);
   }
 }
