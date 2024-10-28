@@ -64,13 +64,4 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   photos: string[];
 
-
-  @ApiProperty()
-  @IsNotEmpty()
-  stripeProductId: string;
-
-
-  @ApiProperty()
-  @IsNotEmpty()
-  stripePriceId: string;
 }
