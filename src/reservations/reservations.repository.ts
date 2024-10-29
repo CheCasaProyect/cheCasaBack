@@ -83,7 +83,16 @@ export class ReservationsRepository {
       from: '"Tu reserva en CheCasa fue exitosa" <che.casa.proyect@gmail.com>',
       to: user.email,
       subject: 'Reserva exitosa',
-      html: `<b>Los datos de tu reserva son: ${newReservation}</b>`, //Mensaje de prueba.
+      html: `
+      <b>Los datos de tu reserva son:</b>
+      <ul>
+      <li><p>Tu Nro. de reserva: ${newReservation.reservationDetails.reservation.id}</p></li>
+      <li><p>Nro. de la propiedad reservada: ${newReservation.reservationDetails.property.id}</p></li>
+        <li><p>Fecha de inicio de la reserva: ${newReservation.reservationDetails.checkIn}</p></li>
+        <li><p>Fecha de finalización de la reserva: ${newReservation.reservationDetails.checkOut}</p></li>
+        <li><p>Nro. de huéspedes reservados: ${newReservation.reservationDetails.pax}</p></li>
+      </ul>
+      `, //Mensaje de prueba.
     });
     return newReservation;
   }
