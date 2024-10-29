@@ -71,6 +71,6 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     await this.userRepository.removeUser(id);
-    return 'User removed successfully'
+    return 'User removed successfully';
   }
 }

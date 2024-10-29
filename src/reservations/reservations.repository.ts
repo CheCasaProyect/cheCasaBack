@@ -86,13 +86,17 @@ export class ReservationsRepository {
       html: `
       <b>Los datos de tu reserva son:</b>
       <ul>
-      <li><p>Tu Nro. de reserva: ${newReservation.reservationDetails.reservation.id}</p></li>
-      <li><p>Nro. de la propiedad reservada: ${newReservation.reservationDetails.property.id}</p></li>
+      <li><p>Nombre del reservante: ${newReservation.user.firstname}</p></li>
+      <li><p>Apellido del reservante: ${newReservation.user.lastname}</p></li>
+      <li><p>Fecha de la operación: ${newReservation.requestedAt}</p></li>
+      <li><p>Propiedad: ${newReservation.reservationDetails.property.title}</p></li>
+      <li><p>Ubicación de la propiedad: ${newReservation.reservationDetails.property.location}</p></li>
         <li><p>Fecha de inicio de la reserva: ${newReservation.reservationDetails.checkIn}</p></li>
         <li><p>Fecha de finalización de la reserva: ${newReservation.reservationDetails.checkOut}</p></li>
         <li><p>Nro. de huéspedes reservados: ${newReservation.reservationDetails.pax}</p></li>
+        <li><p>Total de precio pagado: ${newReservation.totalPrice}</p></li>
       </ul>
-      `, //Mensaje de prueba.
+      `,
     });
     return newReservation;
   }

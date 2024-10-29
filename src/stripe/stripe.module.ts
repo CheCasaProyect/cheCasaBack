@@ -9,12 +9,14 @@ dotenvConfig({ path: '.env' });
 @Module({
   providers: [
     StripeService,
-  {
-    provide: 'STRIPE_CLIENT',
-    useFactory: () => new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2024-09-30.acacia',
-    })
-  } ],
-  controllers: [StripeController]
+    {
+      provide: 'STRIPE_CLIENT',
+      useFactory: () =>
+        new Stripe(process.env.STRIPE_SECRET_KEY, {
+          apiVersion: '2024-09-30.acacia',
+        }),
+    },
+  ],
+  controllers: [StripeController],
 })
 export class StripeModule {}

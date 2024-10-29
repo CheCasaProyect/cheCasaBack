@@ -78,13 +78,13 @@ export class Property {
   })
   @ApiProperty()
   photos: string[];
-  
+
   @ApiProperty()
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   stripeProductId: string;
-  
+
   @ApiProperty()
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   stripePriceId: string;
 
   @OneToMany(() => Review, (review) => review.property)

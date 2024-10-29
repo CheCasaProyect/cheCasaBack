@@ -1,4 +1,4 @@
-// export enum UserRole {
-//   Traveler = 'TRAVELER',
-//   Host = 'HOST',
-// }
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+}

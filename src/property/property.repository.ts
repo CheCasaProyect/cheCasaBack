@@ -10,10 +10,13 @@ import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { Stripe } from 'stripe';
+import { transporter } from 'src/config/mailer';
 
 @Injectable()
 export class PropertyRepository {
-  private stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {apiVersion: '2024-09-30.acacia'})
+  private stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-09-30.acacia',
+  });
   constructor(
     @InjectRepository(Property)
     private readonly propertyDBRepository: Repository<Property>,
@@ -60,10 +63,9 @@ export class PropertyRepository {
         unit_amount: property.price * 100,
         currency: 'ARS',
         product: stripeProduct.id,
-      })
+      });
 
       console.log('Precio creado: ' + stripePrice);
-
 
       const newProperty = this.propertyDBRepository.create({
         ...property,
