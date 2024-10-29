@@ -7,8 +7,12 @@ import * as express from 'express';
 async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
+
+  
   app.enableCors({
     origin: 'https://checasafront.onrender.com',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
   });
   
   app.useGlobalPipes(new ValidationPipe())

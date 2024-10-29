@@ -78,6 +78,14 @@ export class Property {
   })
   @ApiProperty()
   photos: string[];
+  
+  @ApiProperty()
+  @Column({ nullable: true})
+  stripeProductId: string;
+  
+  @ApiProperty()
+  @Column({ nullable: true})
+  stripePriceId: string;
 
   @OneToMany(() => Review, (review) => review.property)
   @ApiProperty()
@@ -89,10 +97,4 @@ export class Property {
   )
   @ApiProperty()
   reservationDetail: ReservationDetail;
-
-  @Column({ nullable: true})
-  stripeProductId: string;
-
-  @Column({ nullable: true})
-  stripePriceId: string;
 }
