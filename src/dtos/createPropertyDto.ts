@@ -63,5 +63,4 @@ export class CreatePropertyDto {
   @ApiProperty()
   @IsNotEmpty()
   photos: string[];
-
 }

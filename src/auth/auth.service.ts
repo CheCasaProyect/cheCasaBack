@@ -61,7 +61,10 @@ export class AuthService {
       from: '"Te Registraste en CheCasa ✍" <che.casa.proyect@gmail.com>',
       to: user.email, //Prueba
       subject: 'Registro existoso',
-      html: '<b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>', //Mensaje de prueba.
+      html: `
+      <b>Te has registrado en la página CheCasa correctamente, ahora solo debes iniciar sesión si deseas reservar una propiedad.</b>
+      <b>Toca aquí para dirigirte directamente al inicio de sesión en CheCasa: <a href="https://checasafront.onrender.com/login">Ir a Iniciar Sesión</a></b>
+      `,
     });
 
     return 'User created successfully!';
@@ -90,7 +93,10 @@ export class AuthService {
       from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
       to: user.email,
       subject: 'Inicio de sesión exitoso',
-      html: `<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>`, //Mensaje de prueba.
+      html: `
+      <b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>
+      <b>Toca aquí para dirigirte directamente al Home de CheCasa: <a href="https://checasafront.onrender.com/">Ir al Home</a></b>
+      `,
     });
 
     return {
@@ -122,7 +128,10 @@ export class AuthService {
         from: '"Iniciaste Sesión en CheCasa 👌" <che.casa.proyect@gmail.com>',
         to: user.email,
         subject: 'Inicio de sesión exitoso',
-        html: '<b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>', //Mensaje de prueba.
+        html: `
+        <b>Has iniciado sesión en la página de CheCasa con éxito, para poder reservar solo debes completar todos los datos de tu perfil.</b>
+        <b>Toca aquí para dirigirte directamente al Home de CheCasa: <a href="https://checasafront.onrender.com/">Ir al Home</a></b>
+        `,
       });
       return 'Loggin successfully!';
     }
