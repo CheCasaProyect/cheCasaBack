@@ -8,17 +8,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // app.enableCors({
-  //   origin: ['https://checasafront.onrender.com', 'https://localhost:3000'],
+  //   origin: true,
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   //   allowedHeaders: 'Content-Type, Authorization',
   // });
-
+  
   app.useGlobalPipes(new ValidationPipe());
 
   setupSwagger(app);
 
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+    res.header('Access-Control-Allow-Origin', '*');
     res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept',
