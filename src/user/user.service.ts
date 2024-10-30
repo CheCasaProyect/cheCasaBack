@@ -23,7 +23,7 @@ export class UserService {
 
   async getUserById(id: string) {
     const user = await this.userRepository.getUserById(id);
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new NotFoundException('User not found');
 
     const { password, ...userWithoutPass } = user;
 
@@ -32,7 +32,7 @@ export class UserService {
 
   async getUserByEmail(email: string) {
     const user = await this.userRepository.getUserByEmail(email);
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -49,7 +49,7 @@ export class UserService {
 
   async updateUser(id: string, updateUser: User): Promise<Partial<User>> {
     const findUser = await this.userRepository.getUserById(id);
-    if (!findUser) throw new BadRequestException('User not found');
+    if (!findUser) throw new NotFoundException('User not found');
 
     const user = Object.assign(findUser, updateUser);
 

@@ -5,9 +5,12 @@ import { UserRepository } from 'src/user/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
 import { FirebaseModule } from 'src/firebase/firebase.module';
+import { ReservationsRepository } from 'src/reservations/reservations.repository';
+
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, FirebaseModule])],
+  imports: [
+    TypeOrmModule.forFeature([User, FirebaseModule, ReservationsRepository])],
   controllers: [AuthController],
   providers: [AuthService, UserRepository],
 })

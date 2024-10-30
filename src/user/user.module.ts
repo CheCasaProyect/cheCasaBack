@@ -4,10 +4,16 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { User } from 'src/entities/users.entity';
+import { PropertyRepository } from 'src/property/property.repository';
+import { ReservationsRepository } from 'src/reservations/reservations.repository';
+import { Property } from 'src/entities/property.entity';
+import { Reservation } from 'src/entities/reservation.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserRepository])],
+  imports: [
+    TypeOrmModule.forFeature([User, Property, Reservation]),
+  ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, PropertyRepository, ReservationsRepository],
 })
 export class UserModule {}
