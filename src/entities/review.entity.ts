@@ -31,7 +31,7 @@ export class Review {
     type: 'date',
   })
   @ApiProperty()
-  requestedAt: Date;
+  reviewDate: Date;
 
   @Column({
     type: 'varchar',
