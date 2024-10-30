@@ -53,7 +53,7 @@ export class CreatePropertyDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  room: number;
+  bedrooms: number;
 
   @ApiProperty()
   @IsNotEmpty()
