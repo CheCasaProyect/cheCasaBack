@@ -52,7 +52,14 @@ export class Property {
     length: 50,
   })
   @ApiProperty()
-  location: string;
+  state: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+  })
+  @ApiProperty()
+  city: string;
 
   @Column({
     type: 'decimal',
@@ -61,6 +68,18 @@ export class Property {
   })
   @ApiProperty()
   price: number;
+
+  @Column({
+    type: 'integer',
+  })
+  @ApiProperty()
+  bedrooms: number;
+
+  @Column({
+    type: 'integer',
+  })
+  @ApiProperty()
+  bathrooms: number;
 
   @Column({
     type: 'boolean',
