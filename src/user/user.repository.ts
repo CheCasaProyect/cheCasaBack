@@ -13,8 +13,7 @@ import { Repository } from 'typeorm';
 export class UserRepository {
   constructor(
     @InjectRepository(User) 
-    private readonly userRepository: Repository<User>,
-    
+    private readonly userRepository: Repository<User>, 
     private readonly propertyRepository: PropertyRepository,
     private readonly reservationsRepository: ReservationsRepository,
   ) {}
