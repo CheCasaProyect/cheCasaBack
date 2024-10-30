@@ -16,9 +16,7 @@ export class UserRepository {
   constructor(
     @InjectRepository(User) 
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Reservation)
     private readonly reservationsRepository: ReservationsRepository,
-    @InjectRepository(Property)
     private readonly propertyRepository: PropertyRepository
 
   ) {}

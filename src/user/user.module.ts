@@ -11,7 +11,7 @@ import { Reservation } from 'src/entities/reservation.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Property, Reservation]),
+    TypeOrmModule.forFeature([User, Property, Reservation, PropertyRepository, ReservationsRepository]),
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, PropertyRepository, ReservationsRepository],
