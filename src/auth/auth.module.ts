@@ -9,12 +9,11 @@ import { ReservationsRepository } from 'src/reservations/reservations.repository
 import { ReservationsModule } from 'src/reservations/reservations.module';
 import { PropertyModule } from 'src/property/property.module';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, FirebaseModule]),
-    ReservationsModule, 
-    PropertyModule
+    ReservationsModule,
+    PropertyModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, UserRepository],
