@@ -12,6 +12,7 @@ import { FileUploadModule } from './files/file-upload.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 import { StripeModule } from './stripe/stripe.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { StripeModule } from './stripe/stripe.module';
     PropertyModule,
     ReservationsModule,
     StripeModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],
