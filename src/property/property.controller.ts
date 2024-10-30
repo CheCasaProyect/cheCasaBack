@@ -33,7 +33,19 @@ export class PropertyController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Pon los datos de la propiedad y selecciona archivos:',
-    type: CreatePropertyDto,
+    schema: {
+      type: 'object',
+      properties: {
+        ...CreatePropertyDto,
+        'property-photos': {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
   })
   @UseInterceptors(
     FileFieldsInterceptor([{ name: `property-photos`, maxCount: 10 }]),
