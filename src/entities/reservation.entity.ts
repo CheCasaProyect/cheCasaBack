@@ -29,18 +29,22 @@ export class Reservation {
   @ApiProperty()
   requestedAt: Date;
 
-  @OneToOne(
-    () => ReservationDetail,
-    (reservationDetail) => reservationDetail.reservation,
-  )
-  @JoinColumn({ name: `reservation_detail_id` })
-  @ApiProperty()
-  reservationDetails: ReservationDetail;
-
   @Column({
     type: 'decimal',
     precision: 10,
     scale: 2,
   })
   totalPrice: number;
+
+  @Column({ default: true })
+  @ApiProperty()
+  active: boolean;
+
+  @OneToOne(
+    () => ReservationDetail,
+    (reservationDetail) => reservationDetail.reservation, {onDelete: 'CASCADE'})
+  @JoinColumn({ name: `reservation_detail_id` })
+  @ApiProperty()
+  reservationDetails: ReservationDetail;
+
 }

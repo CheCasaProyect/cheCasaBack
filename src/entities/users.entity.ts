@@ -5,9 +5,7 @@ import {
   JoinColumn,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
@@ -67,22 +65,23 @@ export class User {
   @ApiProperty()
   active: boolean;
 
-  @OneToMany(() => Reservation, (reservations) => reservations.user)
-  @JoinColumn()
-  reservations: Reservation[];
-
-  @OneToMany(() => Property, (properties) => properties.owner)
-  @JoinColumn()
-  properties: Property[];
-
-  @OneToMany(() => Review, (reviews) => reviews.user)
-  @JoinColumn()
-  reviews: Review[];
-
   @Column({
     type: 'text',
     default:
       'https://res.cloudinary.com/dddh5wrx3/image/upload/v1729712425/png-clipart-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette_lfuate.png',
   })
   profileImgUrl: string;
+  
+  @OneToMany(() => Reservation, (reservations) => reservations.user, {cascade: true, onDelete: 'CASCADE'})
+  @JoinColumn()
+  reservations: Reservation[];
+
+  @OneToMany(() => Property, (properties) => properties.owner, {cascade: true, onDelete: 'CASCADE'})
+  @JoinColumn()
+  properties: Property[];
+
+  @OneToMany(() => Review, (reviews) => reviews.user, {cascade: true, onDelete: 'CASCADE'})
+  @JoinColumn()
+  reviews: Review[];
+
 }

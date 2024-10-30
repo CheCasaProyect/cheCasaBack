@@ -6,14 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from 'src/entities/property.entity';
-import { LessThanOrEqual, Repository } from 'typeorm';
+import { EntityRepository, LessThanOrEqual, Repository } from 'typeorm';
 import { Reservation } from 'src/entities/reservation.entity';
 import { User } from 'src/entities/users.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
 import { CreateReservationDTO } from 'src/dtos/createReservationDto';
 import { transporter } from 'src/config/mailer';
 
-@Injectable()
 export class ReservationsRepository {
   constructor(
     @InjectRepository(Reservation)
@@ -99,5 +98,13 @@ export class ReservationsRepository {
       `,
     });
     return newReservation;
+  }
+
+  async cancelReservation(id: string){
+    const reservation = await this.reservationRepository.findOneBy({id});
+    if(!reservation) throw new NotFoundException('Reservation not found')
+
+    reservation.active = false;
+    await this.reservationRepository.save(reservation)
   }
 }

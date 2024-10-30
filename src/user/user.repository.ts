@@ -4,13 +4,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PropertyRepository } from 'src/property/property.repository';
+import { ReservationsRepository } from 'src/reservations/reservations.repository';
 import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) 
+    private readonly userRepository: Repository<User>,
+    private readonly propertyRepository: PropertyRepository,
+    private readonly reservationsRepository: ReservationsRepository,
+
   ) {}
 
   getAllUsers() {
@@ -35,11 +41,26 @@ export class UserRepository {
   }
 
   async deactivateUser(id: string) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: {id},
+      relations:['properties', 'reservations']
+     });
     if (!user) throw new NotFoundException('User not found');
 
     user.active = false;
     await this.userRepository.save(user);
+
+    await Promise.all(user.properties.map(async (property) => {
+      property.active = false;
+      property.isAvailable = false;
+      await this.propertyRepository.updateProperty(id, property)
+    }))
+
+    if(user.reservations && user.reservations.length > 0) {
+      await Promise.all(user.reservations.map(async(reservation) => {
+        await this.reservationsRepository.cancelReservation(reservation.id)
+      }))
+    }
 
     return 'Disabled user';
   }
