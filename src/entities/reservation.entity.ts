@@ -42,9 +42,10 @@ export class Reservation {
 
   @OneToOne(
     () => ReservationDetail,
-    (reservationDetail) => reservationDetail.reservation, {onDelete: 'CASCADE'})
+    (reservationDetail) => reservationDetail.reservation,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: `reservation_detail_id` })
   @ApiProperty()
   reservationDetails: ReservationDetail;
-
 }

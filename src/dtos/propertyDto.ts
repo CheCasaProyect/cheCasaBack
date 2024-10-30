@@ -18,11 +18,18 @@ export class PropertyDto {
   description: string;
 
   @ApiProperty({
-    description: 'Property location',
+    description: 'Property state',
   })
   @IsNotEmpty()
   @IsString()
-  location: string;
+  state: string;
+
+  @ApiProperty({
+    description: 'Property city',
+  })
+  @IsNotEmpty()
+  @IsString()
+  city: string;
 
   @ApiProperty({
     description: 'Property price',

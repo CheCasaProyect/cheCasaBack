@@ -110,13 +110,15 @@ export class Property {
   @Column({ nullable: true })
   stripePriceId: string;
 
-  @OneToMany(() => Review, (review) => review.property, {onDelete: 'CASCADE'})
+  @OneToMany(() => Review, (review) => review.property, { onDelete: 'CASCADE' })
   @ApiProperty()
   reviews: Review[];
 
   @OneToOne(
     () => ReservationDetail,
-    (reservationDetail) => reservationDetail.property, {onDelete: 'CASCADE'})
+    (reservationDetail) => reservationDetail.property,
+    { onDelete: 'CASCADE' },
+  )
   @ApiProperty()
   reservationDetail: ReservationDetail;
 }

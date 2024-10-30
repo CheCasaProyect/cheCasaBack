@@ -9,13 +9,21 @@ import { ReservationsRepository } from 'src/reservations/reservations.repository
 import { Property } from 'src/entities/property.entity';
 import { Reservation } from 'src/entities/reservation.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
-
+import { CloudinaryConfig } from 'src/config/cloudinary';
+import { CloudinaryService } from 'src/files/cloudinary.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Property, Reservation, ReservationDetail]),
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, PropertyRepository, ReservationsRepository],
+  providers: [
+    UserService,
+    UserRepository,
+    PropertyRepository,
+    ReservationsRepository,
+    CloudinaryService,
+    CloudinaryConfig,
+  ],
 })
 export class UserModule {}
