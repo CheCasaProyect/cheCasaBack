@@ -4,11 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Property } from 'src/entities/property.entity';
-import { Reservation } from 'src/entities/reservation.entity';
-import { User } from 'src/entities/users.entity';
 import { PropertyRepository } from 'src/property/property.repository';
 import { ReservationsRepository } from 'src/reservations/reservations.repository';
+import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -16,11 +14,9 @@ export class UserRepository {
   constructor(
     @InjectRepository(User) 
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Reservation)
+    
+    private readonly propertyRepository: PropertyRepository,
     private readonly reservationsRepository: ReservationsRepository,
-    @InjectRepository(Property)
-    private readonly propertyRepository: PropertyRepository
-
   ) {}
 
   getAllUsers() {
