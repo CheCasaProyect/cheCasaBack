@@ -50,6 +50,7 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
+    nullable: true,
   })
   @ApiProperty()
   state: string;
@@ -57,6 +58,7 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
+    nullable: true,
   })
   @ApiProperty()
   city: string;
@@ -71,12 +73,14 @@ export class Property {
 
   @Column({
     type: 'integer',
+    nullable: true,
   })
   @ApiProperty()
   bedrooms: number;
 
   @Column({
     type: 'integer',
+    nullable: true,
   })
   @ApiProperty()
   bathrooms: number;
