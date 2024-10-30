@@ -13,5 +13,6 @@ import { ReservationDetail } from 'src/entities/reservationDetail.entity';
     TypeOrmModule.forFeature([Reservation, Property, User, ReservationDetail])],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],
+  exports: [ReservationsRepository]
 })
 export class ReservationsModule {}

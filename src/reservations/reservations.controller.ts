@@ -18,7 +18,7 @@ export class ReservationsController {
   }
 
   @ApiOperation({summary: 'Cancel Reservation'})
-  @Put('cancelReservation')
+  @Put(':id/cancel')
   cancelReservation(@Param('id')id: string){
     return this.cancelReservation(id)
   }

@@ -8,10 +8,12 @@ import { PropertyRepository } from 'src/property/property.repository';
 import { ReservationsRepository } from 'src/reservations/reservations.repository';
 import { Property } from 'src/entities/property.entity';
 import { Reservation } from 'src/entities/reservation.entity';
+import { ReservationDetail } from 'src/entities/reservationDetail.entity';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Property, Reservation, PropertyRepository, ReservationsRepository]),
+    TypeOrmModule.forFeature([User, Property, Reservation, ReservationDetail]),
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, PropertyRepository, ReservationsRepository],

@@ -13,5 +13,6 @@ import { ReservationsModule } from 'src/reservations/reservations.module';
   ],
   controllers: [PropertyController],
   providers: [PropertyService, PropertyRepository],
+  exports: [PropertyRepository]
 })
 export class PropertyModule {}
