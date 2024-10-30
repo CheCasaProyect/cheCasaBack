@@ -100,11 +100,11 @@ export class ReservationsRepository {
     return newReservation;
   }
 
-  async cancelReservation(id: string){
-    const reservation = await this.reservationRepository.findOneBy({id});
-    if(!reservation) throw new NotFoundException('Reservation not found')
+  async cancelReservation(id: string) {
+    const reservation = await this.reservationRepository.findOneBy({ id });
+    if (!reservation) throw new NotFoundException('Reservation not found');
 
     reservation.active = false;
-    await this.reservationRepository.save(reservation)
+    await this.reservationRepository.save(reservation);
   }
 }

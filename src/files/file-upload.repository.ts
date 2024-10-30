@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
-import { cloudinaryService } from './cloudinary.service';
+import { CloudinaryService } from './cloudinary.service';
 import { Property } from 'src/entities/property.entity';
 
 @Injectable()
 export class FileUploadRepository {
   constructor(
-    private readonly cloudinaryService: cloudinaryService,
+    private readonly cloudinaryService: CloudinaryService,
     @InjectRepository(User) private readonly userDBRepository: Repository<User>,
     @InjectRepository(Property)
     private readonly propertyDBRepository: Repository<Property>,

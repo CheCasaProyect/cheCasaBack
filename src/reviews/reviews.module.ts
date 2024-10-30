@@ -7,10 +7,8 @@ import { User } from 'src/entities/users.entity';
 import { Property } from 'src/entities/property.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Review, User, Property])
-  ],
+  imports: [TypeOrmModule.forFeature([Review, User, Property])],
   providers: [ReviewsService],
-  controllers: [ReviewsController]
+  controllers: [ReviewsController],
 })
 export class ReviewsModule {}

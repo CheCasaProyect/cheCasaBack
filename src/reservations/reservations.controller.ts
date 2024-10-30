@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateReservationDTO } from 'src/dtos/createReservationDto';
@@ -17,9 +25,9 @@ export class ReservationsController {
     return this.reservationsService.createReservation(createReservation);
   }
 
-  @ApiOperation({summary: 'Cancel Reservation'})
+  @ApiOperation({ summary: 'Cancel Reservation' })
   @Put(':id/cancel')
-  cancelReservation(@Param('id')id: string){
-    return this.cancelReservation(id)
+  cancelReservation(@Param('id') id: string) {
+    return this.cancelReservation(id);
   }
 }
