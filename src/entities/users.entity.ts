@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
@@ -71,17 +65,25 @@ export class User {
       'https://res.cloudinary.com/dddh5wrx3/image/upload/v1729712425/png-clipart-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette_lfuate.png',
   })
   profileImgUrl: string;
-  
-  @OneToMany(() => Reservation, (reservations) => reservations.user, {cascade: true, onDelete: 'CASCADE'})
+
+  @OneToMany(() => Reservation, (reservations) => reservations.user, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   reservations: Reservation[];
 
-  @OneToMany(() => Property, (properties) => properties.owner, {cascade: true, onDelete: 'CASCADE'})
+  @OneToMany(() => Property, (properties) => properties.owner, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   properties: Property[];
 
-  @OneToMany(() => Review, (reviews) => reviews.user, {cascade: true, onDelete: 'CASCADE'})
+  @OneToMany(() => Review, (reviews) => reviews.user, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   reviews: Review[];
-
 }

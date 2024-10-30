@@ -89,7 +89,7 @@ export class ReservationsRepository {
       <li><p>Apellido del reservante: ${newReservation.user.lastname}</p></li>
       <li><p>Fecha de la operación: ${newReservation.requestedAt}</p></li>
       <li><p>Propiedad: ${newReservation.reservationDetails.property.title}</p></li>
-      <li><p>Ubicación de la propiedad: ${newReservation.reservationDetails.property.location}</p></li>
+      <li><p>Ubicación de la propiedad: ${newReservation.reservationDetails.property.state}</p></li>
         <li><p>Fecha de inicio de la reserva: ${newReservation.reservationDetails.checkIn}</p></li>
         <li><p>Fecha de finalización de la reserva: ${newReservation.reservationDetails.checkOut}</p></li>
         <li><p>Nro. de huéspedes reservados: ${newReservation.reservationDetails.pax}</p></li>
@@ -100,11 +100,11 @@ export class ReservationsRepository {
     return newReservation;
   }
 
-  async cancelReservation(id: string){
-    const reservation = await this.reservationRepository.findOneBy({id});
-    if(!reservation) throw new NotFoundException('Reservation not found')
+  async cancelReservation(id: string) {
+    const reservation = await this.reservationRepository.findOneBy({ id });
+    if (!reservation) throw new NotFoundException('Reservation not found');
 
     reservation.active = false;
-    await this.reservationRepository.save(reservation)
+    await this.reservationRepository.save(reservation);
   }
 }

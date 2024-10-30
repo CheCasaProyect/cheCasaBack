@@ -46,14 +46,10 @@ export class UpdatePropertyDto {
   @ApiProperty()
   @IsInt()
   @IsOptional()
-  room?: number;
+  bedrooms?: number;
 
   @ApiProperty()
   @IsInt()
   @IsOptional()
   bathrooms?: number;
-
-  @ApiProperty()
-  @IsOptional()
-  photos?: string[];
 }

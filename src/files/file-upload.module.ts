@@ -3,7 +3,7 @@ import { FileUploadController } from './file-upload.controller';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
-import { cloudinaryService } from './cloudinary.service';
+import { CloudinaryService } from './cloudinary.service';
 import { FileUploadService } from './file-upload.service';
 import { FileUploadRepository } from './file-upload.repository';
 import { Property } from 'src/entities/property.entity';
@@ -12,7 +12,7 @@ import { Property } from 'src/entities/property.entity';
   imports: [TypeOrmModule.forFeature([User, Property])],
   controllers: [FileUploadController],
   providers: [
-    cloudinaryService,
+    CloudinaryService,
     FileUploadService,
     FileUploadRepository,
     CloudinaryConfig,

@@ -12,6 +12,4 @@ export class ReservationsService {
       this.reservationRepository.createReservation(createReservation);
     return newReservation;
   }
-
- 
 }

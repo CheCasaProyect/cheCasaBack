@@ -12,11 +12,10 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User) 
+    @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly propertyRepository: PropertyRepository,
     private readonly reservationsRepository: ReservationsRepository,
-
   ) {}
 
   getAllUsers() {
@@ -42,24 +41,28 @@ export class UserRepository {
 
   async deactivateUser(id: string) {
     const user = await this.userRepository.findOne({
-      where: {id},
-      relations:['properties', 'reservations']
-     });
+      where: { id },
+      relations: ['properties', 'reservations'],
+    });
     if (!user) throw new NotFoundException('User not found');
 
     user.active = false;
     await this.userRepository.save(user);
 
-    await Promise.all(user.properties.map(async (property) => {
-      property.active = false;
-      property.isAvailable = false;
-      await this.propertyRepository.updateProperty(id, property)
-    }))
+    await Promise.all(
+      user.properties.map(async (property) => {
+        property.active = false;
+        property.isAvailable = false;
+        await this.propertyRepository.updateProperty(id, property);
+      }),
+    );
 
-    if(user.reservations && user.reservations.length > 0) {
-      await Promise.all(user.reservations.map(async(reservation) => {
-        await this.reservationsRepository.cancelReservation(reservation.id)
-      }))
+    if (user.reservations && user.reservations.length > 0) {
+      await Promise.all(
+        user.reservations.map(async (reservation) => {
+          await this.reservationsRepository.cancelReservation(reservation.id);
+        }),
+      );
     }
 
     return 'Disabled user';

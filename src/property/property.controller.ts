@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { Property } from 'src/entities/property.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -19,9 +29,28 @@ export class PropertyController {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
+  @ApiOperation({ summary: 'File Upload Property Image Url' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Selecciona el archivo:',
+    schema: {
+      type: 'object',
+      properties: {
+        propertyPhotos: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Post(`uploadPropertyImg/:id`)
+  @UseInterceptors(FileInterceptor(`propertyPhotos`))
   @Post()
-  addProperty(@Body() property: CreatePropertyDto) {
-    const newProperty = this.propertyService.addProperty(property);
+  addProperty(
+    @Body() property: CreatePropertyDto,
+    files: Express.Multer.File[],
+  ) {
+    const newProperty = this.propertyService.addProperty(property, files);
     return newProperty;
   }
   @Put(`:id`)

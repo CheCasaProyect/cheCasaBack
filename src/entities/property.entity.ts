@@ -50,9 +50,18 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
+    nullable: true,
   })
   @ApiProperty()
-  location: string;
+  state: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
+  @ApiProperty()
+  city: string;
 
   @Column({
     type: 'decimal',
@@ -61,6 +70,20 @@ export class Property {
   })
   @ApiProperty()
   price: number;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+  })
+  @ApiProperty()
+  bedrooms: number;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+  })
+  @ApiProperty()
+  bathrooms: number;
 
   @Column({
     type: 'boolean',
@@ -87,13 +110,15 @@ export class Property {
   @Column({ nullable: true })
   stripePriceId: string;
 
-  @OneToMany(() => Review, (review) => review.property, {onDelete: 'CASCADE'})
+  @OneToMany(() => Review, (review) => review.property, { onDelete: 'CASCADE' })
   @ApiProperty()
   reviews: Review[];
 
   @OneToOne(
     () => ReservationDetail,
-    (reservationDetail) => reservationDetail.property, {onDelete: 'CASCADE'})
+    (reservationDetail) => reservationDetail.property,
+    { onDelete: 'CASCADE' },
+  )
   @ApiProperty()
   reservationDetail: ReservationDetail;
 }
