@@ -48,6 +48,7 @@ export class PropertyController {
         bedrooms: { type: 'integer', example: 3 },
         bathrooms: { type: 'integer', example: 2 },
         capacity: { type: 'integer', example: 6 },
+        isAvailable: { type: 'boolean', example: true },
         photos: {
           type: 'array',
           items: {
