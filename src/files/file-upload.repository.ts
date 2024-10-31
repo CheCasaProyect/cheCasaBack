@@ -13,6 +13,8 @@ export class FileUploadRepository {
     @InjectRepository(Property)
     private readonly propertyDBRepository: Repository<Property>,
   ) {}
+
+  
   async uploadProfileImg(file: Express.Multer.File, userId: string) {
     try {
       const foundUser = await this.userDBRepository.findOne({
@@ -25,7 +27,10 @@ export class FileUploadRepository {
       const updateUser = await this.userDBRepository.update(userId, {
         profileImgUrl: uploadImg.secure_url,
       });
-      return updateUser;
+      return {
+        updateUser,
+        uploadImg
+      };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -47,7 +52,10 @@ export class FileUploadRepository {
           photos: [uploadImg.secure_url],
         },
       );
-      return updateProperty;
+      return {
+        updateProperty,
+        uploadImg
+      }
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
