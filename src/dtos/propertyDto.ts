@@ -57,9 +57,9 @@ export class PropertyDto {
       type: 'string',
       format: 'binary',
     },
-    description: 'Property image'
+    description: 'Property image',
   })
   @IsNotEmpty()
   @IsString()
-  photos: Express.Multer.File[];;
+  photos: Express.Multer.File[];
 }
