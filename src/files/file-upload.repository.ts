@@ -22,10 +22,16 @@ export class FileUploadRepository {
         throw new NotFoundException(`Usuario no encontrado.`);
       }
       const uploadImg = await this.cloudinaryService.uploadImage(file);
-      const updateUser = await this.userDBRepository.update(userId, {
+      await this.userDBRepository.update(userId, {
         profileImgUrl: uploadImg.secure_url,
       });
-      return updateUser;
+      const foundUpdateUser = this.userDBRepository.findOne({
+        where: { id: userId },
+      });
+      if (!foundUpdateUser) {
+        throw new NotFoundException(`Usuario no encontrado`);
+      }
+      return foundUpdateUser;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -41,13 +47,16 @@ export class FileUploadRepository {
         throw new NotFoundException(`Propiedad no encontrada.`);
       }
       const uploadImg = await this.cloudinaryService.uploadImage(file);
-      const updateProperty = await this.propertyDBRepository.update(
-        propertyId,
-        {
-          photos: [uploadImg.secure_url],
-        },
-      );
-      return updateProperty;
+      await this.propertyDBRepository.update(propertyId, {
+        photos: [uploadImg.secure_url],
+      });
+      const foundUpdateProperty = await this.propertyDBRepository.findOne({
+        where: { id: propertyId },
+      });
+      if (!foundUpdateProperty) {
+        throw new NotFoundException(`Propiedad no encontrada`);
+      }
+      return foundUpdateProperty;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
