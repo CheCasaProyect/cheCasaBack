@@ -51,15 +51,8 @@ export class PropertyDto {
   @IsInt()
   capacity: number;
 
-  @ApiProperty({
-    type: 'array',
-    items: {
-      type: 'string',
-      format: 'binary',
-    },
-    description: 'Property image',
-  })
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  photos: Express.Multer.File[];
+  photos: string[];
 }
