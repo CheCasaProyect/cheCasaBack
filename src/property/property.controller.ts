@@ -1,9 +1,12 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpCode,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   Put,
   Query,
@@ -36,20 +39,13 @@ export class PropertyController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Pon los datos de la propiedad y selecciona archivos:',
+    type: CreatePropertyDto,
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string', example: 'Nombre de la propiedad' },
-        description: { type: 'string', example: 'Descripción detallada' },
-        state: { type: 'string', example: 'Buenos Aires' },
-        city: { type: 'string', example: 'La Plata' },
-        price: { type: 'number', example: 1000 },
-        bedrooms: { type: 'integer', example: 3 },
-        bathrooms: { type: 'integer', example: 2 },
-        capacity: { type: 'integer', example: 6 },
-        isAvailable: { type: 'boolean', example: true },
         photos: {
-          type: 'array',
+          type: `string`,
+          format: `binary`,
         },
       },
     },
@@ -59,7 +55,20 @@ export class PropertyController {
   @Post()
   addProperty(
     @Body() property: CreatePropertyDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 50000000,
+            message: 'El archivo no puede pesar de 50mb en adelante',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)$/,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
   ) {
     const newProperty = this.propertyService.addProperty(property, files);
     return newProperty;
