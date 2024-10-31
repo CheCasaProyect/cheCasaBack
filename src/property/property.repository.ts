@@ -11,6 +11,7 @@ import * as fs from 'fs';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { Stripe } from 'stripe';
 import { CloudinaryService } from 'src/files/cloudinary.service';
+import { title } from 'process';
 
 @Injectable()
 export class PropertyRepository {
@@ -50,13 +51,16 @@ export class PropertyRepository {
       }
     }
   }
-  async addProperty(property: CreatePropertyDto, files: Express.Multer.File[]) {
+  async addProperty(
+    propertyDto: CreatePropertyDto,
+    files: Express.Multer.File[],
+  ) {
     console.log('Archivos subidos: ' + files);
     try {
       const photosArray = [];
       await Promise.all(
         files.map(async (file) => {
-          console.log('agregando propiedad: ' + JSON.stringify(property));
+          console.log('agregando propiedad: ' + JSON.stringify(propertyDto));
           try {
             const uploadImg = await this.cloudinaryService.uploadImage(file);
             console.log('Imagen subida: ', uploadImg);
@@ -75,15 +79,15 @@ export class PropertyRepository {
       console.log('Cloudinary ok');
 
       const stripeProduct = await this.stripe.products.create({
-        name: property.title,
-        description: property.description,
+        name: propertyDto.title,
+        description: propertyDto.description,
         images: photosArray,
       });
 
       console.log('Propiedad creada:' + stripeProduct);
 
       const stripePrice = await this.stripe.prices.create({
-        unit_amount: property.price * 100,
+        unit_amount: propertyDto.price * 100,
         currency: 'ARS',
         product: stripeProduct.id,
       });
@@ -91,7 +95,15 @@ export class PropertyRepository {
       console.log('Precio creado: ' + stripePrice);
 
       const newProperty = this.propertyDBRepository.create({
-        ...property,
+        title: String(propertyDto.title),
+        description: String(propertyDto.description),
+        state: String(propertyDto.state),
+        city: String(propertyDto.city),
+        price: Number(propertyDto.price),
+        isAvailable: Boolean(propertyDto.isAvailable),
+        capacity: Number(propertyDto.capacity),
+        bedrooms: Number(propertyDto.bedrooms),
+        bathrooms: Number(propertyDto.bathrooms),
         photos: photosArray,
         stripeProductId: stripeProduct.id,
         stripePriceId: stripePrice.id,

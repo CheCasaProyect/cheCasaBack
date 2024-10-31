@@ -19,6 +19,7 @@ import { Property } from 'src/entities/property.entity';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -36,27 +37,47 @@ export class PropertyController {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
+  @HttpCode(201)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Pon los datos de la propiedad y selecciona archivos:',
+    description: 'Provide property JSON data and upload photos',
     schema: {
       type: 'object',
       properties: {
+        propertyData: {
+          type: 'string',
+          description: 'Property JSON data',
+          example: JSON.stringify({
+            title: 'Cabaña',
+            description: 'Una cabaña acogedora en las montañas',
+            state: 'Buenos Aires',
+            city: 'La Plata',
+            price: 1000,
+            isAvailable: true,
+            capacity: 4,
+            bedrooms: 2,
+            bathrooms: 1,
+          }),
+        },
         photos: {
-          type: `string`,
-          format: `binary`,
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
         },
       },
     },
   })
   @UseInterceptors(FileFieldsInterceptor([{ name: `photos`, maxCount: 10 }]))
-  @HttpCode(201)
   @Post()
   addProperty(
-    @Body() property: CreatePropertyDto,
-    files: Express.Multer.File[],
+    @Body(`propertyData`) propertyData: string,
+    @UploadedFiles() files: { photos?: Express.Multer.File[] },
   ) {
-    const newProperty = this.propertyService.addProperty(property, files);
+    const propertyObject = JSON.parse(propertyData);
+    const propertyDto = plainToInstance(CreatePropertyDto, propertyObject);
+    const newProperty = this.propertyService.addProperty(
+      propertyDto,
+      files[`photos`] || [],
+    );
     return newProperty;
   }
   @HttpCode(200)
