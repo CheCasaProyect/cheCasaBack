@@ -13,7 +13,11 @@ async function bootstrap() {
   //   allowedHeaders: 'Content-Type, Authorization',
   // });
   
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true, 
+    whitelist: true, 
+    forbidNonWhitelisted: true, 
+  }));
 
   setupSwagger(app);
 
@@ -30,7 +34,7 @@ async function bootstrap() {
     next();
   });
 
-  await app.listen(5432);
+  await app.listen(3000);
 }
 
 bootstrap();
