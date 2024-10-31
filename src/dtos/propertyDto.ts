@@ -52,12 +52,14 @@ export class PropertyDto {
   capacity: number;
 
   @ApiProperty({
-    type: 'file',
-    format: '',
-    description: 'Product image',
-    example: 'product1.jpg',
+    type: 'array',
+    items: {
+      type: 'string',
+      format: 'binary',
+    },
+    description: 'Property image',
   })
   @IsNotEmpty()
   @IsString()
-  imgUrl: any;
+  photos: Express.Multer.File[];
 }

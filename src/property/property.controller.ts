@@ -41,19 +41,15 @@ export class PropertyController {
       properties: {
         title: { type: 'string', example: 'Nombre de la propiedad' },
         description: { type: 'string', example: 'Descripción detallada' },
+        state: { type: 'string', example: 'Buenos Aires' },
+        city: { type: 'string', example: 'La Plata' },
         price: { type: 'number', example: 1000 },
-        country: { type: 'string', example: 'Argentina' },
-        city: { type: 'string', example: 'Buenos Aires' },
-        state: { type: 'string', example: 'Capital Federal' },
         bedrooms: { type: 'integer', example: 3 },
         bathrooms: { type: 'integer', example: 2 },
         capacity: { type: 'integer', example: 6 },
+        isAvailable: { type: 'boolean', example: true },
         photos: {
           type: 'array',
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
         },
       },
     },

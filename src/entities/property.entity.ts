@@ -97,7 +97,8 @@ export class Property {
   capacity: number;
 
   @Column({
-    type: 'varchar',
+    type: 'text',
+    array: true,
   })
   @ApiProperty()
   photos: string[];

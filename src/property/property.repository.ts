@@ -51,17 +51,29 @@ export class PropertyRepository {
     }
   }
   async addProperty(property: CreatePropertyDto, files: Express.Multer.File[]) {
+    console.log('Archivos subidos: ' + files);
     try {
       const photosArray = [];
       await Promise.all(
         files.map(async (file) => {
-          const uploadImg = await this.cloudinaryService.uploadImage(file);
-          if (!uploadImg || !uploadImg.secure_url) {
-            throw new ConflictException(`No se subió la imágen correctamente`);
+          console.log('agregando propiedad: ' + JSON.stringify(property));
+          try {
+            const uploadImg = await this.cloudinaryService.uploadImage(file);
+            console.log('Imagen subida: ', uploadImg);
+            if (!uploadImg || !uploadImg.secure_url || files.length === 0) {
+              throw new ConflictException(
+                `No se subió la imagen correctamente`,
+              );
+            }
+            photosArray.push(uploadImg.secure_url);
+          } catch (error) {
+            console.error('Error al subir la imagen a Cloudinary:', error);
+            throw new Error('Error en la carga de una de las imágenes');
           }
-          photosArray.push(uploadImg.secure_url);
         }),
       );
+      console.log('Cloudinary ok');
+
       const stripeProduct = await this.stripe.products.create({
         name: property.title,
         description: property.description,
@@ -93,7 +105,7 @@ export class PropertyRepository {
           `La propiedad no se pudo guardar correctamente en la base de datos`,
         );
       }
-      return newProperty;
+      return saveProperty;
     } catch (error) {
       if (error instanceof ConflictException) {
         throw new ConflictException(error.message);
