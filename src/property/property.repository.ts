@@ -88,7 +88,7 @@ export class PropertyRepository {
 
       const stripePrice = await this.stripe.prices.create({
         unit_amount: propertyDto.price * 100,
-        currency: 'ARS',
+        currency: 'USD',
         product: stripeProduct.id,
       });
 

@@ -80,6 +80,7 @@ export class PropertyController {
     );
     return newProperty;
   }
+  
   @HttpCode(200)
   @Put(`:id`)
   updateProperty(@Param(`id`) id: string, @Body() property: UpdatePropertyDto) {
