@@ -23,8 +23,8 @@ export class StripeService {
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:3000/paymentSucces',
-      cancel_url: '',
+      // success_url: 'http://localhost:3000/paymentSucces',
+      // cancel_url: 'http://',
     });
     return session.url;
   }
