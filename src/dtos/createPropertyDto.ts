@@ -9,7 +9,7 @@ import {
 
 export class CreatePropertyDto {
   @ApiProperty({
-    description: 'Title, property type',
+    description: 'Property title',
     example: 'Cabaña',
   })
   @IsNotEmpty()
@@ -47,6 +47,7 @@ export class CreatePropertyDto {
 
   @ApiProperty({
     description: 'Availability',
+    default: true,
   })
   @IsNotEmpty()
   @IsBoolean()
