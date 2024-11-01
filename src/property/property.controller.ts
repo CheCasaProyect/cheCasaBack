@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,8 +19,7 @@ import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { Property } from 'src/entities/property.entity';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { plainToInstance } from 'class-transformer';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -40,47 +40,81 @@ export class PropertyController {
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Provide property JSON data and upload photos',
+    description: 'Pon los datos y sube imagenes:',
     schema: {
       type: 'object',
       properties: {
-        propertyData: {
-          type: 'string',
-          description: 'Property JSON data',
-          example: JSON.stringify({
-            title: 'Cabaña',
-            description: 'Una cabaña acogedora en las montañas',
-            state: 'Buenos Aires',
-            city: 'La Plata',
-            price: 1000,
-            isAvailable: true,
-            capacity: 4,
-            bedrooms: 2,
-            bathrooms: 1,
-          }),
+        title: {
+          type: `string`,
+          example: `Cabaña`,
+        },
+        description: {
+          type: `string`,
+          example: `Cabaña acogedora en la montaña`,
+        },
+        state: {
+          type: `string`,
+          example: `Buenos Aires`,
+        },
+        city: {
+          type: `string`,
+          example: `La Plata`,
+        },
+        price: {
+          type: `number`,
+          example: 1000,
+        },
+        isAvailable: {
+          type: `boolean`,
+          example: true,
+        },
+        capacity: {
+          type: `number`,
+          example: 4,
+        },
+        bedrooms: {
+          type: `number`,
+          example: 2,
+        },
+        bathrooms: {
+          type: `number`,
+          example: 1,
         },
         photos: {
           type: 'array',
-          items: { type: 'string', format: 'binary' },
+          items: { type: `string`, format: 'binary' },
         },
       },
     },
   })
-  @UseInterceptors(FileFieldsInterceptor([{ name: `photos`, maxCount: 10 }]))
+  @UseInterceptors(FilesInterceptor(`photos`))
   @Post()
-  addProperty(
-    @Body(`propertyData`) propertyData: string,
-    @UploadedFiles() files: { photos?: Express.Multer.File[] },
+  async addProperty(
+    @Body() property: any,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 5000000,
+            message: 'El archivo no puede pesar 5mb o más',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)$/,
+          }),
+        ],
+      }),
+    )
+    photos: Express.Multer.File[],
   ) {
-    const propertyObject = JSON.parse(propertyData);
-    const propertyDto = plainToInstance(CreatePropertyDto, propertyObject);
-    const newProperty = this.propertyService.addProperty(
-      propertyDto,
-      files[`photos`] || [],
+    const newProperty = await this.propertyService.addProperty(
+      property,
+      photos,
     );
+    console.log(`Propiedad creada y retornada correctamente`);
+    console.log(newProperty);
     return newProperty;
   }
-  
+
   @HttpCode(200)
   @Put(`:id`)
   updateProperty(@Param(`id`) id: string, @Body() property: UpdatePropertyDto) {

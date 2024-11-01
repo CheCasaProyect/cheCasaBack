@@ -14,8 +14,11 @@ export class PropertyService {
     const property = this.propertyRepository.getPropertyById(id);
     return property;
   }
-  addProperty(propertyDto: CreatePropertyDto, files: Express.Multer.File[]) {
-    const newProperty = this.propertyRepository.addProperty(propertyDto, files);
+  async addProperty(property: any, photos: Express.Multer.File[]) {
+    const newProperty = await this.propertyRepository.addProperty(
+      property,
+      photos,
+    );
     return newProperty;
   }
   updateProperty(id: string, property: UpdatePropertyDto) {
