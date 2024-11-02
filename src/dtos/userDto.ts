@@ -73,6 +73,6 @@ export class UserDto {
   @Validate(MatchPassword, ['password'])
   confirmPassword: string;
 
-  @ApiProperty()
-  active: boolean;
+  // @ApiProperty()
+  // active: boolean;
 }
