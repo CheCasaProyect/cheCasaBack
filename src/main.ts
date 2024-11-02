@@ -2,11 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './config/swaggerConfig';
 import { ValidationPipe } from '@nestjs/common';
-import * as express from 'express';
-
+import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(cors());
   // app.enableCors({
   //   origin: true,
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

@@ -51,29 +51,22 @@ export class PropertyRepository {
     }
   }
 
-  async addProperty(property: CreatePropertyDto, files: Express.Multer.File[]) {
-    console.log('Archivos subidos: ' + files);
+  async addProperty(property: any, photos: Express.Multer.File[]) {
     try {
       const photosArray = [];
-      await Promise.all(
-        files.map(async (file) => {
-          console.log('agregando propiedad: ' + JSON.stringify(property));
-          try {
-            const uploadImg = await this.cloudinaryService.uploadImage(file);
-            console.log('Imagen subida: ', uploadImg);
-            if (!uploadImg || !uploadImg.secure_url || files.length === 0) {
-              throw new ConflictException(
-                `No se subió la imagen correctamente`,
-              );
-            }
-            photosArray.push(uploadImg.secure_url);
-          } catch (error) {
-            console.error('Error al subir la imagen a Cloudinary:', error);
-            throw new Error('Error en la carga de una de las imágenes');
+      const photosPromises = photos.map(async (file) => {
+        try {
+          const uploadImg = await this.cloudinaryService.uploadImage(file);
+          if (!uploadImg || !uploadImg.secure_url) {
+            throw new ConflictException(`No se subió la imagen correctamente`);
           }
-        }),
-      );
-      console.log('Cloudinary ok');
+          photosArray.push(uploadImg.secure_url);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+          throw new ConflictException(`Error unploading files`);
+        }
+      });
+      await Promise.all(photosPromises);
 
       const stripeProduct = await this.stripe.products.create({
         name: property.title,
@@ -81,18 +74,22 @@ export class PropertyRepository {
         images: photosArray,
       });
 
-      console.log('Propiedad creada:' + stripeProduct);
-
       const stripePrice = await this.stripe.prices.create({
         unit_amount: property.price * 100,
-        currency: 'ARS',
+        currency: 'USD',
         product: stripeProduct.id,
       });
 
-      console.log('Precio creado: ' + stripePrice);
-
       const newProperty = this.propertyDBRepository.create({
-        ...property,
+        title: property.title,
+        description: property.description,
+        state: property.state,
+        city: property.city,
+        price: Number(property.price),
+        isAvailable: property.isAvailable,
+        capacity: property.capacity,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
         photos: photosArray,
         stripeProductId: stripeProduct.id,
         stripePriceId: stripePrice.id,

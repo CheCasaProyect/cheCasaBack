@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 export class StripeService {
   constructor(@Inject('STRIPE_CLIENT') private readonly stripe: Stripe) {}
 
-  async createPaymentIntent(amount: number, currency: string = 'ARS') {
+  async createPaymentIntent(amount: number, currency: string = 'USD') {
     return this.stripe.paymentIntents.create({
       amount,
       currency,
@@ -24,7 +24,7 @@ export class StripeService {
       ],
       mode: 'payment',
       success_url: 'http://localhost:3000/paymentSucces',
-      cancel_url: '',
+      cancel_url: 'http://localhost:3000/paymentFailed',
     });
     return session.url;
   }

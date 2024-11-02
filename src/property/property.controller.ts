@@ -1,12 +1,16 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpCode,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   Put,
   Query,
+  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,7 +19,7 @@ import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { Property } from 'src/entities/property.entity';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -33,37 +37,84 @@ export class PropertyController {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
+  @HttpCode(201)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Pon los datos de la propiedad y selecciona archivos:',
+    description: 'Pon los datos y sube imagenes:',
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string', example: 'Nombre de la propiedad' },
-        description: { type: 'string', example: 'Descripción detallada' },
-        state: { type: 'string', example: 'Buenos Aires' },
-        city: { type: 'string', example: 'La Plata' },
-        price: { type: 'number', example: 1000 },
-        bedrooms: { type: 'integer', example: 3 },
-        bathrooms: { type: 'integer', example: 2 },
-        capacity: { type: 'integer', example: 6 },
-        isAvailable: { type: 'boolean', example: true },
+        title: {
+          type: `string`,
+          example: `Cabaña`,
+        },
+        description: {
+          type: `string`,
+          example: `Cabaña acogedora en la montaña`,
+        },
+        state: {
+          type: `string`,
+          example: `Buenos Aires`,
+        },
+        city: {
+          type: `string`,
+          example: `La Plata`,
+        },
+        price: {
+          type: `number`,
+          example: 1000,
+        },
+        isAvailable: {
+          type: `boolean`,
+          example: true,
+        },
+        capacity: {
+          type: `number`,
+          example: 4,
+        },
+        bedrooms: {
+          type: `number`,
+          example: 2,
+        },
+        bathrooms: {
+          type: `number`,
+          example: 1,
+        },
         photos: {
           type: 'array',
+          items: { type: `string`, format: 'binary' },
         },
       },
     },
   })
-  @UseInterceptors(FileFieldsInterceptor([{ name: `photos`, maxCount: 10 }]))
-  @HttpCode(201)
+  @UseInterceptors(FilesInterceptor(`photos`))
   @Post()
-  addProperty(
-    @Body() property: CreatePropertyDto,
-    @UploadedFiles() files: Express.Multer.File[],
+  async addProperty(
+    @Body() property: any,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 5000000,
+            message: 'El archivo no puede pesar 5mb o más',
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp|svg)$/,
+          }),
+        ],
+      }),
+    )
+    photos: Express.Multer.File[],
   ) {
-    const newProperty = this.propertyService.addProperty(property, files);
+    const newProperty = await this.propertyService.addProperty(
+      property,
+      photos,
+    );
+    console.log(`Propiedad creada y retornada correctamente`);
+    console.log(newProperty);
     return newProperty;
   }
+
   @HttpCode(200)
   @Put(`:id`)
   updateProperty(@Param(`id`) id: string, @Body() property: UpdatePropertyDto) {
