@@ -50,6 +50,7 @@ export class PropertyRepository {
       }
     }
   }
+
   async addProperty(property: CreatePropertyDto, files: Express.Multer.File[]) {
     console.log('Archivos subidos: ' + files);
     try {
