@@ -13,6 +13,7 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CarpiBotModule } from './chatbot/carpibot.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     ReservationsModule,
     StripeModule,
     ReviewsModule,
+    CarpiBotModule
   ],
   controllers: [],
   providers: [],

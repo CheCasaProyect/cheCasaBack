@@ -50,6 +50,7 @@ export class PropertyRepository {
       }
     }
   }
+
   async addProperty(property: any, photos: Express.Multer.File[]) {
     try {
       const photosArray = [];
