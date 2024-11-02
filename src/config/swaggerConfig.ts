@@ -202,6 +202,7 @@ export const setupSwagger = (app: INestApplication) => {
         description: No se encontraron propiedades.`,
     )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, SwaggerConfig);

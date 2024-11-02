@@ -2,27 +2,33 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Inject,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import * as admin from 'firebase-admin';
 
 @Injectable()
-export class FirebaseTokenGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = request.headers['authoritation']?.split('Bearer ')[1];
-
-    if (!token) throw new ForbiddenException('You are not logged in');
-
+export class FirebaseAuthGuard implements CanActivate {
+  constructor(
+    @Inject(`FIREBASE_ADMIN`) private readonly firebaseAdmin: admin.app.App,
+  ) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
-      const decodedToken = admin.auth().verifyIdToken(token);
+      const request = context.switchToHttp().getRequest();
+      const token = request.headers['authorization']?.split('Bearer ')[1];
+      if (!token) throw new ForbiddenException('You are not logged in');
+      const decodedToken = await this.firebaseAdmin.auth().verifyIdToken(token);
+      if (!decodedToken) {
+        throw new ForbiddenException(`Failed decoded token`);
+      }
       request.user = decodedToken;
+      return true;
     } catch (error) {
-      throw new ForbiddenException('Invalid token');
+      if (error instanceof ForbiddenException) {
+        throw new ForbiddenException(error.message);
+      }
+      throw new UnauthorizedException(`Invalid token`);
     }
-    return true;
   }
 }
