@@ -1,16 +1,15 @@
-import { IsDateString, IsString } from "class-validator";
+import { IsDateString, IsString } from 'class-validator';
 
 export class CarpiBotDto {
-    @IsString()
-    username?: string;
+  @IsString()
+  username?: string;
 
-    @IsString()
-    chat: string;
+  @IsString()
+  chat: string;
 
-    @IsDateString()
-    createdAt?: Date;
+  @IsDateString()
+  createdAt?: Date;
 
-    @IsString()
-    userId?: string;
-    
+  @IsString()
+  userId?: string;
 }

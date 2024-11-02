@@ -18,5 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "types": ["multer"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

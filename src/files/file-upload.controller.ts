@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('file-upload')
 export class FileUploadController {
   constructor(private readonly fileUploadService: FileUploadService) {}
-  
+
   @ApiOperation({ summary: 'File Upload Profile Image Url' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -51,7 +51,6 @@ export class FileUploadController {
     file: Express.Multer.File,
   ) {
     return this.fileUploadService.uploadProfileImg(file, userId);
-    
   }
 
   @ApiOperation({ summary: 'File Upload Property Image Url' })
@@ -93,7 +92,7 @@ export class FileUploadController {
     );
     return {
       message: 'Image uploaded successfully',
-      updateProperty
-    }
+      updateProperty,
+    };
   }
 }

@@ -1,37 +1,41 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./users.entity";
-import { ApiProperty } from "@nestjs/swagger";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from './users.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({
-    name: 'carpiBot'
+  name: 'carpiBot',
 })
 export class CarpiBot {
-    @PrimaryGeneratedColumn()
-    id?: string;
-    
-    @Column()
-    @ApiProperty({
-        description: 'Username'
-    })
-    username: string;
+  @PrimaryGeneratedColumn()
+  id?: string;
 
-    @Column({type: 'varchar'})
-    @ApiProperty({
-        description: 'Message'
-    })
-    chat: string;
+  @Column()
+  @ApiProperty({
+    description: 'Username',
+  })
+  username: string;
 
-    @ManyToOne(() => User, (user) => user.reviews)
-    @JoinColumn({name: 'userId'})
-    @ApiProperty()
-    userId: string;
+  @Column({ type: 'varchar' })
+  @ApiProperty({
+    description: 'Message',
+  })
+  chat: string;
 
-    @CreateDateColumn({name: 'created_at'})
-    @ApiProperty({
-        description: 'Created at'
-    })
-    createdAt?: Date
+  @ManyToOne(() => User, (user) => user.reviews)
+  @JoinColumn({ name: 'userId' })
+  @ApiProperty()
+  userId: string;
 
+  @CreateDateColumn({ name: 'created_at' })
+  @ApiProperty({
+    description: 'Created at',
+  })
+  createdAt?: Date;
 }
-
-

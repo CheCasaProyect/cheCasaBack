@@ -7,13 +7,15 @@ import {
   Param,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDto } from 'src/dtos/userDto';
 import { User } from 'src/entities/users.entity';
 import { Roles } from 'src/utils/roles.decorator';
 import { Role } from 'src/utils/user.enum';
+import { FirebaseAuthGuard } from 'src/firebase/firebase-token.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -22,6 +24,8 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get All Users' })
   @Get()
+  @UseGuards(FirebaseAuthGuard)
+  @ApiBearerAuth()
   getAllUser() {
     return this.userService.getAllUsers();
   }

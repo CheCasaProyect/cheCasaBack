@@ -7,9 +7,8 @@ import { CarpiChatGateway } from './carpibot.gateway';
 import { CarpibotService } from './carpibot.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ User, CarpiBot ])],
+  imports: [TypeOrmModule.forFeature([User, CarpiBot])],
   controllers: [CarpibotController],
-  providers: [CarpiChatGateway, CarpibotService]
-
+  providers: [CarpiChatGateway, CarpibotService],
 })
 export class CarpiBotModule {}

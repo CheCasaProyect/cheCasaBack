@@ -14,7 +14,6 @@ export class FileUploadRepository {
     private readonly propertyDBRepository: Repository<Property>,
   ) {}
 
-  
   async uploadProfileImg(file: Express.Multer.File, userId: string) {
     try {
       const foundUser = await this.userDBRepository.findOne({
@@ -27,12 +26,6 @@ export class FileUploadRepository {
       await this.userDBRepository.update(userId, {
         profileImgUrl: uploadImg.secure_url,
       });
-<<<<<<< HEAD
-      return {
-        updateUser,
-        uploadImg
-      };
-=======
       const foundUpdateUser = this.userDBRepository.findOne({
         where: { id: userId },
       });
@@ -40,7 +33,6 @@ export class FileUploadRepository {
         throw new NotFoundException(`Usuario no encontrado`);
       }
       return foundUpdateUser;
->>>>>>> 760fd8037238d8dbd7abc29c591a39ab09b79f4b
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -56,18 +48,6 @@ export class FileUploadRepository {
         throw new NotFoundException(`Propiedad no encontrada.`);
       }
       const uploadImg = await this.cloudinaryService.uploadImage(file);
-<<<<<<< HEAD
-      const updateProperty = await this.propertyDBRepository.update(
-        propertyId,
-        {
-          photos: [uploadImg.secure_url],
-        },
-      );
-      return {
-        updateProperty,
-        uploadImg
-      }
-=======
       await this.propertyDBRepository.update(propertyId, {
         photos: [uploadImg.secure_url],
       });
@@ -78,7 +58,6 @@ export class FileUploadRepository {
         throw new NotFoundException(`Propiedad no encontrada`);
       }
       return foundUpdateProperty;
->>>>>>> 760fd8037238d8dbd7abc29c591a39ab09b79f4b
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

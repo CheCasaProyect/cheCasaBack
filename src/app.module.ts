@@ -35,7 +35,7 @@ import { CarpiBotModule } from './chatbot/carpibot.module';
     ReservationsModule,
     StripeModule,
     ReviewsModule,
-    CarpiBotModule
+    CarpiBotModule,
   ],
   controllers: [],
   providers: [],
