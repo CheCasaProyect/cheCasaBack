@@ -12,4 +12,12 @@ export class ReservationsService {
       this.reservationRepository.createReservation(createReservation);
     return newReservation;
   }
+
+  getAllReservation(){
+    return this.reservationRepository.getAllReservation()
+  }
+
+  getUserReservations(userId: string){
+    return this.reservationRepository.getReservationByUserId(userId)
+  }
 }

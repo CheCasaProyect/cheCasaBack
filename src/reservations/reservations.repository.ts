@@ -107,4 +107,19 @@ export class ReservationsRepository {
     reservation.active = false;
     await this.reservationRepository.save(reservation);
   }
+
+  async getAllReservation(){
+    return await this.reservationRepository.find()
+  }
+
+  async getReservationByUserId(userId: string){
+    const user = await this.userRepository.findOne(
+      {where: {id: userId},
+      relations: ['reservations'] 
+    })
+    if(!user) {
+      throw new NotFoundException('User not found')
+    }
+    return user.reservations && user.reservations.length > 0 ? user.reservations : [];
+  }
 }
