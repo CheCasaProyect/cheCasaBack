@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -16,6 +17,13 @@ import { CreateReservationDTO } from 'src/dtos/createReservationDto';
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
+  @ApiOperation({summary: 'All Reservations'})
+  @Get()
+  getAllReservations(){
+    return this.reservationsService.getAllReservation()
+  }
+
+
   @ApiOperation({ summary: 'Create Reservation' })
   @Post('newReservation')
   @HttpCode(HttpStatus.CREATED)
@@ -30,4 +38,11 @@ export class ReservationsController {
   cancelReservation(@Param('id') id: string) {
     return this.cancelReservation(id);
   }
+
+  @ApiOperation({summary: 'User Reservation'})
+  @Get(':id/user')
+  getUserReservations(@Param('id') userId: string){
+    return this.reservationsService.getUserReservations(userId)
+  }
+
 }
