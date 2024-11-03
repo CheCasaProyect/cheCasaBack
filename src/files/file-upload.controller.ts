@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileUploadService } from './file-upload.service';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags(`files`)
 @Controller('file-upload')
@@ -33,50 +33,41 @@ export class FileUploadController {
   })
   @Post(`uploadProfileImg/:id`)
   @UseInterceptors(FileInterceptor(`profileImg`))
-  uploadPropertyImg(
+  async uploadPropertyImg(
     @Param(`id`) userId: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({
-            maxSize: 50000000,
-            message: 'El archivo no puede pesar 50mb o más',
-          }),
-          new FileTypeValidator({
-            fileType: /(jpg|jpeg|png|webp|svg)$/,
-          }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.fileUploadService.uploadProfileImg(file, userId);
+    const updateUser = await this.fileUploadService.uploadProfileImg(
+      file,
+      userId,
+    );
+    return updateUser;
   }
 
-  @ApiOperation({ summary: 'File Upload Property Image Url' })
+  @ApiOperation({ summary: 'Files Upload Property Images Url' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Selecciona el archivo:',
+    description: 'Selecciona los archivos:',
     schema: {
       type: 'object',
       properties: {
-        propertyPhoto: {
-          type: 'string',
-          format: 'binary',
+        photos: {
+          type: 'array',
+          items: { type: `string`, format: `binary` },
         },
       },
     },
   })
+  @UseInterceptors(FilesInterceptor(`photos`))
   @Post(`uploadPropertyImg/:id`)
-  @UseInterceptors(FileInterceptor(`propertyPhoto`))
-  uploadProfileImg(
+  async uploadProfileImg(
     @Param(`id`) productId: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 50000000,
-            message: 'El archivo no puede pesar 50mb o más',
+            maxSize: 5000000,
+            message: 'El archivo no puede pesar 5mb o más',
           }),
           new FileTypeValidator({
             fileType: /(jpg|jpeg|png|webp|svg)$/,
@@ -84,15 +75,13 @@ export class FileUploadController {
         ],
       }),
     )
-    file: Express.Multer.File,
+    photos: Express.Multer.File[],
   ) {
-    const updateProperty = this.fileUploadService.uploadProfileImg(
-      file,
+    console.log(photos);
+    const updateProperty = await this.fileUploadService.uploadPropertyImg(
+      photos,
       productId,
     );
-    return {
-      message: 'Image uploaded successfully',
-      updateProperty,
-    };
+    return updateProperty;
   }
 }

@@ -10,13 +10,13 @@ import {
 import { Server, Socket } from 'socket.io';
 import { CarpibotService } from './carpibot.service';
 
-@WebSocketGateway({ 
+@WebSocketGateway({
   namespace: '/carpibot',
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
-  }
+    allowedHeaders: ['Content-Type'],
+  },
 })
 export class CarpiChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect
@@ -24,11 +24,11 @@ export class CarpiChatGateway
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly carpiBotService: CarpibotService){}
+  constructor(private readonly carpiBotService: CarpibotService) {}
 
   handleConnection(@ConnectedSocket() client: Socket) {
     console.log('Client connect');
-    client.emit('menu', this.carpiBotService.getMenu())
+    client.emit('menu', this.carpiBotService.getMenu());
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
@@ -36,14 +36,20 @@ export class CarpiChatGateway
   }
 
   @SubscribeMessage('chooseOption')
-  handleOption(@MessageBody() optionId: string, @ConnectedSocket() client: Socket){
-      const initialOptions = this.carpiBotService.getInitialOptions(optionId);
-      client.emit('options', initialOptions)
+  handleOption(
+    @MessageBody() optionId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const initialOptions = this.carpiBotService.getInitialOptions(optionId);
+    client.emit('options', initialOptions);
   }
 
   @SubscribeMessage('response')
-  handleResponse(@MessageBody() optionId: string, @ConnectedSocket() client: Socket){
-     const response = this.carpiBotService.getResponse(optionId);
-     client.emit('response', response)
+  handleResponse(
+    @MessageBody() optionId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const response = this.carpiBotService.getResponse(optionId);
+    client.emit('response', response);
   }
 }

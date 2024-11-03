@@ -10,7 +10,6 @@ import {
   Post,
   Put,
   Query,
-  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -110,8 +109,6 @@ export class PropertyController {
       property,
       photos,
     );
-    console.log(`Propiedad creada y retornada correctamente`);
-    console.log(newProperty);
     return newProperty;
   }
 

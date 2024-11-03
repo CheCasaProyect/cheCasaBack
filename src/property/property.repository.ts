@@ -58,12 +58,12 @@ export class PropertyRepository {
         try {
           const uploadImg = await this.cloudinaryService.uploadImage(file);
           if (!uploadImg || !uploadImg.secure_url) {
-            throw new ConflictException(`No se subió la imagen correctamente`);
+            throw new ConflictException(`No se subió la imágen correctamente`);
           }
           photosArray.push(uploadImg.secure_url);
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          throw new ConflictException(`Error unploading files`);
+          throw new ConflictException(`Error uploading files`);
         }
       });
       await Promise.all(photosPromises);
