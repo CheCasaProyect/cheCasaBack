@@ -106,31 +106,30 @@ export class CarpibotService {
   };
 
   getMenu() {
-    return Object.entries(this.menu).map(([key, text]) => ({id: key, text}));
+    return Object.entries(this.menu).map(([key, text]) => ({ id: key, text }));
   }
 
-  getInitialOptions(optionId: string){
+  getInitialOptions(optionId: string) {
     const subMenu = this.initialOptions[optionId];
-    if(!subMenu) {
-       throw new BadRequestException('Opción inválida')
+    if (!subMenu) {
+      throw new BadRequestException('Opción inválida');
     }
     return subMenu;
   }
 
-  getResponse(optionId: string){
+  getResponse(optionId: string) {
     const response = this.response[optionId];
-    if(!response){
-      throw new BadRequestException('Opción inválida')
+    if (!response) {
+      throw new BadRequestException('Opción inválida');
     }
 
     return response;
   }
 
-  saveChat(carpiBotDto: CarpiBotDto): Promise<CarpiBot>{
+  saveChat(carpiBotDto: CarpiBotDto): Promise<CarpiBot> {
     const chat = this.carpibotRepository.create(carpiBotDto);
     return this.carpibotRepository.save(chat);
   }
 
-  getAllChat(){}
-
+  getAllChat() {}
 }
