@@ -33,7 +33,7 @@ export class PropertyController {
   }
 
   @HttpCode(200)
-  @Get(`id`)
+  @Get(`:id`)
   getPropertyById(@Param(`id`) id: string) {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
