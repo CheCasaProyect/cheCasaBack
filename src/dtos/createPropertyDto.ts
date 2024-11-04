@@ -71,4 +71,12 @@ export class CreatePropertyDto {
   @ApiProperty()
   @IsNotEmpty()
   photos: string[];
+
+  @ApiProperty()
+  @IsString()
+  latitude?: string;
+
+  @ApiProperty()
+  @IsString()
+  longitude?: string;
 }

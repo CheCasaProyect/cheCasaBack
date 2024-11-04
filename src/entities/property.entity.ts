@@ -111,6 +111,14 @@ export class Property {
   @Column({ nullable: true })
   stripePriceId: string;
 
+  @ApiProperty()
+  @Column()
+  latitude?: string;
+
+  @ApiProperty()
+  @Column()
+  longitude?: string;
+
   @OneToMany(() => Review, (review) => review.property, { onDelete: 'CASCADE' })
   @ApiProperty()
   reviews: Review[];
