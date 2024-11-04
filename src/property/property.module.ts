@@ -12,8 +12,9 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     HttpModule,
-    ReservationsModule, 
-    TypeOrmModule.forFeature([Property])],
+    ReservationsModule,
+    TypeOrmModule.forFeature([Property]),
+  ],
   controllers: [PropertyController],
   providers: [
     PropertyService,

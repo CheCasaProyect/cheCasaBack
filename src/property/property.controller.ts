@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   HttpCode,
@@ -38,6 +39,7 @@ export class PropertyController {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
+
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -120,18 +122,21 @@ export class PropertyController {
     const updateProperty = this.propertyService.updateProperty(id, property);
     return updateProperty;
   }
+
   @HttpCode(200)
   @Put(`/deactivate/:id`)
   deacticateProperty(@Param(`id`) id: string) {
     const deactivatedProperty = this.propertyService.deactivateProperty(id);
     return deactivatedProperty;
   }
+
   @HttpCode(200)
   @Put(`/activate/:id`)
   activateProperty(@Param(`id`) id: string) {
     const activatedProperty = this.propertyService.activateProperty(id);
     return activatedProperty;
   }
+
   @HttpCode(200)
   @Get('filter')
   async filterProperties(@Query() query: any): Promise<Property[]> {
@@ -148,11 +153,19 @@ export class PropertyController {
     }
 
     try {
-      const coordinates = await this.propertyService.getCoordinates(state, city);
+      const coordinates = await this.propertyService.getCoordinates(
+        state,
+        city,
+      );
       return coordinates;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
-}
 
+  @Delete(`:id`)
+  deleteProperty(@Param(`id`) id: string) {
+    const deletedProperty = this.propertyService.deleteProperty(id);
+    return deletedProperty;
+  }
+}

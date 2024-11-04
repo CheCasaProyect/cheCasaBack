@@ -13,6 +13,7 @@ import { ReservationDetail } from 'src/entities/reservationDetail.entity';
 import { CreateReservationDTO } from 'src/dtos/createReservationDto';
 import { transporter } from 'src/config/mailer';
 
+@Injectable()
 export class ReservationsRepository {
   constructor(
     @InjectRepository(Reservation)
@@ -105,21 +106,48 @@ export class ReservationsRepository {
     if (!reservation) throw new NotFoundException('Reservation not found');
 
     reservation.active = false;
+    const user = await this.userRepository.findOne({
+      where: { id: reservation.user.id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await transporter.sendMail({
+      from: '"Tu reserva en CheCasa fue cancelada eitosamente 😔" <che.casa.proyect@gmail.com>',
+      to: user.email,
+      subject: 'Reserva cancelada con éxito',
+      html: `
+      <b>Los datos de tu reserva cancelada son:</b>
+      <ul>
+      <li><p>Nombre del reservante: ${reservation.user.firstname}</p></li>
+      <li><p>Apellido del reservante: ${reservation.user.lastname}</p></li>
+      <li><p>Fecha de la operación de la reserva: ${reservation.requestedAt}</p></li>
+      <li><p>Propiedad: ${reservation.reservationDetails.property.title}</p></li>
+      <li><p>Ubicación de la propiedad: ${reservation.reservationDetails.property.state}</p></li>
+        <li><p>Fecha de inicio de la reserva: ${reservation.reservationDetails.checkIn}</p></li>
+        <li><p>Fecha de finalización de la reserva: ${reservation.reservationDetails.checkOut}</p></li>
+        <li><p>Nro. de huéspedes reservados: ${reservation.reservationDetails.pax}</p></li>
+        <li><p>Total de dinero a devolver: ${reservation.totalPrice}</p></li>
+      </ul>
+      `,
+    });
     await this.reservationRepository.save(reservation);
   }
 
-  async getAllReservation(){
-    return await this.reservationRepository.find()
+  async getAllReservation() {
+    return await this.reservationRepository.find();
   }
 
-  async getReservationByUserId(userId: string){
-    const user = await this.userRepository.findOne(
-      {where: {id: userId},
-      relations: ['reservations'] 
-    })
-    if(!user) {
-      throw new NotFoundException('User not found')
+  async getReservationByUserId(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['reservations'],
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
-    return user.reservations && user.reservations.length > 0 ? user.reservations : [];
+    return user.reservations && user.reservations.length > 0
+      ? user.reservations
+      : [];
   }
 }

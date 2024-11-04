@@ -10,10 +10,12 @@ export class PropertyService {
     const properties = this.propertyRepository.getProperties();
     return properties;
   }
+
   getPropertyById(id: string) {
     const property = this.propertyRepository.getPropertyById(id);
     return property;
   }
+
   async addProperty(property: any, photos: Express.Multer.File[]) {
     const newProperty = await this.propertyRepository.addProperty(
       property,
@@ -21,23 +23,32 @@ export class PropertyService {
     );
     return newProperty;
   }
+
   updateProperty(id: string, property: UpdatePropertyDto) {
     const updateProperty = this.propertyRepository.updateProperty(id, property);
     return updateProperty;
   }
+
   deactivateProperty(id: string) {
     const deactivatedProperty = this.propertyRepository.deactivateProperty(id);
     return deactivatedProperty;
   }
+
   activateProperty(id: string) {
     const activatedProperty = this.propertyRepository.activateProperty(id);
     return activatedProperty;
   }
+
   filterProperties(filters: any) {
     return this.propertyRepository.filterProperties(filters);
   }
 
-  getCoordinates(state: string, city: string){
-    return this.propertyRepository.getCoordinates(state, city)
+  getCoordinates(state: string, city: string) {
+    return this.propertyRepository.getCoordinates(state, city);
+  }
+
+  deleteProperty(id: string) {
+    const deletedProperty = this.propertyRepository.deleteProperty(id);
+    return deletedProperty;
   }
 }
