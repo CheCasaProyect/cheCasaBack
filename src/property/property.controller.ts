@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   FileTypeValidator,
@@ -30,6 +31,7 @@ export class PropertyController {
     const properties = this.propertyService.getProperties();
     return properties;
   }
+
   @HttpCode(200)
   @Get(`id`)
   getPropertyById(@Param(`id`) id: string) {
@@ -135,4 +137,22 @@ export class PropertyController {
   async filterProperties(@Query() query: any): Promise<Property[]> {
     return this.propertyService.filterProperties(query);
   }
+
+  @Get('coordinates')
+  async getCoordinates(
+    @Query('state') state: string,
+    @Query('city') city: string,
+  ) {
+    if (!state || !city) {
+      throw new BadRequestException('State y City son requeridos');
+    }
+
+    try {
+      const coordinates = await this.propertyService.getCoordinates(state, city);
+      return coordinates;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
+

@@ -7,9 +7,13 @@ import { Property } from 'src/entities/property.entity';
 import { ReservationsModule } from 'src/reservations/reservations.module';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from 'src/files/cloudinary.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [ReservationsModule, TypeOrmModule.forFeature([Property])],
+  imports: [
+    HttpModule,
+    ReservationsModule, 
+    TypeOrmModule.forFeature([Property])],
   controllers: [PropertyController],
   providers: [
     PropertyService,

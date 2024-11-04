@@ -11,9 +11,11 @@ import { Reservation } from 'src/entities/reservation.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from 'src/files/cloudinary.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([User, Property, Reservation, ReservationDetail]),
   ],
   controllers: [UserController],

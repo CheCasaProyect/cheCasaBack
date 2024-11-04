@@ -12,6 +12,9 @@ export class CreatePropertyDto {
     description: 'Property title',
     example: 'Cabaña',
   })
+  @IsString()
+  ownerId: string;
+
   @IsNotEmpty()
   @IsString()
   title: string;
