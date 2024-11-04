@@ -14,6 +14,7 @@ import { FirebaseAdminModule } from './firebase/firebase-admin.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CarpiBotModule } from './chatbot/carpibot.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [

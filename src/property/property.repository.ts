@@ -11,6 +11,7 @@ import * as fs from 'fs';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { Stripe } from 'stripe';
 import { CloudinaryService } from 'src/files/cloudinary.service';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class PropertyRepository {
@@ -21,6 +22,7 @@ export class PropertyRepository {
     @InjectRepository(Property)
     private readonly propertyDBRepository: Repository<Property>,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly httpService: HttpService,
   ) {}
   async getProperties() {
     try {
@@ -233,4 +235,26 @@ export class PropertyRepository {
       console.error('Error al cargar el seeder:', error);
     }
   }
+
+  async getCoordinates(state: string, city: string) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city + ', ' + state)}`;
+  
+    try {
+      const response = await this.httpService.get(url).toPromise();
+      const data = response.data;
+
+      if (data && data.length > 0) {
+        return {
+          latitude: parseFloat(data[0].lat),
+          longitude: parseFloat(data[0].lon),
+        };
+      } else {
+        throw new Error('No se encontraron coordenadas para esta ubicación.');
+      }
+    } catch (error) {
+      throw new Error('Error al obtener las coordenadas.');
+    }
+  }
 }
+  
+

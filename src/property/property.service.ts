@@ -36,4 +36,8 @@ export class PropertyService {
   filterProperties(filters: any) {
     return this.propertyRepository.filterProperties(filters);
   }
+
+  getCoordinates(state: string, city: string){
+    return this.propertyRepository.getCoordinates(state, city)
+  }
 }
