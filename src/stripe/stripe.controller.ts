@@ -52,5 +52,4 @@ export class StripeController {
     );
     return { url: sessionurl };
   }
-  0;
 }

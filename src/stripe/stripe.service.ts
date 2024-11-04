@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { transporter } from 'src/config/mailer';
 import Stripe from 'stripe';
 
 @Injectable()

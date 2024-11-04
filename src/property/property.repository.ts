@@ -238,7 +238,7 @@ export class PropertyRepository {
 
   async getCoordinates(state: string, city: string) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city + ', ' + state)}`;
-  
+
     try {
       const response = await this.httpService.get(url).toPromise();
       const data = response.data;
@@ -255,6 +255,21 @@ export class PropertyRepository {
       throw new Error('Error al obtener las coordenadas.');
     }
   }
-}
-  
 
+  async deleteProperty(id: string) {
+    try {
+      const foundProperty = await this.propertyDBRepository.findOne({
+        where: { id },
+      });
+      if (!foundProperty) {
+        throw new NotFoundException(`Not found property`);
+      }
+      await this.propertyDBRepository.delete(foundProperty.id);
+      return `Propiedad borrada correctamente`;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+    }
+  }
+}

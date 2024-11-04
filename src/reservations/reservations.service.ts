@@ -13,11 +13,11 @@ export class ReservationsService {
     return newReservation;
   }
 
-  getAllReservation(){
-    return this.reservationRepository.getAllReservation()
+  getAllReservation() {
+    return this.reservationRepository.getAllReservation();
   }
 
-  getUserReservations(userId: string){
-    return this.reservationRepository.getReservationByUserId(userId)
+  getUserReservations(userId: string) {
+    return this.reservationRepository.getReservationByUserId(userId);
   }
 }

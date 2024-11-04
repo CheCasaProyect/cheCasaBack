@@ -17,7 +17,11 @@ export class ReservationDetail {
   @ApiProperty()
   id: string;
 
-  @OneToOne(() => Reservation, (reservation) => reservation.reservationDetails)
+  @OneToOne(
+    () => Reservation,
+    (reservation) => reservation.reservationDetails,
+    { cascade: true, onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: `reservation_id` })
   @ApiProperty()
   reservation: Reservation; //Se relaciona con la reserva hecha.
@@ -40,7 +44,10 @@ export class ReservationDetail {
   @ApiProperty()
   pax: number;
 
-  @OneToOne(() => Property, (property) => property.reservationDetail)
+  @OneToOne(() => Property, (property) => property.reservationDetail, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: `property_id` })
   @ApiProperty()
   property: Property;
