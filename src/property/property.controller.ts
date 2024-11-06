@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -78,15 +77,15 @@ export class PropertyController {
         },
         street: {
           type: `string`,
-          example: `Calle 123`,
+          example: `Calle 12`,
         },
         number: {
           type: `number`,
-          example: 123,
+          example: 850,
         },
         postalCode: {
           type: `string`,
-          example: `1234`,
+          example: 1900,
         },
         city: {
           type: `string`,
@@ -142,20 +141,8 @@ export class PropertyController {
     )
     photos: Express.Multer.File[],
   ) {
-    const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
-    const coordinates = await this.getLocalizacion({
-      street: property.street,
-      number: property.number,
-      city: property.city,
-      state: property.state,
-      postalCode: property.postalCode,
-    });
     const newProperty = await this.propertyService.addProperty(
-      {
-        ...property,
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-      },
+      property,
       photos,
     );
     return newProperty;

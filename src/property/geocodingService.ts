@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 
@@ -27,10 +31,31 @@ export class GeocodingService {
       const data = response.data;
 
       console.log('data: ' + data);
-
+      if (!data || typeof data === 'undefined') {
+        throw new NotFoundException(
+          `No existe ninguna data o no se pudo extraer correctamente`,
+        );
+      }
       if (data && data.length > 0) {
         const { lat, lon } = data[0];
-        return { latitude: parseFloat(lat), longitude: parseFloat(lon) };
+        if (
+          !lat ||
+          typeof lat === `undefined` ||
+          !lon ||
+          typeof lon === `undefined`
+        ) {
+          throw new NotFoundException(
+            `El valor de lat o lon no existe o es undefined`,
+          );
+        }
+        console.log(`LATITUD`);
+        console.log(parseFloat(lat));
+        console.log(`LONGITUD`);
+        console.log(Number(lon));
+        return {
+          latitude: parseFloat(lat),
+          longitude: parseFloat(lon),
+        };
       } else {
         throw new InternalServerErrorException(
           'No se encontraron coordenadas para la dirección dada.',
