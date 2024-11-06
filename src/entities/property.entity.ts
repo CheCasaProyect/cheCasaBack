@@ -135,11 +135,15 @@ export class Property {
   stripePriceId: string;
 
   @ApiProperty()
-  @Column({ nullable: true })
+  @Column({ 
+    type: 'decimal',
+    nullable: true })
   latitude?: number;
 
   @ApiProperty()
-  @Column({ nullable: true })
+  @Column({ 
+    type: 'decimal',
+    nullable: true })
   longitude?: number;
 
   @OneToMany(() => Review, (review) => review.property, {

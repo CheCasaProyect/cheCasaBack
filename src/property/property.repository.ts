@@ -105,6 +105,9 @@ export class PropertyRepository {
       const newProperty = this.propertyDBRepository.create({
         title: property.title,
         description: property.description,
+        street: property.street,
+        number: property.number,
+        postalCode: property.postalCode,
         state: property.state,
         city: property.city,
         price: Number(property.price),
