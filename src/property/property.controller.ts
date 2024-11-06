@@ -143,13 +143,13 @@ export class PropertyController {
     photos: Express.Multer.File[],
   ) {
     const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
-    const coordinates = await this.geocodingService.getCoordinates(
-      property.street,
-      property.number,
-      property.city,
-      property.state,
-      property.postalCode,
-    );
+    const coordinates = await this.getLocalizacion({
+      street: property.street,
+      number: property.number,
+      city: property.city,
+      state: property.state,
+      postalCode: property.postalCode,
+    });
     const newProperty = await this.propertyService.addProperty(
       {
         ...property,

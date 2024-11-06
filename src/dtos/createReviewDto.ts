@@ -1,14 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import {
-  IsDate,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, IsUUID, Max, Min } from 'class-validator';
 
 export class CreateReviewDto {
   @IsUUID()
@@ -22,7 +13,7 @@ export class CreateReviewDto {
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: `Reserve aca, me pareció muy buen lugar y cómodo` })
+  @ApiProperty({ example: `Reservé acá, me pareció muy buen lugar y cómodo` })
   comment: string;
 
   @IsInt()
