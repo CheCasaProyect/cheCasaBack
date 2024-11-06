@@ -43,9 +43,6 @@ export class PropertyService {
     return this.propertyRepository.filterProperties(filters);
   }
 
-  getCoordinates(state: string, city: string) {
-    return this.propertyRepository.getCoordinates(state, city);
-  }
 
   deleteProperty(id: string) {
     const deletedProperty = this.propertyRepository.deleteProperty(id);

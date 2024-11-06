@@ -21,16 +21,25 @@ import { Property } from 'src/entities/property.entity';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { GeocodingService } from './geocodingService';
 
 @ApiTags(`property`)
 @Controller(`properties`)
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(private readonly propertyService: PropertyService,
+    private readonly geocodingService: GeocodingService
+  ) {}
   @HttpCode(200)
   @Get()
   getProperties() {
     const properties = this.propertyService.getProperties();
     return properties;
+  }
+  @Get('geolocalizacion')
+  async getLocalizacion(@Body() body: {street: string, number: number, city: string, state: string, postalCode: string} ) {
+    const { street, number, city, state, postalCode } = body;
+    const coordinates = await this.geocodingService.getCoordinates(street, number, city, state, postalCode);
+    return coordinates;
   }
 
   @HttpCode(200)
@@ -39,6 +48,8 @@ export class PropertyController {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
+
+
 
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
@@ -109,8 +120,18 @@ export class PropertyController {
     )
     photos: Express.Multer.File[],
   ) {
-    const newProperty = await this.propertyService.addProperty(
-      property,
+
+    const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
+    const coordinates = await this.geocodingService.getCoordinates(property.street,
+      property.number,
+      property.city,
+      property.state,
+      property.postalCode,);
+    const newProperty = await this.propertyService.addProperty({
+      ... property, 
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+     },
       photos,
     );
     return newProperty;
@@ -143,25 +164,6 @@ export class PropertyController {
     return this.propertyService.filterProperties(query);
   }
 
-  @Get('coordinates')
-  async getCoordinates(
-    @Query('state') state: string,
-    @Query('city') city: string,
-  ) {
-    if (!state || !city) {
-      throw new BadRequestException('State y City son requeridos');
-    }
-
-    try {
-      const coordinates = await this.propertyService.getCoordinates(
-        state,
-        city,
-      );
-      return coordinates;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
 
   @Delete(`:id`)
   deleteProperty(@Param(`id`) id: string) {

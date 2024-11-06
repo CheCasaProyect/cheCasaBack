@@ -12,6 +12,7 @@ import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { Stripe } from 'stripe';
 import { CloudinaryService } from 'src/files/cloudinary.service';
 import { HttpService } from '@nestjs/axios';
+import { GeocodingService } from './geocodingService';
 
 @Injectable()
 export class PropertyRepository {
@@ -23,20 +24,31 @@ export class PropertyRepository {
     private readonly propertyDBRepository: Repository<Property>,
     private readonly cloudinaryService: CloudinaryService,
     private readonly httpService: HttpService,
+    private readonly geocodingService: GeocodingService,
+
   ) {}
   async getProperties() {
     try {
       const properties = await this.propertyDBRepository.find();
-      if (!properties) {
+      if (!properties || properties.length === 0) {
         throw new NotFoundException(`No se encontraron las propiedades`);
       }
+  
+      properties.forEach(property => {
+        if (typeof property.photos === 'string') {
+          property.photos = (property.photos as string).split(',').map(url => url.trim());
+        }
+      });
+  
       return properties;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
+      throw new Error(`Error al obtener las propiedades: ${error.message}`);
     }
   }
+
   async getPropertyById(id: string) {
     try {
       const property = await this.propertyDBRepository.findOne({
@@ -70,6 +82,14 @@ export class PropertyRepository {
       });
       await Promise.all(photosPromises);
 
+      const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
+
+      const coordinates = await this.geocodingService.getCoordinates(property.street,
+        property.number,
+        property.city,
+        property.state,
+        property.postalCode,);
+
       const stripeProduct = await this.stripe.products.create({
         name: property.title,
         description: property.description,
@@ -95,6 +115,8 @@ export class PropertyRepository {
         photos: photosArray,
         stripeProductId: stripeProduct.id,
         stripePriceId: stripePrice.id,
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
       });
       if (!newProperty) {
         throw new ConflictException(`La propiedad no se creó correctamente`);
@@ -233,26 +255,6 @@ export class PropertyRepository {
       console.log('seeder completo');
     } catch (error) {
       console.error('Error al cargar el seeder:', error);
-    }
-  }
-
-  async getCoordinates(state: string, city: string) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city + ', ' + state)}`;
-
-    try {
-      const response = await this.httpService.get(url).toPromise();
-      const data = response.data;
-
-      if (data && data.length > 0) {
-        return {
-          latitude: parseFloat(data[0].lat),
-          longitude: parseFloat(data[0].lon),
-        };
-      } else {
-        throw new Error('No se encontraron coordenadas para esta ubicación.');
-      }
-    } catch (error) {
-      throw new Error('Error al obtener las coordenadas.');
     }
   }
 

@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './config/swaggerConfig';
 import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -37,7 +38,7 @@ async function bootstrap() {
   //   next();
   // });
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 
 bootstrap();

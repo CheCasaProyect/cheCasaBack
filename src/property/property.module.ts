@@ -8,6 +8,7 @@ import { ReservationsModule } from 'src/reservations/reservations.module';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from 'src/files/cloudinary.service';
 import { HttpModule } from '@nestjs/axios';
+import { GeocodingService } from './geocodingService';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { HttpModule } from '@nestjs/axios';
     PropertyRepository,
     CloudinaryService,
     CloudinaryConfig,
+    GeocodingService
   ],
-  exports: [PropertyRepository],
+  exports: [PropertyRepository, GeocodingService],
 })
 export class PropertyModule {}
