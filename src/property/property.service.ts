@@ -27,8 +27,16 @@ export class PropertyService {
     return newProperty;
   }
 
-  updateProperty(id: string, property: UpdatePropertyDto) {
-    const updateProperty = this.propertyRepository.updateProperty(id, property);
+  async updateProperty(
+    id: string,
+    property: UpdatePropertyDto,
+    photos: Express.Multer.File[],
+  ) {
+    const updateProperty = await this.propertyRepository.updateProperty(
+      id,
+      property,
+      photos,
+    );
     return updateProperty;
   }
 

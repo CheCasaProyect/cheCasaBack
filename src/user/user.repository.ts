@@ -51,9 +51,7 @@ export class UserRepository {
 
     await Promise.all(
       user.properties.map(async (property) => {
-        property.active = false;
-        property.isAvailable = false;
-        await this.propertyRepository.updateProperty(id, property);
+        await this.propertyRepository.deactivateProperty(property.id);
       }),
     );
 

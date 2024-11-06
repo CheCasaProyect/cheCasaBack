@@ -11,11 +11,4 @@ export class FileUploadService {
     );
     return updateUser;
   }
-  async uploadPropertyImg(photos: Express.Multer.File[], productId: string) {
-    const updateProperty = await this.fileUploadRepository.uploadPropertyImg(
-      photos,
-      productId,
-    );
-    return updateProperty;
-  }
 }

@@ -145,16 +145,51 @@ export class PropertyRepository {
     }
   }
 
-  async updateProperty(id: string, property: UpdatePropertyDto) {
+  async updateProperty(
+    id: string,
+    property: UpdatePropertyDto,
+    photos: Express.Multer.File[],
+  ) {
     try {
+      const photosArray = [];
+      if (photos.length >= 1) {
+        const photosPromises = photos.map(async (file) => {
+          try {
+            const uploadImg = await this.cloudinaryService.uploadImage(file);
+            if (!uploadImg || !uploadImg.secure_url) {
+              throw new ConflictException(
+                `No se subió la imágen correctamente`,
+              );
+            }
+            photosArray.push(uploadImg.secure_url);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) {
+            throw new ConflictException(`Error uploading files`);
+          }
+        });
+        await Promise.all(photosPromises);
+      }
       const foundProperty = await this.propertyDBRepository.findOne({
         where: { id },
       });
       if (!foundProperty) {
         throw new NotFoundException(`No se encontró la propiedad`);
       }
-      const updateProperty = this.propertyDBRepository.update(id, property);
-      return updateProperty;
+      const filteredProperty = Object.keys(property).reduce((acc, key) => {
+        const value = property[key];
+        if (value === '' || value === null || value === 0) {
+          acc[key] = undefined;
+        } else {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as Partial<UpdatePropertyDto>);
+      const updatedProperty = this.propertyDBRepository.merge(foundProperty, {
+        ...filteredProperty,
+        photos: photosArray.length > 0 ? photosArray : foundProperty.photos,
+      });
+      await this.propertyDBRepository.save(updatedProperty);
+      return updatedProperty;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

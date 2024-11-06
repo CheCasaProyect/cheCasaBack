@@ -33,7 +33,7 @@ export class FileUploadController {
   })
   @Post(`uploadProfileImg/:id`)
   @UseInterceptors(FileInterceptor(`profileImg`))
-  async uploadPropertyImg(
+  async uploadProfileImg(
     @Param(`id`) userId: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
@@ -42,46 +42,5 @@ export class FileUploadController {
       userId,
     );
     return updateUser;
-  }
-
-  @ApiOperation({ summary: 'Files Upload Property Images Url' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Selecciona los archivos:',
-    schema: {
-      type: 'object',
-      properties: {
-        photos: {
-          type: 'array',
-          items: { type: `string`, format: `binary` },
-        },
-      },
-    },
-  })
-  @UseInterceptors(FilesInterceptor(`photos`))
-  @Post(`uploadPropertyImg/:id`)
-  async uploadProfileImg(
-    @Param(`id`) productId: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({
-            maxSize: 5000000,
-            message: 'El archivo no puede pesar 5mb o más',
-          }),
-          new FileTypeValidator({
-            fileType: /(jpg|jpeg|png|webp|svg)$/,
-          }),
-        ],
-      }),
-    )
-    photos: Express.Multer.File[],
-  ) {
-    console.log(photos);
-    const updateProperty = await this.fileUploadService.uploadPropertyImg(
-      photos,
-      productId,
-    );
-    return updateProperty;
   }
 }
