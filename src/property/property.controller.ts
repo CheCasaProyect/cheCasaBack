@@ -66,13 +66,25 @@ export class PropertyController {
           type: `string`,
           example: `Cabaña acogedora en la montaña`,
         },
-        state: {
+        street: {
           type: `string`,
-          example: `Buenos Aires`,
+          example: `Calle 123`,
+         },
+         number: {
+          type: `number`,
+          example: 123,
+        },
+        postalCode: {
+          type: `string`,
+          example: `1234`,
         },
         city: {
           type: `string`,
           example: `La Plata`,
+        },
+        state: {
+          type: `string`,
+          example: `Buenos Aires`,
         },
         price: {
           type: `number`,
