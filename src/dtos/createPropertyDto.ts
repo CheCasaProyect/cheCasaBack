@@ -2,13 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsDecimal,
   IsInt,
   IsNotEmpty,
   IsNumber,
   IsString,
-  Max,
-  Min,
 } from 'class-validator';
 
 export class CreatePropertyDto {
