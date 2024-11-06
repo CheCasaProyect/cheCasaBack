@@ -79,4 +79,13 @@ export class UserRepository {
   removeUser(id: string) {
     return this.userRepository.delete({ id: id });
   }
+
+  async updateRefreshToken(id: string, refreshToken: string) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.refreshToken = refreshToken;
+    return await this.userRepository.save(user);
+  }
 }

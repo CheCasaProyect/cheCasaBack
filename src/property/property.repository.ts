@@ -246,10 +246,10 @@ export class PropertyRepository {
       query.andWhere('property.city = :city', { city: filters.city });
     }
 
-    if (filters.price && filters.price.length === 2) {
-      query.andWhere('property.price BETWEEN :minPrice AND :maxPrice', {
-        minPrice: filters.price[0],
-        maxPrice: filters.price[1],
+    // 
+    if (filters.priceMax) {
+      query.andWhere('property.price <= :maxPrice', { 
+        maxPrice: filters.priceMax 
       });
     }
 
