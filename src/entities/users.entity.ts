@@ -1,9 +1,15 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
 @Entity({
   name: 'users',
@@ -11,9 +17,9 @@ import { v4 as uuid } from 'uuid'
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @ApiProperty({
-   description: 'User id',
-   format: 'uuid',
-   example: '550e8400-e29b-41d4-a716-446655440000'
+    description: 'User id',
+    format: 'uuid',
+    example: '550e8400-e29b-41d4-a716-446655440000',
   })
   id: string = uuid();
 
@@ -70,9 +76,8 @@ export class User {
   @ApiHideProperty()
   isAdmin: boolean;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   refreshToken?: string;
-
 
   @OneToMany(() => Reservation, (reservations) => reservations.user, {
     cascade: true,

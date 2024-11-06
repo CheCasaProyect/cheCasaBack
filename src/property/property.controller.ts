@@ -29,8 +29,9 @@ import { FilterPropertiesDto } from 'src/dtos/filterPropertiesDto';
 @ApiTags(`property`)
 @Controller(`properties`)
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService,
-    private readonly geocodingService: GeocodingService
+  constructor(
+    private readonly propertyService: PropertyService,
+    private readonly geocodingService: GeocodingService,
   ) {}
   @HttpCode(200)
   @Get()
@@ -39,13 +40,26 @@ export class PropertyController {
     return properties;
   }
   @Get('geolocalizacion')
-  async getLocalizacion(@Body() body: {street: string, number: number, city: string, state: string, postalCode: string} ) {
+  async getLocalizacion(
+    @Body()
+    body: {
+      street: string;
+      number: number;
+      city: string;
+      state: string;
+      postalCode: string;
+    },
+  ) {
     const { street, number, city, state, postalCode } = body;
-    const coordinates = await this.geocodingService.getCoordinates(street, number, city, state, postalCode);
+    const coordinates = await this.geocodingService.getCoordinates(
+      street,
+      number,
+      city,
+      state,
+      postalCode,
+    );
     return coordinates;
   }
-
-
 
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
@@ -65,8 +79,8 @@ export class PropertyController {
         street: {
           type: `string`,
           example: `Calle 123`,
-         },
-         number: {
+        },
+        number: {
           type: `number`,
           example: 123,
         },
@@ -112,7 +126,7 @@ export class PropertyController {
   @UseInterceptors(FilesInterceptor(`photos`))
   @Post()
   async addProperty(
-    @Body() property: any,
+    @Body() property: CreatePropertyDto,
     @UploadedFiles(
       new ParseFilePipe({
         validators: [
@@ -128,18 +142,20 @@ export class PropertyController {
     )
     photos: Express.Multer.File[],
   ) {
-
     const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
-    const coordinates = await this.geocodingService.getCoordinates(property.street,
+    const coordinates = await this.geocodingService.getCoordinates(
+      property.street,
       property.number,
       property.city,
       property.state,
-      property.postalCode,);
-    const newProperty = await this.propertyService.addProperty({
-      ... property, 
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-     },
+      property.postalCode,
+    );
+    const newProperty = await this.propertyService.addProperty(
+      {
+        ...property,
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+      },
       photos,
     );
     return newProperty;
@@ -168,8 +184,10 @@ export class PropertyController {
 
   @HttpCode(200)
   @Get('filter')
-  @UsePipes(new ValidationPipe({ transform: true })) 
-  async filterProperties(@Query() query: FilterPropertiesDto): Promise<Property[]> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async filterProperties(
+    @Query() query: FilterPropertiesDto,
+  ): Promise<Property[]> {
     return this.propertyService.filterProperties(query);
   }
 
@@ -178,12 +196,11 @@ export class PropertyController {
     const deletedProperty = this.propertyService.deleteProperty(id);
     return deletedProperty;
   }
-  
+
   @HttpCode(200)
   @Get(`:id`)
   getPropertyById(@Param(`id`) id: string) {
     const repository = this.propertyService.getPropertyById(id);
     return repository;
   }
-
 }

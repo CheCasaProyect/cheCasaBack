@@ -5,12 +5,12 @@ export class CreatePaymentDto {
   @ApiProperty()
   @IsNotEmpty()
   propertyId: string;
-  
+
   @ApiProperty()
   @IsNotEmpty()
-  checkIn: string;  
-  
+  checkIn: string;
+
   @ApiProperty()
   @IsNotEmpty()
-  checkOut: string;    
+  checkOut: string;
 }

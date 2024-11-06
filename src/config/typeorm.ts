@@ -12,7 +12,7 @@ const config = {
   port: parseInt(process.env.DB_PORT, 10),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  synchronize: true,  
+  synchronize: true,
   dropSchema: false,
   logging: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
