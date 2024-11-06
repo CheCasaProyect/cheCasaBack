@@ -1,20 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
+import { v4 as uuid } from 'uuid'
 
 @Entity({
   name: 'users',
 })
 export class User {
-  @PrimaryColumn('varchar')
+  @PrimaryGeneratedColumn('uuid')
   @ApiProperty({
-    description: 'User id',
-    format: 'varchar(255)',
-    example: '550e8400-e29b-41d4-a716-446655440000',
+   description: 'User id',
+   format: 'uuid',
+   example: '550e8400-e29b-41d4-a716-446655440000'
   })
-  id: string;
+  id: string = uuid();
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   @ApiProperty({
@@ -65,6 +66,13 @@ export class User {
       'https://res.cloudinary.com/dddh5wrx3/image/upload/v1729712425/png-clipart-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette_lfuate.png',
   })
   profileImgUrl: string;
+
+  @ApiHideProperty()
+  isAdmin: boolean;
+
+  @Column({nullable: true})
+  refreshToken?: string;
+
 
   @OneToMany(() => Reservation, (reservations) => reservations.user, {
     cascade: true,

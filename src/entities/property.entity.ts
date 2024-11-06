@@ -27,7 +27,7 @@ export class Property {
   @ManyToOne(() => User, (user) => user.properties)
   @JoinColumn({ name: `owner_id` })
   @ApiProperty()
-  owner: User; //Se relaciona el dueño de la propiedad.
+  owner: User; 
 
   @Column({ default: true })
   @ApiProperty()
@@ -46,6 +46,29 @@ export class Property {
   })
   @ApiProperty()
   description: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
+  @ApiProperty()
+  street: string;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+  })
+  @ApiProperty()
+  number: number;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
+  @ApiProperty()
+  postalCode: string;
 
   @Column({
     type: 'varchar',
@@ -113,11 +136,11 @@ export class Property {
 
   @ApiProperty()
   @Column({ nullable: true })
-  latitude?: string;
+  latitude?: number;
 
   @ApiProperty()
   @Column({ nullable: true })
-  longitude?: string;
+  longitude?: number;
 
   @OneToMany(() => Review, (review) => review.property, {
     cascade: true,
