@@ -9,6 +9,9 @@ import {
 } from 'class-validator';
 
 export class CreatePropertyDto {
+  @ApiProperty({
+    description: `Property title`,
+  })
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -20,12 +23,11 @@ export class CreatePropertyDto {
   @IsString()
   description: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   @ApiProperty({
     description: 'Property state',
   })
+  @IsNotEmpty()
+  @IsString()
   street: string;
 
   @ApiProperty()

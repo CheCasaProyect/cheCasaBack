@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -85,9 +86,9 @@ export class PropertyRepository {
         }
       });
       await Promise.all(photosPromises);
-
-      const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
-
+      if (photosArray.length <= 0) {
+        throw new BadRequestException(`El campo de photos es requerido`);
+      }
       const coordinates = await this.geocodingService.getCoordinates(
         property.street,
         property.number,
