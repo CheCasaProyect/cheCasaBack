@@ -73,7 +73,7 @@ export class PropertyController {
         },
         description: {
           type: `string`,
-          example: `Cabaña acogedora en la montaña`,
+          example: `Cabaña familiar en la montaña`,
         },
         street: {
           type: `string`,
@@ -149,9 +149,81 @@ export class PropertyController {
   }
 
   @HttpCode(200)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description:
+      'Pon los datos que quieres actualizar y sube imagenes si quieres actualizarlas:',
+    schema: {
+      type: 'object',
+      properties: {
+        title: {
+          type: `string`,
+          example: ``,
+        },
+        description: {
+          type: `string`,
+          example: `Cabaña familiar en la montaña`,
+        },
+        street: {
+          type: `string`,
+          example: ``,
+        },
+        number: {
+          type: `number`,
+          example: ``,
+        },
+        postalCode: {
+          type: `string`,
+          example: ``,
+        },
+        city: {
+          type: `string`,
+          example: ``,
+        },
+        state: {
+          type: `string`,
+          example: ``,
+        },
+        price: {
+          type: `number`,
+          example: ``,
+        },
+        isAvailable: {
+          type: `boolean`,
+          example: ``,
+          default: true,
+        },
+        capacity: {
+          type: `number`,
+          example: ``,
+        },
+        bedrooms: {
+          type: `number`,
+          example: ``,
+        },
+        bathrooms: {
+          type: `number`,
+          example: ``,
+        },
+        photos: {
+          type: 'array',
+          items: { type: `string`, format: 'binary' },
+        },
+      },
+    },
+  })
+  @UseInterceptors(FilesInterceptor(`photos`))
   @Put(`:id`)
-  updateProperty(@Param(`id`) id: string, @Body() property: UpdatePropertyDto) {
-    const updateProperty = this.propertyService.updateProperty(id, property);
+  async updateProperty(
+    @Param(`id`) id: string,
+    @Body() property: UpdatePropertyDto,
+    @UploadedFiles() photos: Express.Multer.File[],
+  ) {
+    const updateProperty = await this.propertyService.updateProperty(
+      id,
+      property,
+      photos,
+    );
     return updateProperty;
   }
 

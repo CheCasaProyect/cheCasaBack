@@ -49,45 +49,4 @@ export class FileUploadRepository {
       }
     }
   }
-  async uploadPropertyImg(photos: Express.Multer.File[], propertyId: string) {
-    try {
-      const photosArray = [];
-      const photosPromises = photos.map(async (file) => {
-        try {
-          const uploadImg = await this.cloudinaryService.uploadImage(file);
-          if (!uploadImg || !uploadImg.secure_url) {
-            throw new ConflictException(`No se subió la imágen correctamente`);
-          }
-          photosArray.push(uploadImg.secure_url);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-          throw new ConflictException(`Error uploading files`);
-        }
-      });
-      await Promise.all(photosPromises);
-      const foundProperty = await this.propertyDBRepository.findOne({
-        where: { id: propertyId },
-      });
-      if (!foundProperty) {
-        throw new NotFoundException(`Propiedad no encontrada.`);
-      }
-      await this.propertyDBRepository.update(propertyId, {
-        photos: photosArray,
-      });
-      const foundUpdatedProperty = await this.propertyDBRepository.findOne({
-        where: { id: propertyId },
-      });
-      if (!foundUpdatedProperty) {
-        throw new NotFoundException(`No se econtró la propiedad actualizada`);
-      }
-      return foundUpdatedProperty;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      if (error instanceof ConflictException) {
-        throw new ConflictException(error.message);
-      }
-    }
-  }
 }
