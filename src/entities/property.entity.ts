@@ -50,15 +50,12 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
-    default: null,
   })
   @ApiProperty()
   street: string;
 
   @Column({
     type: 'int',
-    nullable: true,
   })
   @ApiProperty()
   number: number;
@@ -66,7 +63,6 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   @ApiProperty()
   postalCode: string;
@@ -74,7 +70,6 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   @ApiProperty()
   state: string;
@@ -82,7 +77,6 @@ export class Property {
   @Column({
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   @ApiProperty()
   city: string;
@@ -97,14 +91,12 @@ export class Property {
 
   @Column({
     type: 'int',
-    nullable: true,
   })
   @ApiProperty()
   bedrooms: number;
 
   @Column({
     type: 'int',
-    nullable: true,
   })
   @ApiProperty()
   bathrooms: number;
@@ -138,14 +130,12 @@ export class Property {
   @ApiProperty()
   @Column({
     type: 'decimal',
-    nullable: true,
   })
   latitude?: number;
 
   @ApiProperty()
   @Column({
     type: 'decimal',
-    nullable: true,
   })
   longitude?: number;
 
