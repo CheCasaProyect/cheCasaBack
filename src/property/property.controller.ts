@@ -14,6 +14,8 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
@@ -22,6 +24,7 @@ import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GeocodingService } from './geocodingService';
+import { FilterPropertiesDto } from 'src/dtos/filterPropertiesDto';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -40,13 +43,6 @@ export class PropertyController {
     const { street, number, city, state, postalCode } = body;
     const coordinates = await this.geocodingService.getCoordinates(street, number, city, state, postalCode);
     return coordinates;
-  }
-
-  @HttpCode(200)
-  @Get(`:id`)
-  getPropertyById(@Param(`id`) id: string) {
-    const repository = this.propertyService.getPropertyById(id);
-    return repository;
   }
 
 
@@ -172,14 +168,22 @@ export class PropertyController {
 
   @HttpCode(200)
   @Get('filter')
-  async filterProperties(@Query() query: any): Promise<Property[]> {
+  @UsePipes(new ValidationPipe({ transform: true })) 
+  async filterProperties(@Query() query: FilterPropertiesDto): Promise<Property[]> {
     return this.propertyService.filterProperties(query);
   }
-
 
   @Delete(`:id`)
   deleteProperty(@Param(`id`) id: string) {
     const deletedProperty = this.propertyService.deleteProperty(id);
     return deletedProperty;
   }
+  
+  @HttpCode(200)
+  @Get(`:id`)
+  getPropertyById(@Param(`id`) id: string) {
+    const repository = this.propertyService.getPropertyById(id);
+    return repository;
+  }
+
 }

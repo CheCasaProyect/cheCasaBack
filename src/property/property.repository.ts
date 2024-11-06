@@ -195,46 +195,34 @@ export class PropertyRepository {
 
   async filterProperties(filters: any): Promise<Property[]> {
     const query = this.propertyDBRepository.createQueryBuilder('property');
-
+  
     if (filters.state) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      query.andWhere('property.state = :state'), { state: filters.state };
+      query.andWhere('property.state = :state', { state: filters.state });
     }
-
+  
     if (filters.city) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      query.andWhere('property.city = :city'), { city: filters.city };
+      query.andWhere('property.city = :city', { city: filters.city });
     }
-
-    if (filters.price && filters.price.length == 2) {
+  
+    if (filters.price && filters.price.length === 2) {
       query.andWhere('property.price BETWEEN :minPrice AND :maxPrice', {
         minPrice: filters.price[0],
         maxPrice: filters.price[1],
       });
     }
-
+  
     if (filters.capacity) {
       query.andWhere('property.capacity >= :capacity', {
         capacity: filters.capacity,
       });
     }
-
-    if (filters.price && filters.price.length == 2) {
-      query.andWhere(
-        'property.price >= :minPrice AND property.price <= :maxPrice',
-        {
-          minPrice: filters.price[0],
-          maxPrice: filters.price[1],
-        },
-      );
-    }
-
+  
     if (filters.bedrooms && filters.bedrooms.length) {
       query.andWhere('property.bedrooms >= :bedrooms', {
         bedrooms: filters.bedrooms[0],
       });
     }
-
+  
     return await query.getMany();
   }
 
