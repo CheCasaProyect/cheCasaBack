@@ -20,10 +20,18 @@ export class GoogleController {
     }
   
    
-    @ApiOperation({summary: 'Redirect'})
     @Post('/redirect')
     async googleOAuthredirect(@Req() req, @Res() res: any) {
-      this.googleService.googleAuthRedirect(req.user, res);
+      const { accessToken, refreshToken, user } = await this.googleService.googleAuthRedirect(req.user);
+      res.cookie('token', refreshToken, {
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+      res.json({
+        status: 'success',
+        message: 'Login successfully',
+        data: { accessToken },
+      });
     }
   
 }
