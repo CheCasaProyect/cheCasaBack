@@ -4,9 +4,13 @@ import { IsNotEmpty } from 'class-validator';
 export class CreatePaymentDto {
   @ApiProperty()
   @IsNotEmpty()
-  stripeProductId: string;
-
+  propertyId: string;
+  
   @ApiProperty()
   @IsNotEmpty()
-  stripePriceId: string;
+  checkIn: string;  
+  
+  @ApiProperty()
+  @IsNotEmpty()
+  checkOut: string;    
 }

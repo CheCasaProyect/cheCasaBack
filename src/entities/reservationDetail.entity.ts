@@ -24,7 +24,7 @@ export class ReservationDetail {
   )
   @JoinColumn({ name: `reservation_id` })
   @ApiProperty()
-  reservation: Reservation; //Se relaciona con la reserva hecha.
+  reservation: Reservation; 
 
   @Column({
     type: 'date',
