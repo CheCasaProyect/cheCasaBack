@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsOptional, IsArray, IsNumber, IsString } from 'class-validator';
 
 export class FilterPropertiesDto {
@@ -9,10 +10,10 @@ export class FilterPropertiesDto {
   @IsString()
   city?: string;
 
+
   @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  price?: number[];
+  @Transform(({ value }) => Number(value))
+  priceMax?: number;
 
   @IsOptional()
   @IsNumber()

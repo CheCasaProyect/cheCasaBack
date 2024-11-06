@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { error } from 'console';
+import { get } from 'http';
 import { CarpiBotDto } from 'src/dtos/carpiBotDto';
 import { CarpiBot } from 'src/entities/carpiBot.entity';
 import { User } from 'src/entities/users.entity';
@@ -106,7 +106,7 @@ export class CarpibotService {
   };
 
   getMenu() {
-    return Object.entries(this.menu).map(([key, text]) => ({ id: key, text }));
+    return this.menu;
   }
 
   getInitialOptions(optionId: string) {
@@ -131,5 +131,8 @@ export class CarpibotService {
     return this.carpibotRepository.save(chat);
   }
 
-  getAllChat() {}
+  getAllChat() {
+    const allChat = this.carpibotRepository.find();
+    return allChat;
+  }
 }

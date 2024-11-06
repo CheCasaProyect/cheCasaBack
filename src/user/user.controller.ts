@@ -15,7 +15,6 @@ import { UserDto } from 'src/dtos/userDto';
 import { User } from 'src/entities/users.entity';
 import { Roles } from 'src/utils/roles.decorator';
 import { Role } from 'src/utils/user.enum';
-import { FirebaseAuthGuard } from 'src/firebase/firebase-token.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -24,7 +23,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Get All Users' })
   @Get()
-  @UseGuards(FirebaseAuthGuard)
+  @UseGuards()
   @ApiBearerAuth()
   getAllUser() {
     return this.userService.getAllUsers();
