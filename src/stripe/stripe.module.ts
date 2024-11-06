@@ -9,9 +9,7 @@ import { PropertyModule } from 'src/property/property.module';
 dotenvConfig({ path: '.env' });
 
 @Module({
-  imports: [
-    PropertyModule,
-  ],
+  imports: [PropertyModule],
   providers: [
     StripeService,
     {

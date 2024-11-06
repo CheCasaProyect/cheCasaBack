@@ -27,7 +27,7 @@ export class Property {
   @ManyToOne(() => User, (user) => user.properties)
   @JoinColumn({ name: `owner_id` })
   @ApiProperty()
-  owner: User; 
+  owner: User;
 
   @Column({ default: true })
   @ApiProperty()
@@ -51,12 +51,13 @@ export class Property {
     type: 'varchar',
     length: 50,
     nullable: true,
+    default: null,
   })
   @ApiProperty()
   street: string;
 
   @Column({
-    type: 'integer',
+    type: 'int',
     nullable: true,
   })
   @ApiProperty()
@@ -95,14 +96,14 @@ export class Property {
   price: number;
 
   @Column({
-    type: 'integer',
+    type: 'int',
     nullable: true,
   })
   @ApiProperty()
   bedrooms: number;
 
   @Column({
-    type: 'integer',
+    type: 'int',
     nullable: true,
   })
   @ApiProperty()
@@ -113,9 +114,9 @@ export class Property {
     default: true,
   })
   @ApiProperty()
-  isAvailable: boolean; //aquí el tipo boolean es para tener una referencia, pero se podría poner otra cosa para ver para qué fecha vuelve a estar disponible.
+  isAvailable: boolean;
 
-  @Column({ type: 'integer' })
+  @Column({ type: 'int' })
   @ApiProperty()
   capacity: number;
 
@@ -135,15 +136,17 @@ export class Property {
   stripePriceId: string;
 
   @ApiProperty()
-  @Column({ 
+  @Column({
     type: 'decimal',
-    nullable: true })
+    nullable: true,
+  })
   latitude?: number;
 
   @ApiProperty()
-  @Column({ 
+  @Column({
     type: 'decimal',
-    nullable: true })
+    nullable: true,
+  })
   longitude?: number;
 
   @OneToMany(() => Review, (review) => review.property, {

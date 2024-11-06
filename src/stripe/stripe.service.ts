@@ -5,8 +5,10 @@ import Stripe from 'stripe';
 
 @Injectable()
 export class StripeService {
-  constructor(@Inject('STRIPE_CLIENT') private readonly stripe: Stripe,
-  private readonly propertyService: PropertyRepository) {}
+  constructor(
+    @Inject('STRIPE_CLIENT') private readonly stripe: Stripe,
+    private readonly propertyService: PropertyRepository,
+  ) {}
 
   async createPaymentIntent(amount: number, currency: string = 'USD') {
     return this.stripe.paymentIntents.create({
@@ -16,14 +18,19 @@ export class StripeService {
     });
   }
 
-  async createCheckoutSession(reservation: {propertyId: string, checkIn: string, checkOut: string}) {
-
+  async createCheckoutSession(reservation: {
+    propertyId: string;
+    checkIn: string;
+    checkOut: string;
+  }) {
     const checkInDate = new Date(reservation.checkIn);
     const checkOutDate = new Date(reservation.checkOut);
     const diffTime = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    const property = await this.propertyService.getPropertyById(reservation.propertyId);
+    const property = await this.propertyService.getPropertyById(
+      reservation.propertyId,
+    );
 
     if (!property) {
       throw new Error('Propiedad no encontrada');

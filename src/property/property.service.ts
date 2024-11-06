@@ -16,7 +16,10 @@ export class PropertyService {
     return property;
   }
 
-  async addProperty(property: any, photos: Express.Multer.File[]) {
+  async addProperty(
+    property: CreatePropertyDto,
+    photos: Express.Multer.File[],
+  ) {
     const newProperty = await this.propertyRepository.addProperty(
       property,
       photos,
@@ -42,7 +45,6 @@ export class PropertyService {
   filterProperties(filters: any) {
     return this.propertyRepository.filterProperties(filters);
   }
-
 
   deleteProperty(id: string) {
     const deletedProperty = this.propertyRepository.deleteProperty(id);

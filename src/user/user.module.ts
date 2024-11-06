@@ -27,7 +27,7 @@ import { GeocodingService } from 'src/property/geocodingService';
     ReservationsRepository,
     CloudinaryService,
     CloudinaryConfig,
-    GeocodingService
+    GeocodingService,
   ],
 })
 export class UserModule {}

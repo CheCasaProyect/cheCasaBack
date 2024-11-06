@@ -45,8 +45,6 @@ export class AuthService {
     );
     const firebaseUid = userCredential.user.uid;
 
-    // console.log(hashedPassword);
-
     await this.userRepository.createUser({
       id: firebaseUid,
       email,

@@ -23,7 +23,7 @@ import { StripeModule } from 'src/stripe/stripe.module';
     PropertyRepository,
     CloudinaryService,
     CloudinaryConfig,
-    GeocodingService
+    GeocodingService,
   ],
   exports: [PropertyRepository, GeocodingService],
 })

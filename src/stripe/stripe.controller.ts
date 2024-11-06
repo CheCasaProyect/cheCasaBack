@@ -47,7 +47,8 @@ export class StripeController {
 
   @Post('paymentSession')
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
-    const sessionurl = await this.stripeService.createCheckoutSession(createPaymentDto);
+    const sessionurl =
+      await this.stripeService.createCheckoutSession(createPaymentDto);
     return { url: sessionurl };
   }
 }

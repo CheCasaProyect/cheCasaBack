@@ -25,7 +25,6 @@ export class PropertyRepository {
     private readonly cloudinaryService: CloudinaryService,
     private readonly httpService: HttpService,
     private readonly geocodingService: GeocodingService,
-
   ) {}
   async getProperties() {
     try {
@@ -33,13 +32,15 @@ export class PropertyRepository {
       if (!properties || properties.length === 0) {
         throw new NotFoundException(`No se encontraron las propiedades`);
       }
-  
-      properties.forEach(property => {
+
+      properties.forEach((property) => {
         if (typeof property.photos === 'string') {
-          property.photos = (property.photos as string).split(',').map(url => url.trim());
+          property.photos = (property.photos as string)
+            .split(',')
+            .map((url) => url.trim());
         }
       });
-  
+
       return properties;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -65,7 +66,10 @@ export class PropertyRepository {
     }
   }
 
-  async addProperty(property: any, photos: Express.Multer.File[]) {
+  async addProperty(
+    property: CreatePropertyDto,
+    photos: Express.Multer.File[],
+  ) {
     try {
       const photosArray = [];
       const photosPromises = photos.map(async (file) => {
@@ -84,11 +88,13 @@ export class PropertyRepository {
 
       const address = `${property.street}, ${property.number}, ${property.city}, ${property.state}, ${property.postalCode}`;
 
-      const coordinates = await this.geocodingService.getCoordinates(property.street,
+      const coordinates = await this.geocodingService.getCoordinates(
+        property.street,
         property.number,
         property.city,
         property.state,
-        property.postalCode,);
+        property.postalCode,
+      );
 
       const stripeProduct = await this.stripe.products.create({
         name: property.title,
@@ -195,34 +201,34 @@ export class PropertyRepository {
 
   async filterProperties(filters: any): Promise<Property[]> {
     const query = this.propertyDBRepository.createQueryBuilder('property');
-  
+
     if (filters.state) {
       query.andWhere('property.state = :state', { state: filters.state });
     }
-  
+
     if (filters.city) {
       query.andWhere('property.city = :city', { city: filters.city });
     }
-  
+
     if (filters.price && filters.price.length === 2) {
       query.andWhere('property.price BETWEEN :minPrice AND :maxPrice', {
         minPrice: filters.price[0],
         maxPrice: filters.price[1],
       });
     }
-  
+
     if (filters.capacity) {
       query.andWhere('property.capacity >= :capacity', {
         capacity: filters.capacity,
       });
     }
-  
+
     if (filters.bedrooms && filters.bedrooms.length) {
       query.andWhere('property.bedrooms >= :bedrooms', {
         bedrooms: filters.bedrooms[0],
       });
     }
-  
+
     return await query.getMany();
   }
 
