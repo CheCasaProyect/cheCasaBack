@@ -29,6 +29,6 @@ import { GeocodingService } from 'src/property/geocodingService';
     CloudinaryConfig,
     GeocodingService,
   ],
-  exports: [UserRepository],
+  exports: [PropertyRepository, UserRepository],
 })
 export class UserModule {}

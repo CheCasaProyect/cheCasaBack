@@ -11,7 +11,9 @@ import { StripeService } from './stripe.service';
 import { Request, Response } from 'express';
 import stripe from 'stripe';
 import { CreatePaymentDto } from 'src/dtos/createPaymentDto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('stripe')
 @Controller('stripe')
 export class StripeController {
   constructor(private readonly stripeService: StripeService) {}

@@ -9,17 +9,20 @@ import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from 'src/files/cloudinary.service';
 import { HttpModule } from '@nestjs/axios';
 import { GeocodingService } from './geocodingService';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   imports: [
     HttpModule,
     ReservationsModule,
+    UserModule,
     TypeOrmModule.forFeature([Property]),
   ],
   controllers: [PropertyController],
   providers: [
     PropertyService,
     PropertyRepository,
+    PropertyGuard,
     CloudinaryService,
     CloudinaryConfig,
     GeocodingService,
