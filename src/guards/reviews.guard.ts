@@ -2,14 +2,20 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Property } from 'src/entities/property.entity';
 import { PropertyRepository } from 'src/property/property.repository';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReviewsGuard implements CanActivate {
-  constructor(private readonly propertyRepository: PropertyRepository) {}
+  constructor(
+    @Inject(Property)
+    private readonly propertyDBRepository: Repository<Property>,
+  ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
@@ -18,8 +24,9 @@ export class ReviewsGuard implements CanActivate {
       if (!user || !propertyId) {
         throw new NotFoundException(`Usuario o propiedad no encontrado`);
       }
-      const property =
-        await this.propertyRepository.getPropertyById(propertyId);
+      const property = await this.propertyDBRepository.findOne({
+        where: { id: propertyId },
+      });
       if (!property) {
         throw new NotFoundException(`Propiedad no encontrada`);
       }
@@ -28,7 +35,7 @@ export class ReviewsGuard implements CanActivate {
       }
       if (property.owner.id === user.id) {
         throw new ForbiddenException(
-          `No puedes hacer una reseña a una propiedad la cual seas dueño`,
+          `No puedes hacer una reseña a una propiedad que sea tuya`,
         );
       }
     } catch (error) {

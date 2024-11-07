@@ -7,10 +7,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateReservationDTO } from 'src/dtos/createReservationDto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { AutoReservationsGuard } from 'src/guards/autoReservations.guard';
 
 @ApiTags('reservations')
 @Controller('reservations')

@@ -19,8 +19,8 @@ import { ReviewsGuard } from 'src/guards/reviews.guard';
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewService: ReviewsService) {}
-  /* @UseGuards(AuthGuard, ReviewsGuard)
-  @ApiBearerAuth() */
+  /* @UseGuards(AuthGuard, ReviewsGuard) */
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
   @Post('newReview')
   async createReview(@Body() createReview: CreateReviewDto): Promise<Review> {
