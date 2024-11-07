@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PropertyRepository } from './property.repository';
 import { CreatePropertyDto } from 'src/dtos/createPropertyDto';
 import { UpdatePropertyDto } from 'src/dtos/updatePropertyDto';
+import { User } from 'src/entities/users.entity';
 
 @Injectable()
 export class PropertyService {
@@ -19,10 +20,12 @@ export class PropertyService {
   async addProperty(
     property: CreatePropertyDto,
     photos: Express.Multer.File[],
+    /* owner: User, */
   ) {
     const newProperty = await this.propertyRepository.addProperty(
       property,
       photos,
+      /* owner, */
     );
     return newProperty;
   }

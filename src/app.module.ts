@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -36,12 +35,13 @@ import { JwtModule } from '@nestjs/jwt';
     ReviewsModule,
     CarpiBotModule,
     GoogleModule,
+    ReviewsModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_KEY_SECRET,
       signOptions: {
         expiresIn: '1h',
-      }
+      },
     }),
   ],
   controllers: [],

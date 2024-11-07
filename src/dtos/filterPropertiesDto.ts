@@ -10,7 +10,6 @@ export class FilterPropertiesDto {
   @IsString()
   city?: string;
 
-
   @IsOptional()
   @Transform(({ value }) => Number(value))
   priceMax?: number;

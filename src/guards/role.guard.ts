@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -10,10 +15,10 @@ export class AccessGuard implements CanActivate {
     const userId = request.params.id;
     const user = request.user;
 
-    if(user.role === 'admin' || user.id === userId){
-      return true
-    } 
+    if (user.role === 'admin' || user.id === userId) {
+      return true;
+    }
 
-   throw new UnauthorizedException('Access do not authorized')
+    throw new UnauthorizedException('Access do not authorized');
   }
 }

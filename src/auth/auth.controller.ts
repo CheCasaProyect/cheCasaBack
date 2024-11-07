@@ -22,23 +22,19 @@ export class AuthController {
     return this.authService.login(email, password);
   }
 
-
   // @ApiOperation({summary: 'Login Google'})
   // @Get('oauth/google')
   // async signinWithGoogle() {}
 
- 
   // @ApiOperation({summary: 'Redirect'})
   // @Get('oauth/google/redirect')
   // async googleOAuthredirect(@Req() req, @Res() res: any) {
   //   this.authService.googleAuthRedirect(req.user, res);
   // }
 
-  
   // @ApiOperation({summary: 'Login Google'})
   // @Post('oauth/google')
   // async signinWithGoogle() {
   //   return { url: 'https://accounts.google.com/o/oauth2/auth?...' };
   // }
-
 }

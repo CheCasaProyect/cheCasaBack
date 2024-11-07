@@ -6,19 +6,23 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from 'src/dtos/createReviewDto';
 import { Review } from 'src/entities/review.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { ReviewsGuard } from 'src/guards/reviews.guard';
 
 @ApiTags('reviews')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewService: ReviewsService) {}
-
-  @Post('newReview')
+  /* @UseGuards(AuthGuard, ReviewsGuard)
+  @ApiBearerAuth() */
   @HttpCode(HttpStatus.CREATED)
+  @Post('newReview')
   async createReview(@Body() createReview: CreateReviewDto): Promise<Review> {
     return this.reviewService.createReview(createReview);
   }
