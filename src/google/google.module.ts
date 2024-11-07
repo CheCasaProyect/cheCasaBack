@@ -10,16 +10,17 @@ import { PropertyModule } from 'src/property/property.module';
 import { ReservationsModule } from 'src/reservations/reservations.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]),
-  UserModule,
-  PropertyModule,
-  ReservationsModule,
-  PassportModule.register({
-    defaultStrategy: 'google',
-    session: false,
-  }),
-],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    UserModule,
+    PropertyModule,
+    ReservationsModule,
+    PassportModule.register({
+      defaultStrategy: 'google',
+      session: false,
+    }),
+  ],
   providers: [GoogleService, UserRepository],
-  controllers: [GoogleController]
+  controllers: [GoogleController],
 })
 export class GoogleModule {}

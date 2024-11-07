@@ -14,6 +14,7 @@ import { Stripe } from 'stripe';
 import { CloudinaryService } from 'src/files/cloudinary.service';
 import { HttpService } from '@nestjs/axios';
 import { GeocodingService } from './geocodingService';
+import { User } from 'src/entities/users.entity';
 
 @Injectable()
 export class PropertyRepository {
@@ -55,6 +56,7 @@ export class PropertyRepository {
     try {
       const property = await this.propertyDBRepository.findOne({
         where: { id },
+        relations: [`owner`],
       });
       if (!property) {
         throw new NotFoundException(`No se encontró la propiedad`);
@@ -70,6 +72,7 @@ export class PropertyRepository {
   async addProperty(
     property: CreatePropertyDto,
     photos: Express.Multer.File[],
+    /* owner: User, */
   ) {
     try {
       const photosArray = [];
@@ -110,6 +113,7 @@ export class PropertyRepository {
       });
 
       const newProperty = this.propertyDBRepository.create({
+        /*  owner: owner, */
         title: property.title,
         description: property.description,
         street: property.street,
@@ -246,10 +250,10 @@ export class PropertyRepository {
       query.andWhere('property.city = :city', { city: filters.city });
     }
 
-    // 
+    //
     if (filters.priceMax) {
-      query.andWhere('property.price <= :maxPrice', { 
-        maxPrice: filters.priceMax 
+      query.andWhere('property.price <= :maxPrice', {
+        maxPrice: filters.priceMax,
       });
     }
 

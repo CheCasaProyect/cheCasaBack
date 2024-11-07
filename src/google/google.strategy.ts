@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 
-
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
