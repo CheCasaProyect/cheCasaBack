@@ -9,7 +9,6 @@ import {
 import { Reservation } from './reservation.entity';
 import { Property } from './property.entity';
 import { Review } from './review.entity';
-import { v4 as uuid } from 'uuid';
 
 @Entity({
   name: 'users',
@@ -21,7 +20,7 @@ export class User {
     format: 'uuid',
     example: '550e8400-e29b-41d4-a716-446655440000',
   })
-  id: string = uuid();
+  id: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   @ApiProperty({
