@@ -20,12 +20,12 @@ export class PropertyService {
   async addProperty(
     property: CreatePropertyDto,
     photos: Express.Multer.File[],
-    /* owner: User, */
+    owner: User,
   ) {
     const newProperty = await this.propertyRepository.addProperty(
       property,
       photos,
-      /* owner, */
+      owner,
     );
     return newProperty;
   }

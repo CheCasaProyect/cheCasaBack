@@ -67,6 +67,7 @@ export class PropertyController {
 
   @HttpCode(201)
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Pon los datos y sube imagenes:',
@@ -129,7 +130,6 @@ export class PropertyController {
     },
   })
   @UseInterceptors(FilesInterceptor(`photos`))
-  @ApiBearerAuth()
   @Post()
   async addProperty(
     @Body() property: CreatePropertyDto,
@@ -147,19 +147,20 @@ export class PropertyController {
       }),
     )
     photos: Express.Multer.File[],
-    /* @Request() req, */
+    @Request() req,
   ) {
-    /* const owner = req.user.id; */
+    const owner = req.user;
     const newProperty = await this.propertyService.addProperty(
       property,
       photos,
-      /* owner, */
+      owner,
     );
     return newProperty;
   }
 
   @HttpCode(200)
-  @UseGuards(PropertyGuard)
+  @UseGuards(AuthGuard /* PropertyGuard */)
+  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description:
@@ -239,7 +240,8 @@ export class PropertyController {
   }
 
   @HttpCode(200)
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
+  @ApiBearerAuth()
   @Put(`/deactivate/:id`)
   deacticateProperty(@Param(`id`) id: string) {
     const deactivatedProperty = this.propertyService.deactivateProperty(id);
@@ -247,7 +249,8 @@ export class PropertyController {
   }
 
   @HttpCode(200)
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
+  @ApiBearerAuth()
   @Put(`/activate/:id`)
   activateProperty(@Param(`id`) id: string) {
     const activatedProperty = this.propertyService.activateProperty(id);
@@ -263,7 +266,8 @@ export class PropertyController {
     return this.propertyService.filterProperties(query);
   }
 
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
+  @ApiBearerAuth()
   @Delete(`:id`)
   deleteProperty(@Param(`id`) id: string) {
     const deletedProperty = this.propertyService.deleteProperty(id);

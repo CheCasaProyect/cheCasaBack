@@ -14,7 +14,7 @@ import { Repository } from 'typeorm';
 export class ReviewsGuard implements CanActivate {
   constructor(
     @Inject(Property)
-    private readonly propertyDBRepository: Repository<Property>,
+    private readonly propertyRepository: PropertyRepository,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
@@ -24,9 +24,8 @@ export class ReviewsGuard implements CanActivate {
       if (!user || !propertyId) {
         throw new NotFoundException(`Usuario o propiedad no encontrado`);
       }
-      const property = await this.propertyDBRepository.findOne({
-        where: { id: propertyId },
-      });
+      const property =
+        await this.propertyRepository.getPropertyById(propertyId);
       if (!property) {
         throw new NotFoundException(`Propiedad no encontrada`);
       }
@@ -35,7 +34,7 @@ export class ReviewsGuard implements CanActivate {
       }
       if (property.owner.id === user.id) {
         throw new ForbiddenException(
-          `No puedes hacer una reseña a una propiedad que sea tuya`,
+          `No puedes hacer eso, porque es tu propiedad`,
         );
       }
     } catch (error) {
