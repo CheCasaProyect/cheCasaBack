@@ -40,6 +40,13 @@ export class ReviewsService {
     return this.reviewRepository.save(review);
   }
 
+  async getAllMyReviews(id: string) {
+    return await this.userRepository.findOne({
+      where: { id },
+      relations: [`reviews`],
+    });
+  }
+
   async getAllPropertyReviews(propertyId: string): Promise<Review[]> {
     return this.reviewRepository.find({
       where: { property: { id: propertyId } },

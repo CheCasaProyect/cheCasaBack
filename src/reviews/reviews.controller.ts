@@ -32,6 +32,12 @@ export class ReviewsController {
     return this.reviewService.getAllReviews();
   }
 
+  @Get(':userId')
+  async getAllMyReviews(@Param('userId') id: string) {
+    const user = await this.reviewService.getAllMyReviews(id);
+    return user.reviews;
+  }
+
   @Get(':propertyId')
   async getAllPropertyReviews(
     @Param('propertyId') propertyId: string,
