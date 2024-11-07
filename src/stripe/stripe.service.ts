@@ -50,8 +50,8 @@ export class StripeService {
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:3000/paymentSucces',
-      cancel_url: 'http://localhost:3000/paymentFailed',
+      success_url: 'http://localhost:3000/Successpage',
+      cancel_url: 'http://localhost:3000/Rejectedpayment',
     });
     return session.url;
   }

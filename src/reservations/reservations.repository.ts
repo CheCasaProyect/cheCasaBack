@@ -35,7 +35,7 @@ export class ReservationsRepository {
     }
 
     const property = await this.propertyRepository.findOne({
-      where: { id: createReservation.propertyId, isAvailable: true },
+      where: { id: createReservation.propertyId},
       relations: [`reservationDetail`],
     });
     if (!property) {
