@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateReservationDTO {
   @ApiProperty()
