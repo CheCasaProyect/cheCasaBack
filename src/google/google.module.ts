@@ -6,8 +6,8 @@ import { User } from 'src/entities/users.entity';
 import { PassportModule } from '@nestjs/passport';
 import { UserRepository } from 'src/user/user.repository';
 import { UserModule } from 'src/user/user.module';
-import { PropertyModule } from 'src/property/property.module';
 import { ReservationsModule } from 'src/reservations/reservations.module';
+import { PropertyModule } from 'src/property/property.module';
 
 @Module({
   imports: [

@@ -5,15 +5,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import typeOrmConfig from './config/typeorm';
 import { DataSource } from 'typeorm';
-import { PropertyModule } from './property/property.module';
 import { FileUploadModule } from './files/file-upload.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CarpiBotModule } from './chatbot/carpibot.module';
-import { HttpModule } from '@nestjs/axios';
 import { GoogleModule } from './google/google.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PropertyModule } from './property/property.module';
 
 @Module({
   imports: [

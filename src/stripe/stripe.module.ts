@@ -3,7 +3,6 @@ import { config as dotenvConfig } from 'dotenv';
 import { StripeService } from './stripe.service';
 import { StripeController } from './stripe.controller';
 import Stripe from 'stripe';
-import { PropertyRepository } from 'src/property/property.repository';
 import { PropertyModule } from 'src/property/property.module';
 
 dotenvConfig({ path: '.env' });

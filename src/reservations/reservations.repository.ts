@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from 'src/entities/property.entity';
-import { EntityRepository, LessThanOrEqual, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Reservation } from 'src/entities/reservation.entity';
 import { User } from 'src/entities/users.entity';
 import { ReservationDetail } from 'src/entities/reservationDetail.entity';
@@ -27,9 +27,7 @@ export class ReservationsRepository {
 
   async createReservation(
     createReservation: CreateReservationDTO,
-  ): Promise<Reservation> {
-    console.log('Payload de reserva: ', createReservation);
-
+  ): Promise<Reservation | string> {
     if (!createReservation) {
       throw new BadRequestException(
         'El objeto reservation o userId es inválido',
@@ -38,28 +36,27 @@ export class ReservationsRepository {
 
     const property = await this.propertyRepository.findOne({
       where: { id: createReservation.propertyId, isAvailable: true },
+      relations: [`reservationDetail`],
     });
     if (!property) {
       throw new NotFoundException(
         'La propiedad no existe o no está disponible',
       );
     }
-    console.log(property);
-
     const user = await this.userRepository.findOne({
       where: { id: createReservation.userId },
     });
     if (!user) {
       throw new NotFoundException('usuario inexistente');
     }
-
-    console.log(user);
-
+    if (property.isAvailable === false) {
+      throw new BadRequestException(`Propiedad no disponible para reservar`);
+    }
     const newReservationDetails = this.reservationDetailsRepository.create({
       checkIn: createReservation.checkIn,
       checkOut: createReservation.checkOut,
       pax: createReservation.pax,
-      property: property,
+      property,
     });
 
     await this.reservationDetailsRepository.save(newReservationDetails);
@@ -97,6 +94,8 @@ export class ReservationsRepository {
       </ul>
       `,
     });
+    property.isAvailable = false;
+    await this.propertyRepository.save(property);
     return newReservation;
   }
 

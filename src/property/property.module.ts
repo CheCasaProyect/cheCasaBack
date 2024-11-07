@@ -29,7 +29,8 @@ import { UserRepository } from 'src/user/user.repository';
     CloudinaryService,
     CloudinaryConfig,
     GeocodingService,
+    Property,
   ],
-  exports: [PropertyRepository, GeocodingService],
+  exports: [PropertyRepository, GeocodingService, Property],
 })
 export class PropertyModule {}

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateReservationDTO {
   @ApiProperty()
@@ -12,29 +12,19 @@ export class CreateReservationDTO {
   @IsNotEmpty()
   userId: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
-  requestedAt: Date;
-
-  @ApiProperty()
+  @ApiProperty({ example: new Date() })
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
   checkIn: Date;
 
-  @ApiProperty()
+  @ApiProperty({ example: new Date() })
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
   checkOut: Date;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @IsNotEmpty()
   pax: number;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  totalPrice?: number;
 }
