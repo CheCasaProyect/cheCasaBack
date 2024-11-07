@@ -28,6 +28,7 @@ import { GeocodingService } from './geocodingService';
 import { FilterPropertiesDto } from 'src/dtos/filterPropertiesDto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { PropertyGuard } from 'src/guards/property.guard';
+import { AccessGuard } from 'src/guards/role.guard';
 
 @ApiTags(`property`)
 @Controller(`properties`)
@@ -65,7 +66,7 @@ export class PropertyController {
   }
 
   @HttpCode(201)
-  /* @UseGuards(AuthGuard) */
+  @UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Pon los datos y sube imagenes:',
@@ -128,7 +129,7 @@ export class PropertyController {
     },
   })
   @UseInterceptors(FilesInterceptor(`photos`))
-  /* @ApiBearerAuth() */
+  @ApiBearerAuth()
   @Post()
   async addProperty(
     @Body() property: CreatePropertyDto,
@@ -158,7 +159,7 @@ export class PropertyController {
   }
 
   @HttpCode(200)
-  // @UseGuards(PropertyGuard)
+  @UseGuards(PropertyGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description:
@@ -238,6 +239,7 @@ export class PropertyController {
   }
 
   @HttpCode(200)
+  @UseGuards(AuthGuard, AccessGuard)
   @Put(`/deactivate/:id`)
   deacticateProperty(@Param(`id`) id: string) {
     const deactivatedProperty = this.propertyService.deactivateProperty(id);
@@ -245,6 +247,7 @@ export class PropertyController {
   }
 
   @HttpCode(200)
+  @UseGuards(AuthGuard, AccessGuard)
   @Put(`/activate/:id`)
   activateProperty(@Param(`id`) id: string) {
     const activatedProperty = this.propertyService.activateProperty(id);
@@ -260,6 +263,7 @@ export class PropertyController {
     return this.propertyService.filterProperties(query);
   }
 
+  @UseGuards(AuthGuard, AccessGuard)
   @Delete(`:id`)
   deleteProperty(@Param(`id`) id: string) {
     const deletedProperty = this.propertyService.deleteProperty(id);
