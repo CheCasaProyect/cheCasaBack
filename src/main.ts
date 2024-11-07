@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { setupSwagger } from './config/swaggerConfig';
+import { setupSwagger } from '../swaggerConfig';
 import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
 
