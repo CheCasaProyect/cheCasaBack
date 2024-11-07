@@ -1,7 +1,8 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GoogleService } from './google.service';
 
+@ApiTags('google')
 @Controller('google')
 export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
