@@ -30,7 +30,11 @@ export class AuthService {
 
     console.log(hashedPassword);
 
-    await this.userRepository.createUser({ ...user, password: hashedPassword });
+    await this.userRepository.createUser({
+      ...user,
+      password: hashedPassword,
+      isAdmin: false,
+    });
 
     await transporter.sendMail({
       from: '"Te Registraste en CheCasa ✍" <che.casa.proyect@gmail.com>',

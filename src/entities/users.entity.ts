@@ -74,6 +74,7 @@ export class User {
   profileImgUrl: string;
 
   @ApiHideProperty()
+  @Column({ default: false })
   isAdmin: boolean;
 
   @Column({ nullable: true })
