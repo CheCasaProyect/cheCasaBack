@@ -72,7 +72,7 @@ export class PropertyRepository {
   async addProperty(
     property: CreatePropertyDto,
     photos: Express.Multer.File[],
-    /* owner: User, */
+    owner: User,
   ) {
     try {
       const photosArray = [];
@@ -113,7 +113,7 @@ export class PropertyRepository {
       });
 
       const newProperty = this.propertyDBRepository.create({
-        /*  owner: owner, */
+        owner: owner,
         title: property.title,
         description: property.description,
         street: property.street,

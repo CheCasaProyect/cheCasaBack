@@ -19,7 +19,7 @@ import { ReviewsGuard } from 'src/guards/reviews.guard';
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewService: ReviewsService) {}
-  /* @UseGuards(AuthGuard, ReviewsGuard) */
+  @UseGuards(AuthGuard, ReviewsGuard)
   @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
   @Post('newReview')

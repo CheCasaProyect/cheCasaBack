@@ -21,7 +21,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: 'Get All Users' })
-  @UseGuards(AccessGuard)
+  @UseGuards(/* AccessGuard */)
   @ApiBearerAuth()
   @Get()
   getAllUser() {
@@ -39,21 +39,21 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Deactivate User' })
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
   @Put(':id/deactivate')
   deactivateUser(@Param('id') id: string) {
     return this.userService.deactivateUser(id);
   }
 
   @ApiOperation({ summary: 'Activate User' })
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
   @Put(':id/activate')
   activateUser(@Param('id') id: string) {
     return this.userService.activeUser(id);
   }
 
   @ApiOperation({ summary: 'Remove User' })
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard /* AccessGuard */)
   @Delete(':id/delete')
   removeUser(@Param('id') id: string) {
     return this.userService.removeUser(id);
