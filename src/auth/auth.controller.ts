@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserDto } from 'src/dtos/userDto';
 import { LoginDto } from 'src/dtos/loginDto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -22,19 +23,16 @@ export class AuthController {
     return this.authService.login(email, password);
   }
 
-  // @ApiOperation({summary: 'Login Google'})
-  // @Get('oauth/google')
-  // async signinWithGoogle() {}
+  @ApiOperation({ summary: 'Google Auth'})
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
 
-  // @ApiOperation({summary: 'Redirect'})
-  // @Get('oauth/google/redirect')
-  // async googleOAuthredirect(@Req() req, @Res() res: any) {
-  //   this.authService.googleAuthRedirect(req.user, res);
-  // }
+  @ApiOperation({summary: 'Callback Google'})
+  @Get('google/callback')
+   @UseGuards(AuthGuard('google'))
+   async googleAuthRedirect(@Req() req) {
+    return this.authService.validateUser(req.user);
+   }
 
-  // @ApiOperation({summary: 'Login Google'})
-  // @Post('oauth/google')
-  // async signinWithGoogle() {
-  //   return { url: 'https://accounts.google.com/o/oauth2/auth?...' };
-  // }
 }

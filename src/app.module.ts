@@ -10,7 +10,6 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CarpiBotModule } from './chatbot/carpibot.module';
-import { GoogleModule } from './google/google.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PropertyModule } from './property/property.module';
 
@@ -33,7 +32,6 @@ import { PropertyModule } from './property/property.module';
     StripeModule,
     ReviewsModule,
     CarpiBotModule,
-    GoogleModule,
     ReviewsModule,
     JwtModule.register({
       global: true,

@@ -22,19 +22,19 @@ export class User {
   })
   id: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   @ApiProperty({
     description: 'User firstname',
     example: 'CheCasa',
   })
-  firstname: string;
+  firstname?: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   @ApiProperty({
     description: 'User lastname',
     example: 'CheCasa',
   })
-  lastname: string;
+  lastname?: string;
 
   @Column({ type: 'varchar', nullable: true })
   @ApiProperty()
@@ -54,12 +54,12 @@ export class User {
   })
   email: string;
 
-  @Column()
+  @Column({ select: false, nullable: true})
   @ApiProperty({
     description: 'User password',
     example: 'checasa123',
   })
-  password: string;
+  password?: string;
 
   @Column({ default: true })
   @ApiProperty()
@@ -76,8 +76,8 @@ export class User {
   @Column({ default: false })
   isAdmin: boolean;
 
-  @Column({ nullable: true })
-  refreshToken?: string;
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  googleId?: string;
 
   @OneToMany(() => Reservation, (reservations) => reservations.user, {
     cascade: true,
