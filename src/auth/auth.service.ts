@@ -81,29 +81,23 @@ export class AuthService {
     };
   }
 
-  // async googleAuthRedirect(user: UserGoogleDto, res: any) {
-  //   if (!user) return new NotFoundException('User google account not found');
-  //   this.userId = (await this.userRepository.getUserByEmail(user.email))?.id;
-  //   if (!this.userId)
-  //     this.userId = (await this.userRepository.createUser(user)).id;
+  async validateUser(profile: any) {
+    const { id, emails, displayName} = profile;
+    const email = emails[0].value;
 
-  //   const refreshToken = await this.generateRefreshToken(this.userId);
-  //   const accessToken = await this.generateAccessToken(this.userId);
-  //   const hashedRefreshToken = await bcrypt.hash(
-  //     refreshToken,
-  //     this.SALT_ROUNDS,
-  //   );
+    let user = await this.userRepository.getUserByEmail(email);
+    if(!user) {
+      user = await this.userRepository.createUser({
+        email,
+        password: null,
+        isAdmin: false,
+        googleId: id,
+     });
+    } 
+    const payload = { id: user.id, email: user.email, roles: [user.isAdmin ? Role.Admin : Role.User]};
+    const token = this.jwtService.sign(payload);
 
-  //   await this.userRepository.updateRefreshToken(this.userId, hashedRefreshToken);
-  //   res.cookie('token', refreshToken, {
-  //     maxAge: 3 * 24 * 60 * 60,
-  //     httpOnly: true,
-  //   });
-  //   res.json({
-  //     status: 'success',
-  //     message: 'Login successfully',
-  //     data: {
-  //       accessToken: accessToken,
-  //     },
-  //   });
+    return { user, token };
+  }
+
 }

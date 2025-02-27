@@ -39,10 +39,14 @@ export class UserService {
   async createUser(userData: UserDto) {
     try {
       const newUser = await this.userRepository.createUser(userData);
-      const { password, ...userWithoutPass } = newUser;
+      if (!newUser) {
+        throw new BadRequestException('New user not created');
+      }
 
+      const { password, ...userWithoutPass } = newUser;
       return userWithoutPass;
     } catch (error) {
+      console.error('Error creating user:', error);
       throw new BadRequestException('New user not created');
     }
   }

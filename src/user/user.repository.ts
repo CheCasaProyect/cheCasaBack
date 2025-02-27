@@ -30,9 +30,10 @@ export class UserRepository {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  createUser(userData: Partial<User>): Promise<User> {
+  async createUser(userData: Partial<User>): Promise<User> {
     const newUser = this.userRepository.create(userData);
-    return this.userRepository.save(newUser);
+    await this.userRepository.save(newUser);
+    return newUser;
   }
 
   userUpdate(id: string, updateUser: Partial<User>) {
@@ -80,12 +81,4 @@ export class UserRepository {
     return this.userRepository.delete({ id: id });
   }
 
-  async updateRefreshToken(id: string, refreshToken: string) {
-    const user = await this.userRepository.findOneBy({ id });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    user.refreshToken = refreshToken;
-    return await this.userRepository.save(user);
-  }
 }
